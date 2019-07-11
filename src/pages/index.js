@@ -1,3 +1,9 @@
-import React from "react"
+import React from 'react';
+import Landing from '../components/landing';
 
-export default () => <div>Hello world!</div>
+export default () => (
+  <div>
+    <Landing />
+    <div>Hello world!</div>
+  </div>
+);
