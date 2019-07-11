@@ -1,3 +1,13 @@
 import React from 'react';
+import landingStyles from './landing.module.css';
 
-export default () => <h1>This is a header.</h1>;
+export default () => (
+  <section className={landingStyles.landing__cover}>
+    <div className={landingStyles.landing__content}>
+      <header>
+        <h2>Hello World</h2>
+        <p>Welcome Home</p>
+      </header>
+    </div>
+  </section>
+);
