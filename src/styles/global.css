@@ -1,0 +1,64 @@
+body {
+  margin: 0;
+  line-height: 1;
+}
+
+html,
+body {
+  background: #1c1d26;
+}
+
+body,
+input,
+textarea {
+  color: rgba(255, 255, 255, 0.75) !important;
+  font-family: 'Roboto', Helvetica, sans-serif;
+  font-size: 15pt;
+  font-weight: 100;
+  line-height: 1.75em;
+}
+
+a {
+  -moz-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  -webkit-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  -ms-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  border-bottom: dotted 1px;
+  color: #e44c65;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #e44c65 !important;
+  border-bottom-color: transparent;
+}
+
+p {
+  margin: 0 0 2em 0;
+}
+
+h2,
+h3 {
+  color: #ffffff;
+  font-weight: 300;
+  line-height: 1em;
+  margin: 0 0 1em 0;
+}
+
+h2 a,
+h3 a {
+  color: inherit;
+  border: 0;
+}
+
+h2 {
+  font-size: 2em;
+  line-height: 1.5em;
+  letter-spacing: -0.025em;
+  font-family: 'Raleway', sans-serif;
+}
+
+h3 {
+  font-size: 1.35em;
+  line-height: 1.5em;
+}
