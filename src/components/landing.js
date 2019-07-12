@@ -9,5 +9,6 @@ export default () => (
         <p>Welcome Home</p>
       </header>
     </div>
+    <a href="#two" className={landingStyles.landing__downArrow}></a>
   </section>
 );
