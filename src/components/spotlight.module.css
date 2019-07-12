@@ -46,6 +46,10 @@ header h3 + p {
   margin-top: -0.5em;
   line-height: 1.75em;
 }
+.spotlight__content_left {
+  border-right-width: 0.35em;
+  left: 0;
+}
 
 .spotlight__content_right {
   border-left-width: 0.35em;
