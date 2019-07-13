@@ -3,7 +3,7 @@ import spotlightStyles from './spotlight.module.css';
 
 export default () => (
   <div>
-    <section className={spotlightStyles.spotlight__cover}>
+    <section id="spotlight-one" className={spotlightStyles.spotlight__cover}>
       <div
         className={`${spotlightStyles.spotlight__content} ${spotlightStyles.spotlight__content_right}`}
       >
@@ -17,20 +17,36 @@ export default () => (
         <p>
           I strongly believe in making use of technology to create value and
           improve the lives of people. I currently work at{' '}
-          <a href="https://www.mafint.com/" target="_blank">
+          <a
+            href="https://www.mafint.com/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             MAF Intelligence
           </a>{' '}
           as a Front End Developer, and my previous experiences include working
           as a full stack web developer in{' '}
-          <a href="https://worldsmarathons.com/" target="_blank">
+          <a
+            href="https://worldsmarathons.com/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             World's Marathons
           </a>
           , Product in{' '}
-          <a href="http://keepinview.totemapp.com/company" target="_blank">
+          <a
+            href="http://keepinview.totemapp.com/company"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             KIV
           </a>
           , as well as Co-founder of Brackets for Change. I{' '}
-          <a href="https://medium.com/@wentjun" target="_blank">
+          <a
+            href="https://medium.com/@wentjun"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             write
           </a>{' '}
           to consolidate my learning experiences as a software engineer (coming
@@ -41,9 +57,9 @@ export default () => (
           2018.
         </p>
       </div>
-      <a href="#three" className="downArrow"></a>
+      <a href="#spotlight-two" className="downArrow"></a>
     </section>
-    <section className={spotlightStyles.spotlight__cover}>
+    <section id="spotlight-two" className={spotlightStyles.spotlight__cover}>
       <div
         className={`${spotlightStyles.spotlight__content} ${spotlightStyles.spotlight__content_left}`}
       >

@@ -103,3 +103,11 @@ h3 {
     font-size: 13pt;
   }
 }
+
+@media screen and (max-width: 1280px) {
+  body,
+  input,
+  textarea {
+    font-size: 11.5pt;
+  }
+}
