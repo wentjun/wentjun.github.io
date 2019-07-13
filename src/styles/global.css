@@ -93,6 +93,12 @@ h3 {
   text-align: center;
 }
 
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .downArrow {
   border: 0;
   bottom: 0;

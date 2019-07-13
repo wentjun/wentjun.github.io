@@ -1,5 +1,5 @@
 import React from 'react';
-import landingStyles from './landing.module.css';
+import PersonalProjectsStyles from './personal-projects.module.css';
 
 export default () => (
   <section id="personal-projects" className="wrapper">
@@ -9,7 +9,7 @@ export default () => (
         <p>These are the list of projects I had worked on.</p>
       </header>
       <div class="row text-center">
-        <section class="col-sm-4 col-xs-12">
+        <section className={PersonalProjectsStyles.PersonalProjects__column}>
           <h3>Capsule</h3>
           <p>
             <i>Product Design, Front-end Developer</i>
@@ -27,7 +27,7 @@ export default () => (
             Vue.js.
           </p>
         </section>
-        <section class="col-sm-4 col-xs-12">
+        <section className={PersonalProjectsStyles.PersonalProjects__column}>
           <h3>MyPAP</h3>
           <p>
             <i>Interaction Designer</i>
@@ -49,7 +49,7 @@ export default () => (
             to explore the interactive prototype.
           </p>
         </section>
-        <section class="col-sm-4 col-xs-12">
+        <section className={PersonalProjectsStyles.PersonalProjects__column}>
           <h3>Shuffle</h3>
           <p>
             <i>Front-end Developer</i>
@@ -71,15 +71,15 @@ export default () => (
         <p>If you would like to collaborate, we should talk.</p>
       </header>
       <div class="row text-center">
-        <section class="col-sm-4 col-xs-12">
+        <section className={PersonalProjectsStyles.PersonalProjects__column}>
           <span class="icon alt big fa-university"></span>
           <h3>Education</h3>
         </section>
-        <section class="col-sm-4 col-xs-12">
+        <section className={PersonalProjectsStyles.PersonalProjects__column}>
           <span class="icon alt big fa-shopping-cart"></span>
           <h3>E-commerce</h3>
         </section>
-        <section class="col-sm-4 col-xs-12">
+        <section className={PersonalProjectsStyles.PersonalProjects__column}>
           <span class="icon alt big fa-heartbeat"></span>
           <h3>Healthcare</h3>
         </section>
