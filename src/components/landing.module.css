@@ -55,34 +55,3 @@
   font-weight: 200;
   line-height: 1.75em;
 }
-
-.landing__downArrow {
-  border: 0;
-  bottom: 0;
-  display: block;
-  height: 5em;
-  left: 50%;
-  margin: 0 0 0 -5em;
-  overflow: hidden;
-  position: absolute;
-  text-indent: 10em;
-  white-space: nowrap;
-  width: 10em;
-  z-index: 1;
-}
-
-.landing__downArrow:before {
-  background-image: url('../../static/arrow.svg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  content: '';
-  display: block;
-  height: 1.5em;
-  left: 50%;
-  margin: -0.75em 0 0 -1em;
-  position: absolute;
-  top: 50%;
-  width: 2em;
-  z-index: 1;
-}
