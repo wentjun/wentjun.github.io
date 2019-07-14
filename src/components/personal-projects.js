@@ -1,14 +1,20 @@
+import {
+  faUniversity,
+  faShoppingCart,
+  faHeartbeat,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import PersonalProjectsStyles from './personal-projects.module.css';
 
 export default () => (
   <section id="personal-projects" className="wrapper">
     <div className="container">
-      <header class="text-center">
+      <header className="text-center">
         <h2>Some of my Work</h2>
         <p>These are the list of projects I had worked on.</p>
       </header>
-      <div class="row text-center">
+      <div className="row text-center">
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
           <h3>Capsule</h3>
           <p>
@@ -66,21 +72,36 @@ export default () => (
           </p>
         </section>
       </div>
-      <header class="text-center">
+      <header className="text-center">
         <h2>I am passionate in solving issues pertaining these industries:</h2>
         <p>If you would like to collaborate, we should talk.</p>
       </header>
-      <div class="row text-center">
+      <div className="row text-center">
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <span class="icon alt big fa-university"></span>
+          <span className={PersonalProjectsStyles.iconContainer}>
+            <FontAwesomeIcon
+              icon={faUniversity}
+              className={PersonalProjectsStyles.icon}
+            />
+          </span>
           <h3>Education</h3>
         </section>
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <span class="icon alt big fa-shopping-cart"></span>
+          <span className={PersonalProjectsStyles.iconContainer}>
+            <FontAwesomeIcon
+              icon={faShoppingCart}
+              className={PersonalProjectsStyles.icon}
+            />
+          </span>
           <h3>E-commerce</h3>
         </section>
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <span class="icon alt big fa-heartbeat"></span>
+          <span className={PersonalProjectsStyles.iconContainer}>
+            <FontAwesomeIcon
+              icon={faHeartbeat}
+              className={PersonalProjectsStyles.icon}
+            />
+          </span>
           <h3>Healthcare</h3>
         </section>
       </div>

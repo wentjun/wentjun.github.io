@@ -2,3 +2,24 @@
   width: 33.33333333%;
   padding: 0 1em 0 1em;
 }
+
+.iconContainer {
+  background: #272833;
+  border-radius: 100%;
+  cursor: default;
+  height: 6em;
+  line-height: 6em;
+  margin: 0 auto;
+  margin-bottom: 2em;
+  text-align: center;
+  width: 6em !important;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  height: 30%;
+  width: 30% !important;
+}
