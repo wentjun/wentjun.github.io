@@ -49,8 +49,7 @@ export default () => (
           >
             write
           </a>{' '}
-          to consolidate my learning experiences as a software engineer (coming
-          soon! November 2018).
+          to consolidate my learning experiences as a software engineer.
         </p>{' '}
         <p>
           I graduated from the National University of Singapore (NUS) in May
@@ -84,7 +83,7 @@ export default () => (
           </li>
         </ul>
       </div>
-      <a href="#four" className="downArrow"></a>
+      <a href="#personal-projects" className="downArrow"></a>
     </section>
   </div>
 );
