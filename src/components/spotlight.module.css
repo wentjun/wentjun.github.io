@@ -1,33 +1,11 @@
-header p {
-  color: #ffffff;
-  position: relative;
-  margin: 0 0 1.5em 0;
-}
-/*
-header h2 + p {
-  font-size: 1.25em;
-  margin-top: -1em;
-  line-height: 1.75em;
-}
-*/
-header h3 + p {
-  font-size: 1.1em;
-  margin-top: -0.8em;
-  line-height: 1.75em;
-}
-
 .spotlight__cover {
   background-position: center center;
   background-size: cover;
   background-image: url('../../static/reine2.jpeg');
+  background-attachment: scroll;
   box-shadow: 0 0.25em 0.5em 0 rgba(0, 0, 0, 0.25);
   overflow: hidden;
   position: relative;
-  /*
-  background-attachment: fixed;
-  height: 100vh;
-  */
-  background-attachment: scroll;
   height: auto;
 }
 
@@ -60,7 +38,7 @@ header h3 + p {
 
 .spotlight__contentHighlight {
   font-size: 1em;
-  margin-top: -0.5em;
+  margin-top: -1em;
   line-height: 1.75em;
 }
 
@@ -72,13 +50,7 @@ header h3 + p {
 .spotlight__content_left,
 .spotlight__content_right {
   height: 101%;
-  /*padding: 6em 3em;*/
-
   background-color: #1c1d26;
-  /* border-width: 0 !important;
-  border-top-width: 0.35em !important;
-  bottom: auto !important;
-  left: auto !important;*/
   padding: 3em 1.25em 1em 1.25em;
   position: relative;
   text-align: center;
@@ -86,6 +58,22 @@ header h3 + p {
   width: 100%;
 }
 
+@media screen and (min-width: 576px) {
+  .spotlight__content_left,
+  .spotlight__content_right {
+    padding: 3.25em 1.5em 1.25em 1.5em;
+  }
+}
+@media screen and (min-width: 768px) {
+  .spotlight__content_left,
+  .spotlight__content_right {
+    padding: 4.5em 2.5em 2.5em 2.5em;
+  }
+
+  .spotlight__contentHighlight {
+    font-size: 1.25em;
+  }
+}
 /* Medium */
 @media screen and (min-width: 992px) {
   .spotlight__cover {
@@ -95,7 +83,7 @@ header h3 + p {
 
   .spotlight__content_left,
   .spotlight__content_right {
-    padding: 4.5em 2.5em 2.5em 2.5em;
+    padding: 4.5em 2.5em;
     position: absolute;
     text-align: left;
     top: 0;
@@ -105,5 +93,14 @@ header h3 + p {
   .spotlight__content_right {
     border-left-width: 0.35em;
     right: 0;
+  }
+}
+
+/* Large */
+@media screen and (min-width: 1200px) {
+  .spotlight__content_left,
+  .spotlight__content_right {
+    padding: 6em 3em;
+    width: 28em;
   }
 }

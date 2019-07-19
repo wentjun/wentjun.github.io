@@ -1,6 +1,5 @@
 .PersonalProjects__column {
   padding: 0 1em 0 1em;
-
   -webkit-box-flex: 0;
   -ms-flex: 0 0 100%;
   flex: 0 0 100%;
@@ -17,7 +16,6 @@
   margin-bottom: 2em;
   text-align: center;
   width: 6em !important;
-
   display: flex;
   justify-content: center;
   align-items: center;

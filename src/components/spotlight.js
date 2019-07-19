@@ -9,7 +9,7 @@ export default () => (
       >
         <header>
           <h2>Hi, I am Wen Tjun.</h2>
-          <p className={spotlightStyles.spotlight__contentHighlight}>
+          <p>
             I'm a software engineer. I love JavaScript/TypeScript, design, and a
             good cup of coffee.
           </p>
@@ -56,11 +56,11 @@ export default () => (
           2018.
         </p>
       </div>
-      <a href="#spotlight-two" className="{`downArrow mdHidden`}"></a>
+      <a href="#spotlight-two" className="downArrow mdHiddenDown"></a>
     </section>
     <section id="spotlight-two" className={spotlightStyles.spotlight__cover}>
       <div
-        className={`${spotlightStyles.spotlight__mobileCover} mdHidden`}
+        className={`${spotlightStyles.spotlight__mobileCover} mdHiddenUp`}
       ></div>
       <div
         className={`${spotlightStyles.spotlight__content} ${spotlightStyles.spotlight__content_left}`}
@@ -86,7 +86,7 @@ export default () => (
           </li>
         </ul>
       </div>
-      <a href="#personal-projects" className="{`downArrow mdHidden`}"></a>
+      <a href="#personal-projects" className="downArrow mdHiddenDown"></a>
     </section>
   </div>
 );
