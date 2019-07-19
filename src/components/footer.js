@@ -15,7 +15,6 @@ export default () => (
   <footer>
     <div className="row">
       <a
-        className={footerStyles.footer__iconContainer}
         href="https://twitter.com/wentjun"
         target="_blank"
         rel="noopener noreferrer"
@@ -26,7 +25,6 @@ export default () => (
         />
       </a>
       <a
-        className={footerStyles.footer__iconContainer}
         href="https://www.linkedin.com/in/wentjun/"
         target="_blank"
         rel="noopener noreferrer"
@@ -37,7 +35,6 @@ export default () => (
         />
       </a>
       <a
-        className={footerStyles.footer__iconContainer}
         href="https://github.com/wentjun"
         target="_blank"
         rel="noopener noreferrer"
@@ -48,7 +45,6 @@ export default () => (
         />
       </a>
       <a
-        className={footerStyles.footer__iconContainer}
         href="https://medium.com/@wentjun"
         target="_blank"
         rel="noopener noreferrer"
@@ -59,7 +55,6 @@ export default () => (
         />
       </a>
       <a
-        className={footerStyles.footer__iconContainer}
         href="https://www.freecodecamp.org/news/author/wentjun/"
         target="_blank"
         rel="noopener noreferrer"
@@ -70,7 +65,6 @@ export default () => (
         />
       </a>
       <a
-        className={footerStyles.footer__iconContainer}
         href="mailto: wentjun@u.nus.edu"
         target="_blank"
         rel="noopener noreferrer"

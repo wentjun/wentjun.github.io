@@ -4,26 +4,12 @@ footer {
   text-align: center;
 }
 
-.footer__iconContainer {
-  /*
-  background: #272833;
-  border-radius: 100%;
-  cursor: default;
-  height: 6em;
-  line-height: 6em;
-  margin: 0 auto;
-  margin-bottom: 2em;
-  text-align: center;
-  width: 6em !important;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  */
+.footer__icon {
+  height: 1.75em;
+  width: 1.75em !important;
+  padding: 0 1em 0 1em;
 }
 
-.footer__icon {
-  height: 1.5em;
-  width: 1.5em !important;
-  padding: 0 1em 0 1em;
+a {
+  color: #ffffff;
 }

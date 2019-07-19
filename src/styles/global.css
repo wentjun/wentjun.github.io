@@ -20,7 +20,11 @@ textarea {
   line-height: 1.75em;
 }
 
-a {
+p {
+  margin: 0 0 2em 0;
+}
+
+p a {
   -moz-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
   -webkit-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
   -ms-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -30,13 +34,9 @@ a {
   text-decoration: none;
 }
 
-a:hover {
+p a:hover {
   color: #e44c65 !important;
   border-bottom-color: transparent;
-}
-
-p {
-  margin: 0 0 2em 0;
 }
 
 h2,
