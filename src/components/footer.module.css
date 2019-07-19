@@ -4,10 +4,13 @@ footer {
   text-align: center;
 }
 
+.footer__iconContainer {
+  padding: 0 1em 0 1em;
+}
+
 .footer__icon {
   height: 1.75em;
   width: 1.75em !important;
-  padding: 0 1em 0 1em;
 }
 
 a {

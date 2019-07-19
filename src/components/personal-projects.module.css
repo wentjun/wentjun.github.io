@@ -1,6 +1,10 @@
 .PersonalProjects__column {
-  width: 33.33333333%;
   padding: 0 1em 0 1em;
+
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 100%;
+  flex: 0 0 100%;
+  max-width: 100%;
 }
 
 .iconContainer {
@@ -22,4 +26,14 @@
 .icon {
   height: 30%;
   width: 30% !important;
+}
+
+/* Small */
+@media screen and (min-width: 768px) {
+  .PersonalProjects__column {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 33.333333%;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
 }

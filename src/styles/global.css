@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,100italic,300italic');
 
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   line-height: 1;
@@ -15,7 +23,7 @@ input,
 textarea {
   color: rgba(255, 255, 255, 0.75) !important;
   font-family: 'Roboto', Helvetica, sans-serif;
-  font-size: 15pt;
+  font-size: 12pt;
   font-weight: 100;
   line-height: 1.75em;
 }
@@ -54,7 +62,7 @@ h3 a {
 }
 
 h2 {
-  font-size: 2em;
+  font-size: 1.5em;
   line-height: 1.5em;
   letter-spacing: -0.025em;
   font-family: 'Raleway', sans-serif;
@@ -74,7 +82,7 @@ h3 {
 }
 
 .wrapper {
-  padding: 6em 0 4em 0;
+  padding: 3em 1.25em 1em 1.25em;
 }
 
 .wrapper.fade-up > .container {
@@ -102,9 +110,15 @@ h3 {
 }
 
 .row {
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .downArrow {
@@ -149,10 +163,6 @@ h3 {
   .container {
     width: 540px;
   }
-
-  .wrapper {
-    padding: 3em 1.25em 1em 1.25em;
-  }
 }
 
 /* Small */
@@ -186,6 +196,10 @@ h3 {
 
   .wrapper {
     padding: 4.5em 2.5em 2.5em 2.5em;
+  }
+
+  .mdHidden {
+    display: none;
   }
 }
 

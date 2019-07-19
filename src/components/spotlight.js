@@ -56,9 +56,12 @@ export default () => (
           2018.
         </p>
       </div>
-      <a href="#spotlight-two" className="downArrow"></a>
+      <a href="#spotlight-two" className="{`downArrow mdHidden`}"></a>
     </section>
     <section id="spotlight-two" className={spotlightStyles.spotlight__cover}>
+      <div
+        className={`${spotlightStyles.spotlight__mobileCover} mdHidden`}
+      ></div>
       <div
         className={`${spotlightStyles.spotlight__content} ${spotlightStyles.spotlight__content_left}`}
       >
@@ -83,7 +86,7 @@ export default () => (
           </li>
         </ul>
       </div>
-      <a href="#personal-projects" className="downArrow"></a>
+      <a href="#personal-projects" className="{`downArrow mdHidden`}"></a>
     </section>
   </div>
 );

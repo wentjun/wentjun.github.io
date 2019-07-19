@@ -40,7 +40,8 @@
 
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  /*align-items: flex-end;*/
+  align-items: center;
 }
 
 .contact__formWrapper {
@@ -68,10 +69,6 @@ textarea {
   text-decoration: none;
   width: 100%;
   height: 3em;
-
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 
 textarea {
@@ -132,11 +129,22 @@ form {
 }
 
 .contact__formElement {
-  width: 50%;
+  width: 100%;
   margin-top: 15px;
 }
 
 .contact__formGroup {
   margin-left: 15px;
   margin-right: 15px;
+}
+
+/* Medium */
+@media screen and (min-width: 992px) {
+  .contact__contentQuote header {
+    align-items: flex-end;
+  }
+
+  .contact__formElement {
+    width: 50%;
+  }
 }
