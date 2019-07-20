@@ -56,7 +56,13 @@ export default () => (
           2018.
         </p>
       </div>
-      <a href="#spotlight-two" className="downArrow mdHiddenDown"></a>
+      <a
+        href="#spotlight-two"
+        className="downArrow mdHiddenDown"
+        aria-label="down arrow"
+      >
+        <i></i>
+      </a>
     </section>
     <section id="spotlight-two" className={spotlightStyles.spotlight__cover}>
       <div
@@ -66,6 +72,7 @@ export default () => (
         className={`${spotlightStyles.spotlight__content} ${spotlightStyles.spotlight__content_left}`}
       >
         <header>
+          {/* eslint-disable-next-line */}
           <h2></h2>
           <p>Dreamer. Believer. Achiever.</p>
         </header>
@@ -86,7 +93,13 @@ export default () => (
           </li>
         </ul>
       </div>
-      <a href="#personal-projects" className="downArrow mdHiddenDown"></a>
+      <a
+        href="#personal-projects"
+        className="downArrow mdHiddenDown"
+        aria-label="down arrow"
+      >
+        <i></i>
+      </a>
     </section>
   </div>
 );

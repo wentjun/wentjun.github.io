@@ -1,6 +1,10 @@
+a {
+  color: #ffffff;
+}
+
 footer {
   background: #272833;
-  padding: 6em 0;
+  padding: 5em 0;
   text-align: center;
 }
 
@@ -20,6 +24,11 @@ footer {
   color: #e44c65;
 }
 
-a {
-  color: #ffffff;
+.footer__heartIcon {
+  color: #e44c65;
+}
+
+.footer__label {
+  flex-basis: 100%;
+  padding-top: 2em;
 }

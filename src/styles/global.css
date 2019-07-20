@@ -8,6 +8,14 @@
   box-sizing: border-box;
 }
 
+::selection {
+  background: rgba(228, 76, 101, 0.5);
+}
+
+::-moz-selection {
+  background: rgba(228, 76, 101, 0.5);
+}
+
 body {
   margin: 0;
   line-height: 1;
@@ -30,18 +38,22 @@ textarea {
 
 p {
   margin: 0 0 2em 0;
+  -webkit-tap-highlight-color: rgba(228, 76, 101, 0.5);
 }
 
-p a {
+p a,
+span a {
   -moz-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
   -webkit-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
   transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  -webkit-tap-highlight-color: rgba(228, 76, 101, 0.5);
   border-bottom: dotted 1px;
   color: #e44c65;
   text-decoration: none;
 }
 
-p a:hover {
+p a:hover,
+span a:hover {
   color: #e44c65 !important;
   border-bottom-color: transparent;
 }

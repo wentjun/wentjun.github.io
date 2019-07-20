@@ -21,7 +21,11 @@ export default () => (
             <i>Product Design, Front-end Developer</i>
           </p>
           <p>
-            <a href="https://capsule.sg" target="_blank">
+            <a
+              href="https://capsule.sg"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Capsule
             </a>{' '}
             aims to become a global mobile platform for organisations and
@@ -49,6 +53,7 @@ export default () => (
             <a
               href="https://xd.adobe.com/view/1a1bb2b6-02df-49c4-9f6a-21276f078b48/"
               target="_blank"
+              rel="noopener noreferrer"
             >
               here
             </a>{' '}
@@ -61,7 +66,11 @@ export default () => (
             <i>Front-end Developer</i>
           </p>
           <p>
-            <a href="https://goshuffle.co" target="_blank">
+            <a
+              href="https://goshuffle.co"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Shuffle
             </a>{' '}
             enhances the travel experience for backpackers by connecting them

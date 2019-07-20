@@ -71,8 +71,6 @@ export default () => (
       </a>
       <a
         href="mailto: wentjun@u.nus.edu"
-        target="_blank"
-        rel="noopener noreferrer"
         className={footerStyles.footer__iconContainer}
       >
         <FontAwesomeIcon
@@ -80,6 +78,17 @@ export default () => (
           className={footerStyles.footer__icon}
         />
       </a>
+      <span className={footerStyles.footer__label}>
+        Made with{' '}
+        <span className={footerStyles.footer__heartIcon}>&#9829;</span> using{' '}
+        <a
+          href="https://www.gatsbyjs.org/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          GatsbyJS
+        </a>
+      </span>
     </div>
   </footer>
 );
