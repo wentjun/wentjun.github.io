@@ -1,7 +1,7 @@
 import {
   faUniversity,
-  faShoppingCart,
-  faHeartbeat,
+  faChartPie,
+  faLaptopCode,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
@@ -12,7 +12,7 @@ export default () => (
     <div className="container">
       <header className="text-center">
         <h2>Some of my Work</h2>
-        <p>These are the list of projects I had worked on.</p>
+        <p>This is a list of side projects I had worked on.</p>
       </header>
       <div className="row text-center">
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
@@ -73,10 +73,31 @@ export default () => (
         </section>
       </div>
       <header className="text-center">
-        <h2>I am passionate in solving issues pertaining these industries:</h2>
-        <p>If you would like to collaborate, we should talk.</p>
+        <h2>I am always on the lookout for interesting projects.</h2>
+        <p>
+          If you would like to collaborate on any of the following areas, we
+          should talk.
+        </p>
       </header>
       <div className="row text-center">
+        <section className={PersonalProjectsStyles.PersonalProjects__column}>
+          <span className={PersonalProjectsStyles.iconContainer}>
+            <FontAwesomeIcon
+              icon={faChartPie}
+              className={PersonalProjectsStyles.icon}
+            />
+          </span>
+          <h3>Data Visualisation</h3>
+        </section>
+        <section className={PersonalProjectsStyles.PersonalProjects__column}>
+          <span className={PersonalProjectsStyles.iconContainer}>
+            <FontAwesomeIcon
+              icon={faLaptopCode}
+              className={PersonalProjectsStyles.icon}
+            />
+          </span>
+          <h3>Open Source</h3>
+        </section>
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
           <span className={PersonalProjectsStyles.iconContainer}>
             <FontAwesomeIcon
@@ -85,24 +106,6 @@ export default () => (
             />
           </span>
           <h3>Education</h3>
-        </section>
-        <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <span className={PersonalProjectsStyles.iconContainer}>
-            <FontAwesomeIcon
-              icon={faShoppingCart}
-              className={PersonalProjectsStyles.icon}
-            />
-          </span>
-          <h3>E-commerce</h3>
-        </section>
-        <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <span className={PersonalProjectsStyles.iconContainer}>
-            <FontAwesomeIcon
-              icon={faHeartbeat}
-              className={PersonalProjectsStyles.icon}
-            />
-          </span>
-          <h3>Healthcare</h3>
         </section>
       </div>
     </div>

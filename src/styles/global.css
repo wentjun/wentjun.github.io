@@ -35,7 +35,6 @@ p {
 p a {
   -moz-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
   -webkit-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
-  -ms-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
   transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
   border-bottom: dotted 1px;
   color: #e44c65;
@@ -104,7 +103,6 @@ h3 {
   transform: translate(0, 0);
   -moz-transition: -moz-transform 1s ease, opacity 1s ease;
   -webkit-transition: -webkit-transform 1s ease, opacity 1s ease;
-  -ms-transition: -ms-transform 1s ease, opacity 1s ease;
   transition: transform 1s ease, opacity 1s ease;
   opacity: 1;
 }
@@ -146,6 +144,9 @@ h3 {
   white-space: nowrap;
   width: 10em;
   z-index: 1;
+  -moz-transition: -moz-transform 0.2s ease-in-out;
+  -webkit-transition: -webkit-transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 
 .downArrow:before {
@@ -162,6 +163,9 @@ h3 {
   top: 50%;
   width: 2em;
   z-index: 1;
+}
+.downArrow:hover {
+  transform: scale(1.1);
 }
 
 /* XSmall */

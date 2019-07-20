@@ -11,6 +11,13 @@ footer {
 .footer__icon {
   height: 1.75em;
   width: 1.75em !important;
+  -moz-transition: color 0.2s ease-in-out;
+  -webkit-transition: color 0.2s ease-in-out;
+  transition: color 0.2s ease-in-out;
+}
+
+.footer__icon:hover {
+  color: #e44c65;
 }
 
 a {
