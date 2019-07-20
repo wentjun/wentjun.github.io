@@ -1,5 +1,21 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,100italic,300italic');
 
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(228, 76, 101, 0.5);
+}
+
+::-moz-selection {
+  background: rgba(228, 76, 101, 0.5);
+}
+
 body {
   margin: 0;
   line-height: 1;
@@ -15,28 +31,43 @@ input,
 textarea {
   color: rgba(255, 255, 255, 0.75) !important;
   font-family: 'Roboto', Helvetica, sans-serif;
-  font-size: 15pt;
+  font-size: 12pt;
   font-weight: 100;
   line-height: 1.75em;
 }
 
-a {
+p {
+  margin: 0 0 2em 0;
+  -webkit-tap-highlight-color: rgba(228, 76, 101, 0.5);
+}
+
+p a,
+span a {
   -moz-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
   -webkit-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
-  -ms-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
   transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  -webkit-tap-highlight-color: rgba(228, 76, 101, 0.5);
   border-bottom: dotted 1px;
   color: #e44c65;
   text-decoration: none;
 }
 
-a:hover {
+p a:hover,
+span a:hover {
   color: #e44c65 !important;
   border-bottom-color: transparent;
 }
 
-p {
-  margin: 0 0 2em 0;
+header p {
+  color: #ffffff;
+  position: relative;
+  margin: 0 0 1.5em 0;
+}
+
+header h2 + p {
+  font-size: 1em;
+  margin-top: -1em;
+  line-height: 1.75em;
 }
 
 h2,
@@ -54,7 +85,7 @@ h3 a {
 }
 
 h2 {
-  font-size: 2em;
+  font-size: 1.5em;
   line-height: 1.5em;
   letter-spacing: -0.025em;
   font-family: 'Raleway', sans-serif;
@@ -63,6 +94,53 @@ h2 {
 h3 {
   font-size: 1.35em;
   line-height: 1.5em;
+}
+
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.wrapper {
+  padding: 3em 1.25em 1em 1.25em;
+}
+
+.wrapper.fade-up > .container {
+  -moz-transform: translate(0, 0);
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+  -moz-transition: -moz-transform 1s ease, opacity 1s ease;
+  -webkit-transition: -webkit-transform 1s ease, opacity 1s ease;
+  transition: transform 1s ease, opacity 1s ease;
+  opacity: 1;
+}
+
+.wrapper.fade-up.inactive > .container {
+  -moz-transform: translate(0, 1em);
+  -webkit-transform: translate(0, 1em);
+  -ms-transform: translate(0, 1em);
+  transform: translate(0, 1em);
+  opacity: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.row {
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .downArrow {
@@ -78,6 +156,9 @@ h3 {
   white-space: nowrap;
   width: 10em;
   z-index: 1;
+  -moz-transition: -moz-transform 0.2s ease-in-out;
+  -webkit-transition: -webkit-transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 
 .downArrow:before {
@@ -95,19 +176,101 @@ h3 {
   width: 2em;
   z-index: 1;
 }
+.downArrow:hover {
+  transform: scale(1.1);
+}
 
-@media screen and (max-width: 1680px) {
+/* XSmall */
+@media screen and (min-width: 576px) {
   body,
   input,
   textarea {
-    font-size: 13pt;
+    font-size: 12pt;
+  }
+
+  .container {
+    width: 540px;
+  }
+
+  .wrapper {
+    padding: 3.25em 1.5em 1.25em 1.5em;
   }
 }
 
-@media screen and (max-width: 1280px) {
+/* Small */
+@media screen and (min-width: 768px) {
+  body,
+  input,
+  textarea {
+    font-size: 12pt;
+  }
+
+  header h2 + p {
+    font-size: 1.25em;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  .container {
+    width: 720px;
+  }
+
+  .wrapper {
+    padding: 4.5em 2.5em 2.5em 2.5em;
+  }
+}
+
+/* Medium */
+@media screen and (min-width: 992px) {
+  body,
+  input,
+  textarea {
+    font-size: 12pt;
+  }
+
+  .container {
+    width: 960px;
+  }
+
+  .wrapper {
+    padding: 4.5em 0 2.5em 0;
+  }
+
+  .mdHiddenUp {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .mdHiddenDown {
+    display: none;
+  }
+}
+
+/* Large */
+@media screen and (min-width: 1200px) {
   body,
   input,
   textarea {
     font-size: 11.5pt;
+  }
+
+  .container {
+    width: 1140px;
+  }
+
+  .wrapper {
+    padding: 6em 0 4em 0;
+  }
+}
+
+/* XLarge */
+@media screen and (min-width: 1680px) {
+  body,
+  input,
+  textarea {
+    font-size: 13pt;
   }
 }

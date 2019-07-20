@@ -1,0 +1,34 @@
+a {
+  color: #ffffff;
+}
+
+footer {
+  background: #272833;
+  padding: 5em 0;
+  text-align: center;
+}
+
+.footer__iconContainer {
+  padding: 0 1em 0 1em;
+}
+
+.footer__icon {
+  height: 1.75em;
+  width: 1.75em !important;
+  -moz-transition: color 0.2s ease-in-out;
+  -webkit-transition: color 0.2s ease-in-out;
+  transition: color 0.2s ease-in-out;
+}
+
+.footer__icon:hover {
+  color: #e44c65;
+}
+
+.footer__heartIcon {
+  color: #e44c65;
+}
+
+.footer__label {
+  flex-basis: 100%;
+  padding-top: 2em;
+}
