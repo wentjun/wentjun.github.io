@@ -9,6 +9,8 @@ export default () => (
         <p>Welcome Home</p>
       </header>
     </div>
-    <a href="#spotlight-one" className="downArrow"></a>
+    <a href="#spotlight-one" className="downArrow" aria-label="down arrow">
+      <i></i>
+    </a>
   </section>
 );

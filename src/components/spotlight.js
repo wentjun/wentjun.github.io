@@ -9,7 +9,7 @@ export default () => (
       >
         <header>
           <h2>Hi, I am Wen Tjun.</h2>
-          <p className={spotlightStyles.spotlight__contentHighlight}>
+          <p>
             I'm a software engineer. I love JavaScript/TypeScript, design, and a
             good cup of coffee.
           </p>
@@ -56,13 +56,23 @@ export default () => (
           2018.
         </p>
       </div>
-      <a href="#spotlight-two" className="downArrow"></a>
+      <a
+        href="#spotlight-two"
+        className="downArrow mdHiddenDown"
+        aria-label="down arrow"
+      >
+        <i></i>
+      </a>
     </section>
     <section id="spotlight-two" className={spotlightStyles.spotlight__cover}>
+      <div
+        className={`${spotlightStyles.spotlight__mobileCover} mdHiddenUp`}
+      ></div>
       <div
         className={`${spotlightStyles.spotlight__content} ${spotlightStyles.spotlight__content_left}`}
       >
         <header>
+          {/* eslint-disable-next-line */}
           <h2></h2>
           <p>Dreamer. Believer. Achiever.</p>
         </header>
@@ -83,7 +93,13 @@ export default () => (
           </li>
         </ul>
       </div>
-      <a href="#personal-projects" className="downArrow"></a>
+      <a
+        href="#personal-projects"
+        className="downArrow mdHiddenDown"
+        aria-label="down arrow"
+      >
+        <i></i>
+      </a>
     </section>
   </div>
 );

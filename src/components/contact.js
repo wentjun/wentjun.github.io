@@ -10,7 +10,9 @@ export default () => (
           <span>the wall of fear and caution</span>
         </header>
       </div>
-      <a href="#contact" className="downArrow"></a>
+      <a href="#contact" className="downArrow" aria-label="down arrow">
+        <i></i>
+      </a>
     </section>
     <section
       id="contact"

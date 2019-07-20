@@ -18,6 +18,7 @@ export default () => (
         href="https://twitter.com/wentjun"
         target="_blank"
         rel="noopener noreferrer"
+        className={footerStyles.footer__iconContainer}
       >
         <FontAwesomeIcon
           icon={faTwitter}
@@ -28,6 +29,7 @@ export default () => (
         href="https://www.linkedin.com/in/wentjun/"
         target="_blank"
         rel="noopener noreferrer"
+        className={footerStyles.footer__iconContainer}
       >
         <FontAwesomeIcon
           icon={faLinkedinIn}
@@ -38,6 +40,7 @@ export default () => (
         href="https://github.com/wentjun"
         target="_blank"
         rel="noopener noreferrer"
+        className={footerStyles.footer__iconContainer}
       >
         <FontAwesomeIcon
           icon={faGithub}
@@ -48,6 +51,7 @@ export default () => (
         href="https://medium.com/@wentjun"
         target="_blank"
         rel="noopener noreferrer"
+        className={footerStyles.footer__iconContainer}
       >
         <FontAwesomeIcon
           icon={faMediumM}
@@ -58,6 +62,7 @@ export default () => (
         href="https://www.freecodecamp.org/news/author/wentjun/"
         target="_blank"
         rel="noopener noreferrer"
+        className={footerStyles.footer__iconContainer}
       >
         <FontAwesomeIcon
           icon={faFreeCodeCamp}
@@ -66,14 +71,24 @@ export default () => (
       </a>
       <a
         href="mailto: wentjun@u.nus.edu"
-        target="_blank"
-        rel="noopener noreferrer"
+        className={footerStyles.footer__iconContainer}
       >
         <FontAwesomeIcon
           icon={faEnvelope}
           className={footerStyles.footer__icon}
         />
       </a>
+      <span className={footerStyles.footer__label}>
+        Made with{' '}
+        <span className={footerStyles.footer__heartIcon}>&#9829;</span> using{' '}
+        <a
+          href="https://www.gatsbyjs.org/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          GatsbyJS
+        </a>
+      </span>
     </div>
   </footer>
 );
