@@ -27,7 +27,6 @@
   -moz-transition: -moz-transform 1s ease, opacity 1s ease;
   -webkit-transition: -webkit-transform 1s ease, opacity 1s ease;
   transition: transform 1s ease, opacity 1s ease;
-  background: rgba(23, 24, 32, 0.95);
   opacity: 1;
   position: absolute;
   width: 100%;
@@ -89,6 +88,7 @@
 
   .spotlight__content_left,
   .spotlight__content_right {
+    background: rgba(23, 24, 32, 0.95);
     padding: 4.5em 2.5em;
     position: absolute;
     text-align: left;
