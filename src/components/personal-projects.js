@@ -5,6 +5,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
+
 import PersonalProjectsStyles from './personal-projects.module.css';
 
 export default () => (
@@ -90,28 +91,34 @@ export default () => (
       </header>
       <div className="row text-center">
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <span className={PersonalProjectsStyles.iconContainer}>
+          <span
+            className={PersonalProjectsStyles.PersonalProjects__iconContainer}
+          >
             <FontAwesomeIcon
               icon={faChartPie}
-              className={PersonalProjectsStyles.icon}
+              className={PersonalProjectsStyles.PersonalProjects__icon}
             />
           </span>
           <h3>Data Visualisation</h3>
         </section>
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <span className={PersonalProjectsStyles.iconContainer}>
+          <span
+            className={PersonalProjectsStyles.PersonalProjects__iconContainer}
+          >
             <FontAwesomeIcon
               icon={faLaptopCode}
-              className={PersonalProjectsStyles.icon}
+              className={PersonalProjectsStyles.PersonalProjects__icon}
             />
           </span>
           <h3>Open Source</h3>
         </section>
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <span className={PersonalProjectsStyles.iconContainer}>
+          <span
+            className={PersonalProjectsStyles.PersonalProjects__iconContainer}
+          >
             <FontAwesomeIcon
               icon={faUniversity}
-              className={PersonalProjectsStyles.icon}
+              className={PersonalProjectsStyles.PersonalProjects__icon}
             />
           </span>
           <h3>Education</h3>

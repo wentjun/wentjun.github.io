@@ -7,7 +7,7 @@ import Landing from '../components/landing';
 import PersonalProjects from '../components/personal-projects';
 import Spotlight from '../components/spotlight';
 
-// Polyfill for Scroll Behavior as part Window interface. Allows support for IE, and Safari.
+// Polyfill for Scroll Behaviour as part Window interface. Allows support for IE, and Safari.
 smoothscroll.polyfill();
 
 export default () => (

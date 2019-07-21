@@ -1,6 +1,5 @@
 import React from 'react';
-import footerStyles from './footer.module.css';
-
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import {
   faTwitter,
   faLinkedinIn,
@@ -8,8 +7,9 @@ import {
   faGithub,
   faMediumM,
 } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import footerStyles from './footer.module.css';
 
 export default () => (
   <footer>
