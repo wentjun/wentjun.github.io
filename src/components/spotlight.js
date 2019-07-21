@@ -1,4 +1,6 @@
 import React from 'react';
+
+import AnchorLink from '../utilities/anchor-link.js';
 import spotlightStyles from './spotlight.module.css';
 
 export default () => (
@@ -56,13 +58,7 @@ export default () => (
           2018.
         </p>
       </div>
-      <a
-        href="#spotlight-two"
-        className="downArrow mdHiddenDown"
-        aria-label="down arrow"
-      >
-        <i></i>
-      </a>
+      <AnchorLink location="spotlight-two" />
     </section>
     <section id="spotlight-two" className={spotlightStyles.spotlight__cover}>
       <div
@@ -93,13 +89,7 @@ export default () => (
           </li>
         </ul>
       </div>
-      <a
-        href="#personal-projects"
-        className="downArrow mdHiddenDown"
-        aria-label="down arrow"
-      >
-        <i></i>
-      </a>
+      <AnchorLink location="personal-projects" />
     </section>
   </div>
 );

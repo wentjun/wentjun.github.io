@@ -1,4 +1,6 @@
 import React from 'react';
+
+import AnchorLink from '../utilities/anchor-link.js';
 import contactStyles from './contact.module.css';
 
 export default () => (
@@ -10,9 +12,7 @@ export default () => (
           <span>the wall of fear and caution</span>
         </header>
       </div>
-      <a href="#contact" className="downArrow" aria-label="down arrow">
-        <i></i>
-      </a>
+      <AnchorLink location="contact" />
     </section>
     <section
       id="contact"

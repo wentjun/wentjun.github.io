@@ -1,4 +1,6 @@
 import React from 'react';
+
+import AnchorLink from '../utilities/anchor-link.js';
 import landingStyles from './landing.module.css';
 
 export default () => (
@@ -9,8 +11,6 @@ export default () => (
         <p>Welcome Home</p>
       </header>
     </div>
-    <a href="#spotlight-one" className="downArrow" aria-label="down arrow">
-      <i></i>
-    </a>
+    <AnchorLink location="spotlight-one" />
   </section>
 );
