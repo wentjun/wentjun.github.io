@@ -8,26 +8,80 @@ class Contact extends React.Component {
     super(props);
     this.state = {
       name: '',
-      email: '',
+      _replyto: '',
       message: '',
       errors: {
         name: '',
-        email: '',
+        _replyto: '',
         message: '',
       },
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleSubmit(event) {
-    // event.preventDefault();
+  validateForm(field, value) {
     const emailRegex = RegExp(
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
-    const { name, email, message } = this.state;
     let {
       name: nameErrorMessage,
-      email: emailErrorMessage,
+      _replyto: emailErrorMessage,
+      message: messageErrorMessage,
+    } = this.state.errors;
+
+    switch (field) {
+      case 'name':
+        if (value.length < 1) {
+          nameErrorMessage = 'This field cannot be empty.';
+        } else {
+          nameErrorMessage = '';
+        }
+        break;
+      case '_replyto':
+        if (value.length < 1) {
+          emailErrorMessage = 'This field cannot be empty.';
+        } else if (!emailRegex.test(value)) {
+          emailErrorMessage = 'Please enter a valid email.';
+        } else {
+          emailErrorMessage = '';
+        }
+        break;
+      case 'message':
+        if (value.length < 1) {
+          messageErrorMessage = 'This field cannot be empty.';
+        } else {
+          messageErrorMessage = '';
+        }
+        break;
+      default:
+        break;
+    }
+    this.setState({
+      errors: {
+        name: nameErrorMessage,
+        _replyto: emailErrorMessage,
+        message: messageErrorMessage,
+      },
+    });
+  }
+
+  handleChange(event) {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value,
+    });
+    this.validateForm(name, value);
+  }
+
+  handleSubmit(event) {
+    const emailRegex = RegExp(
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+    const { name, _replyto, message } = this.state;
+    let {
+      name: nameErrorMessage,
+      _replyto: emailErrorMessage,
       message: messageErrorMessage,
     } = this.state.errors;
 
@@ -37,9 +91,9 @@ class Contact extends React.Component {
       nameErrorMessage = '';
     }
 
-    if (email.length < 1) {
+    if (_replyto.length < 1) {
       emailErrorMessage = 'This field cannot be empty.';
-    } else if (!emailRegex.test(email)) {
+    } else if (!emailRegex.test(_replyto)) {
       emailErrorMessage = 'Please enter a valid email.';
     } else {
       emailErrorMessage = '';
@@ -54,10 +108,11 @@ class Contact extends React.Component {
     this.setState({
       errors: {
         name: nameErrorMessage,
-        email: emailErrorMessage,
+        _replyto: emailErrorMessage,
         message: messageErrorMessage,
       },
     });
+
     if (nameErrorMessage || emailErrorMessage || messageErrorMessage) {
       event.preventDefault();
       return;
@@ -99,9 +154,7 @@ class Contact extends React.Component {
                     type="text"
                     placeholder="Your name"
                     name="name"
-                    onChange={event =>
-                      this.setState({ name: event.target.value })
-                    }
+                    onChange={this.handleChange}
                   ></input>
                   {errors.name.length > 0 && (
                     <span className="error">{errors.name}</span>
@@ -114,12 +167,10 @@ class Contact extends React.Component {
                     type="email"
                     placeholder="Your email"
                     name="_replyto"
-                    onChange={event =>
-                      this.setState({ email: event.target.value })
-                    }
+                    onChange={this.handleChange}
                   ></input>
-                  {errors.email.length > 0 && (
-                    <span className="error">{errors.email}</span>
+                  {errors._replyto.length > 0 && (
+                    <span className="error">{errors._replyto}</span>
                   )}
                 </div>
               </div>
@@ -129,9 +180,6 @@ class Contact extends React.Component {
                     type="text"
                     placeholder="Subject"
                     name="_subject"
-                    onChange={event =>
-                      this.setState({ subject: event.target.value })
-                    }
                   ></input>
                 </div>
               </div>
@@ -141,9 +189,7 @@ class Contact extends React.Component {
                     name="message"
                     rows="3"
                     placeholder="Your message"
-                    onChange={event =>
-                      this.setState({ message: event.target.value })
-                    }
+                    onChange={this.handleChange}
                   ></textarea>
                   {errors.message.length > 0 && (
                     <span className="error">{errors.message}</span>
