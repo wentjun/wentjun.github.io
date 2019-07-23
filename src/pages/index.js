@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet';
 import React from 'react';
 import smoothscroll from 'smoothscroll-polyfill';
 
@@ -12,6 +13,15 @@ smoothscroll.polyfill();
 
 export default () => (
   <div>
+    <Helmet>
+      <html lang="en" />
+      <meta charSet="utf-8" />
+      <meta
+        name="Description"
+        content="Hi, I am Wen Tjun. I am a full stack software engineer, specialising in front end development. Passionate about JavaScript, Web Development, and Design. Currently working as Senior Full Stack Developer at Splyt."
+      />
+      <title>Wen Tjun</title>
+    </Helmet>
     <Landing />
     <Spotlight />
     <PersonalProjects />
