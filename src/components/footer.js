@@ -19,6 +19,7 @@ export default () => (
         target="_blank"
         rel="noopener noreferrer"
         className={footerStyles.footer__iconContainer}
+        aria-label="Click here to access my Twitter profile"
       >
         <FontAwesomeIcon
           icon={faTwitter}
@@ -30,6 +31,7 @@ export default () => (
         target="_blank"
         rel="noopener noreferrer"
         className={footerStyles.footer__iconContainer}
+        aria-label="Click here to access my Linkedin profile"
       >
         <FontAwesomeIcon
           icon={faLinkedinIn}
@@ -41,6 +43,7 @@ export default () => (
         target="_blank"
         rel="noopener noreferrer"
         className={footerStyles.footer__iconContainer}
+        aria-label="Click here to access my Github repository"
       >
         <FontAwesomeIcon
           icon={faGithub}
@@ -52,6 +55,7 @@ export default () => (
         target="_blank"
         rel="noopener noreferrer"
         className={footerStyles.footer__iconContainer}
+        aria-label="Click here to read my freeCodeCamp articles"
       >
         <FontAwesomeIcon
           icon={faMediumM}
@@ -63,6 +67,7 @@ export default () => (
         target="_blank"
         rel="noopener noreferrer"
         className={footerStyles.footer__iconContainer}
+        aria-label="Check out my freeCodeCamp articles"
       >
         <FontAwesomeIcon
           icon={faFreeCodeCamp}
@@ -72,6 +77,7 @@ export default () => (
       <a
         href="mailto: wentjun@u.nus.edu"
         className={footerStyles.footer__iconContainer}
+        aria-label="Email me at wentjun@u.nus.edu"
       >
         <FontAwesomeIcon
           icon={faEnvelope}
