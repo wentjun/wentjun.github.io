@@ -22,6 +22,7 @@ class Contact extends React.Component {
 
   validateForm(field, value) {
     const emailRegex = RegExp(
+      // eslint-disable-next-line
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
     let {
@@ -76,6 +77,7 @@ class Contact extends React.Component {
 
   handleSubmit(event) {
     const emailRegex = RegExp(
+      // eslint-disable-next-line
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
     const { name, _replyto, message } = this.state;
@@ -155,6 +157,7 @@ class Contact extends React.Component {
                     placeholder="Your name"
                     name="name"
                     onChange={this.handleChange}
+                    aria-label="Your name"
                   ></input>
                   {errors.name.length > 0 && (
                     <span className="error">{errors.name}</span>
@@ -168,6 +171,7 @@ class Contact extends React.Component {
                     placeholder="Your email"
                     name="_replyto"
                     onChange={this.handleChange}
+                    aria-label="Your email"
                   ></input>
                   {errors._replyto.length > 0 && (
                     <span className="error">{errors._replyto}</span>
@@ -180,6 +184,7 @@ class Contact extends React.Component {
                     type="text"
                     placeholder="Subject"
                     name="_subject"
+                    aria-label="Subject"
                   ></input>
                 </div>
               </div>
@@ -190,6 +195,7 @@ class Contact extends React.Component {
                     rows="3"
                     placeholder="Your message"
                     onChange={this.handleChange}
+                    aria-label="Your message"
                   ></textarea>
                   {errors.message.length > 0 && (
                     <span className="error">{errors.message}</span>

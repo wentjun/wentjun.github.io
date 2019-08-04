@@ -58,7 +58,9 @@ export default () => (
           2018.
         </p>
       </div>
-      <AnchorLink location="spotlight-two" />
+      <div className="mdHiddenDown">
+        <AnchorLink location="spotlight-two" />
+      </div>
     </section>
     <section id="spotlight-two" className={spotlightStyles.spotlight__cover}>
       <div
@@ -89,7 +91,9 @@ export default () => (
           </li>
         </ul>
       </div>
-      <AnchorLink location="personal-projects" />
+      <div className="mdHiddenDown">
+        <AnchorLink location="personal-projects" />
+      </div>
     </section>
   </div>
 );

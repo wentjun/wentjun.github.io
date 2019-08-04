@@ -50,15 +50,15 @@ export default () => (
             ​and ​more intuitive ​for them to deal with ​internship ​matters.
             ​These ​include ​matters ​from ​logging ​in and ​uploading ​their
             ​resumes, ​ to ​submitting ​their ​applications ​and ​turning ​in
-            ​monthly ​progress reports. Feel free to click{' '}
+            ​monthly ​progress reports. Feel free to{' '}
             <a
               href="https://xd.adobe.com/view/1a1bb2b6-02df-49c4-9f6a-21276f078b48/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              here
+              explore
             </a>{' '}
-            to explore the interactive prototype.
+            the interactive prototype.
           </p>
         </section>
         <section className={PersonalProjectsStyles.PersonalProjects__column}>

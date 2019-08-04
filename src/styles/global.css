@@ -148,13 +148,14 @@ h3 {
   white-space: nowrap;
   width: 10em;
   z-index: 1;
+  cursor: pointer;
   -moz-transition: -moz-transform 0.2s ease-in-out;
   -webkit-transition: -webkit-transform 0.2s ease-in-out;
   transition: transform 0.2s ease-in-out;
 }
 
 .downArrow:before {
-  background-image: url('../../static/arrow.svg');
+  background-image: url('./arrow.svg');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;
