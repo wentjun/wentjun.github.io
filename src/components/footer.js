@@ -1,15 +1,16 @@
 import React from 'react';
-import footerStyles from './footer.module.css';
-
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import {
   faTwitter,
   faLinkedinIn,
   faFreeCodeCamp,
   faGithub,
   faMediumM,
+  faStackOverflow,
 } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import footerStyles from './footer.module.css';
 
 export default () => (
   <footer>
@@ -19,6 +20,7 @@ export default () => (
         target="_blank"
         rel="noopener noreferrer"
         className={footerStyles.footer__iconContainer}
+        aria-label="Click here to access my Twitter profile"
       >
         <FontAwesomeIcon
           icon={faTwitter}
@@ -30,6 +32,7 @@ export default () => (
         target="_blank"
         rel="noopener noreferrer"
         className={footerStyles.footer__iconContainer}
+        aria-label="Click here to access my Linkedin profile"
       >
         <FontAwesomeIcon
           icon={faLinkedinIn}
@@ -41,6 +44,7 @@ export default () => (
         target="_blank"
         rel="noopener noreferrer"
         className={footerStyles.footer__iconContainer}
+        aria-label="Click here to access my Github repository"
       >
         <FontAwesomeIcon
           icon={faGithub}
@@ -52,6 +56,7 @@ export default () => (
         target="_blank"
         rel="noopener noreferrer"
         className={footerStyles.footer__iconContainer}
+        aria-label="Click here to read my freeCodeCamp articles"
       >
         <FontAwesomeIcon
           icon={faMediumM}
@@ -63,6 +68,7 @@ export default () => (
         target="_blank"
         rel="noopener noreferrer"
         className={footerStyles.footer__iconContainer}
+        aria-label="Check out my freeCodeCamp articles"
       >
         <FontAwesomeIcon
           icon={faFreeCodeCamp}
@@ -70,8 +76,21 @@ export default () => (
         />
       </a>
       <a
+        href="https://stackoverflow.com/users/10959940/wentjun"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={footerStyles.footer__iconContainer}
+        aria-label="Check out my Stack Overflow profile"
+      >
+        <FontAwesomeIcon
+          icon={faStackOverflow}
+          className={footerStyles.footer__icon}
+        />
+      </a>
+      <a
         href="mailto: wentjun@u.nus.edu"
         className={footerStyles.footer__iconContainer}
+        aria-label="Email me at wentjun@u.nus.edu"
       >
         <FontAwesomeIcon
           icon={faEnvelope}

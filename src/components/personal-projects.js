@@ -5,6 +5,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
+
 import PersonalProjectsStyles from './personal-projects.module.css';
 
 export default () => (
@@ -49,15 +50,15 @@ export default () => (
             ​and ​more intuitive ​for them to deal with ​internship ​matters.
             ​These ​include ​matters ​from ​logging ​in and ​uploading ​their
             ​resumes, ​ to ​submitting ​their ​applications ​and ​turning ​in
-            ​monthly ​progress reports. Feel free to click{' '}
+            ​monthly ​progress reports. Feel free to{' '}
             <a
               href="https://xd.adobe.com/view/1a1bb2b6-02df-49c4-9f6a-21276f078b48/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              here
+              explore
             </a>{' '}
-            to explore the interactive prototype.
+            the interactive prototype.
           </p>
         </section>
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
@@ -90,28 +91,34 @@ export default () => (
       </header>
       <div className="row text-center">
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <span className={PersonalProjectsStyles.iconContainer}>
+          <span
+            className={PersonalProjectsStyles.PersonalProjects__iconContainer}
+          >
             <FontAwesomeIcon
               icon={faChartPie}
-              className={PersonalProjectsStyles.icon}
+              className={PersonalProjectsStyles.PersonalProjects__icon}
             />
           </span>
           <h3>Data Visualisation</h3>
         </section>
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <span className={PersonalProjectsStyles.iconContainer}>
+          <span
+            className={PersonalProjectsStyles.PersonalProjects__iconContainer}
+          >
             <FontAwesomeIcon
               icon={faLaptopCode}
-              className={PersonalProjectsStyles.icon}
+              className={PersonalProjectsStyles.PersonalProjects__icon}
             />
           </span>
           <h3>Open Source</h3>
         </section>
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <span className={PersonalProjectsStyles.iconContainer}>
+          <span
+            className={PersonalProjectsStyles.PersonalProjects__iconContainer}
+          >
             <FontAwesomeIcon
               icon={faUniversity}
-              className={PersonalProjectsStyles.icon}
+              className={PersonalProjectsStyles.PersonalProjects__icon}
             />
           </span>
           <h3>Education</h3>

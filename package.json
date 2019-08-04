@@ -10,18 +10,25 @@
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",
     "serve": "gatsby serve",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\"",
+    "deploy": "gatsby build && gh-pages -d public -b master"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
     "@fortawesome/free-brands-svg-icons": "^5.9.0",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "@fortawesome/react-fontawesome": "^0.1.4",
-    "gatsby": "^2.13.13",
+    "gatsby": "^2.13.39",
+    "gatsby-plugin-manifest": "^2.2.3",
+    "gatsby-plugin-offline": "^2.2.4",
+    "gatsby-plugin-react-helmet": "^3.1.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-helmet": "^5.2.1",
+    "smoothscroll-polyfill": "^0.4.4"
   },
   "devDependencies": {
+    "gh-pages": "^2.1.0",
     "prettier": "^1.18.2"
   },
   "repository": {
