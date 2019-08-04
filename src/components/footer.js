@@ -6,6 +6,7 @@ import {
   faFreeCodeCamp,
   faGithub,
   faMediumM,
+  faStackOverflow,
 } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -71,6 +72,18 @@ export default () => (
       >
         <FontAwesomeIcon
           icon={faFreeCodeCamp}
+          className={footerStyles.footer__icon}
+        />
+      </a>
+      <a
+        href="https://stackoverflow.com/users/10959940/wentjun"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={footerStyles.footer__iconContainer}
+        aria-label="Check out my Stack Overflow profile"
+      >
+        <FontAwesomeIcon
+          icon={faStackOverflow}
           className={footerStyles.footer__icon}
         />
       </a>

@@ -9,7 +9,7 @@ footer {
 }
 
 .footer__iconContainer {
-  padding: 0 1em 0 1em;
+  padding: 0 1em 1em 1em;
 }
 
 .footer__icon {
@@ -31,4 +31,11 @@ footer {
 .footer__label {
   flex-basis: 100%;
   padding-top: 2em;
+}
+
+/* XSmall */
+@media screen and (min-width: 576px) {
+  .footer__iconContainer {
+    padding: 0 1em 0 1em;
+  }
 }
