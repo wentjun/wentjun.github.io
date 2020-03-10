@@ -42,7 +42,8 @@ p {
 }
 
 p a,
-span a {
+span a,
+li a {
   -moz-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
   -webkit-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
   transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -53,7 +54,8 @@ span a {
 }
 
 p a:hover,
-span a:hover {
+span a:hover,
+li a:hover {
   color: #e44c65;
   border-bottom-color: transparent;
 }

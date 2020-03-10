@@ -17,68 +17,72 @@ export default () => (
       </header>
       <div className="row text-center">
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <h3>Capsule</h3>
+          <h3>COVID-19 Initiatives</h3>
           <p>
-            <i>Product Design, Front-end Developer</i>
+            {/*<i></i>*/}
           </p>
           <p>
             <a
-              href="https://capsule.sg"
+              href="https://github.com/wentjun/covid-19-sg"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Capsule
+              Open Data Source
             </a>{' '}
-            aims to become a global mobile platform for organisations and
-            quality content producers around the world to manage and showcase
-            their valuable micro-content. Recently received funding of S$10,000
-            from the NUS School of Computing as part of the Innovation &
-            Entrepreneurship Practicum Award. Developed the low and high
-            fidelity prototype for the application, as well as building it with
-            Vue.js.
+            of COVID-19/Coronavirus cases and cluster locations in Singapore, which includes metadata such as hospitalisation/discharge dates and news summaries.
+            Data is scraped from local news sources and government websites using Cheerio and Node.js. This has extended into a visualisation project{' '}
+            <a
+              href="https://covid-tracker.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              covid-tracker.com
+            </a>
+            {' '}which provides insights about the development of COVID-19 in Singapore. The web project is built with React, TypeScript, Redux, Redux Observable, RxJS, Styled Components, and Mapbox.
           </p>
         </section>
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <h3>MyPAP</h3>
+          <h3>Visualisations with D3.js</h3>
           <p>
-            <i>Interaction Designer</i>
+            {/*<i></i>*/}
           </p>
           <p>
-            MyPAP(Project Administration Portal) ​aims ​to ​improve ​the ​whole
-            ​internship ​experience for students of the National University of
-            Singapore​, School of Computing, by ​making ​the ​portal ​simpler
-            ​and ​more intuitive ​for them to deal with ​internship ​matters.
-            ​These ​include ​matters ​from ​logging ​in and ​uploading ​their
-            ​resumes, ​ to ​submitting ​their ​applications ​and ​turning ​in
-            ​monthly ​progress reports. Feel free to{' '}
+            Recreated{' '}
             <a
-              href="https://xd.adobe.com/view/1a1bb2b6-02df-49c4-9f6a-21276f078b48/"
+              href="https://wentjun.com/d3-historical-prices-data-joins/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              explore
-            </a>{' '}
-            the interactive prototype.
-          </p>
-        </section>
-        <section className={PersonalProjectsStyles.PersonalProjects__column}>
-          <h3>Shuffle</h3>
-          <p>
-            <i>Front-end Developer</i>
-          </p>
-          <p>
+              historical price charts
+            </a>
+            {' '}of financial instruments (
             <a
-              href="https://goshuffle.co"
+              href="https://github.com/wentjun/d3-historical-prices-data-joins"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Shuffle
-            </a>{' '}
-            enhances the travel experience for backpackers by connecting them
-            with like-minded travellers to explore new destinations together. In
-            December 2018, I started working on this project with my fellow NUS
-            Overseas College Alumni. I worked with Vue.js, and Google Cloud
-            Firestore, to develop the web application.
+              source code
+            </a>
+          ). Published several beginner friendly{' '}
+            <a
+              href="https://www.freecodecamp.org/news/author/wentjun/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              guides about D3.js
+            </a>
+             {' '}on freeCodeCamp.
+          </p>
+          <p>
+            Visualised the lineage of the top Brazilian Jiu-jitsu competitors, practioners, and coaches using a dendogram/tree structure (
+            <a
+              href="https://github.com/wentjun/bjj-lineage-tree"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              source code
+            </a>
+          ).
           </p>
         </section>
       </div>

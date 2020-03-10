@@ -20,7 +20,7 @@ export default () => (
       <meta charSet="utf-8" />
       <meta
         name="Description"
-        content="Hi, I am Wen Tjun. I am a full stack software engineer, specialising in front end development. Passionate about JavaScript, Web Development, and Design. Currently working as Senior Full Stack Developer at Splyt."
+        content="Hi, I am Wen Tjun. I am a full stack software engineer, specialising in front end development. Passionate about JavaScript, Web Development, and Design. Currently working as Full Stack Developer at Splyt."
       />
       <title>Wen Tjun</title>
     </Helmet>
