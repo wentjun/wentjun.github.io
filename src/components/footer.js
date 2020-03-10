@@ -88,9 +88,9 @@ export default () => (
         />
       </a>
       <a
-        href="mailto: wentjun@u.nus.edu"
+        href="mailto: wentjun289@hotmail.com"
         className={footerStyles.footer__iconContainer}
-        aria-label="Email me at wentjun@u.nus.edu"
+        aria-label="Email me at wentjun289@hotmail.com"
       >
         <FontAwesomeIcon
           icon={faEnvelope}

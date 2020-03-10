@@ -18,16 +18,24 @@ export default () => (
         </header>
         <p>
           I strongly believe in making use of technology to create value and
-          improve the lives of people. I currently work at{' '}
+          improve the lives of people. I am currently a Full Stack Developer at{' '}
+          <a
+            href="https://splyt.com/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Splyt
+          </a>
+          , working on improving mobility solutions.
+          My previous experiences include working as a Frontend developer at {' '}
           <a
             href="https://www.mafint.com/"
             rel="noopener noreferrer"
             target="_blank"
           >
             MAF Intelligence
-          </a>{' '}
-          as a Front End Developer, and my previous experiences include working
-          as a full stack web developer in{' '}
+          </a>
+          , as well as Full Stack Web Developer in{' '}
           <a
             href="https://worldsmarathons.com/"
             rel="noopener noreferrer"
@@ -35,15 +43,7 @@ export default () => (
           >
             World's Marathons
           </a>
-          , Product in{' '}
-          <a
-            href="http://keepinview.totemapp.com/company"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            KIV
-          </a>
-          , as well as Co-founder of Brackets for Change. I{' '}
+          . I{' '}
           <a
             href="https://medium.com/@wentjun"
             rel="noopener noreferrer"
@@ -70,24 +70,37 @@ export default () => (
         className={`${spotlightStyles.spotlight__content} ${spotlightStyles.spotlight__content_left}`}
       >
         <header>
-          {/* eslint-disable-next-line */}
           <h2></h2>
           <p>Dreamer. Believer. Achiever.</p>
         </header>
         <p>Outside of my professional life, I have the following pursuits:</p>
         <ul>
-          <li>Reading and writing.</li>
           <li>
             Casual Photography. I work with my iPhone 7 Plus and Sony camera.
           </li>
           <li>
-            Martial arts. I have been trained in various martial arts including
-            Taekwondo, Muay Thai, and Boxing. I am currently hooked on Brazilian
-            Jiu-jitsu.
+            More programming. I enjoy working on data visualisations, and my tools include{' '}
+            <a
+              href="https://wentjun.com/d3-historical-prices-data-joins/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              D3.js
+            </a>
+            {' '}and Mapbox. From time to time, I pop by{' '}
+            <a
+              href="https://stackoverflow.com/users/10959940/wentjun"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              StackOverflow
+            </a>
+            {' '}and answer a few questions.
           </li>
           <li>
-            House music. My favourite DJs include the Swedish House Mafia,
-            Alesso, and Martin Garrix{' '}
+            Fitness and Martial arts. I have been trained in various martial arts including
+            Muay Thai, Boxing, and Brazilian Jiu-jitsu. Talk to me about nutrition,
+            strength programmes, and fitness in general!
           </li>
         </ul>
       </div>

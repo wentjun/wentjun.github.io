@@ -147,7 +147,7 @@ class Contact extends React.Component {
             </header>
             <form
               onSubmit={this.handleSubmit}
-              action="https://formspree.io/wentjun@u.nus.edu"
+              action="https://formspree.io/mpzrvyvw"
               method="post"
             >
               <div className={contactStyles.contact__formElement}>
