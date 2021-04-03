@@ -1,7 +1,6 @@
 import React from 'react';
-
 import AnchorLink from '../utilities/anchor-link.js';
-import contactStyles from './contact.module.css';
+import * as contactStyles from './contact.module.css';
 
 class Contact extends React.Component {
   constructor(props) {

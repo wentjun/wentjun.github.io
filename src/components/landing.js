@@ -1,7 +1,7 @@
 import React from 'react';
 
 import AnchorLink from '../utilities/anchor-link.js';
-import landingStyles from './landing.module.css';
+import * as landingStyles from './landing.module.css';
 
 export default () => (
   <section className={landingStyles.landing__cover}>

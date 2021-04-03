@@ -6,7 +6,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
-import PersonalProjectsStyles from './personal-projects.module.css';
+import * as PersonalProjectsStyles from './personal-projects.module.css';
 
 export default () => (
   <section id="personal-projects" className="wrapper">

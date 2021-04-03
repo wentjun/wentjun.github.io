@@ -9,8 +9,7 @@ import {
   faStackOverflow,
 } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import footerStyles from './footer.module.css';
+import * as footerStyles from './footer.module.css';
 
 export default () => (
   <footer>
