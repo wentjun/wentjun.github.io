@@ -1,9 +1,8 @@
 import React from 'react';
-
 import AnchorLink from '../utilities/anchor-link.js';
 import * as landingStyles from './landing.module.css';
 
-export default () => (
+const Landing = () => (
   <section className={landingStyles.landing__cover}>
     <div className={landingStyles.landing__content}>
       <header>
@@ -14,3 +13,5 @@ export default () => (
     <AnchorLink location="spotlight-one" />
   </section>
 );
+
+export default Landing;

@@ -11,7 +11,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as footerStyles from './footer.module.css';
 
-export default () => (
+const Footer = () => (
   <footer>
     <div className="row">
       <a
@@ -110,3 +110,5 @@ export default () => (
     </div>
   </footer>
 );
+
+export default Footer;

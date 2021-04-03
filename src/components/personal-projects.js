@@ -8,7 +8,7 @@ import React from 'react';
 
 import * as PersonalProjectsStyles from './personal-projects.module.css';
 
-export default () => (
+const PersonalProjects = () => (
   <section id="personal-projects" className="wrapper">
     <div className="container">
       <header className="text-center">
@@ -131,3 +131,5 @@ export default () => (
     </div>
   </section>
 );
+
+export default PersonalProjects;

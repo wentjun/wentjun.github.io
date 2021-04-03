@@ -13,7 +13,7 @@ if (typeof window !== 'undefined') {
   smoothscroll.polyfill();
 }
 
-export default () => (
+const Index = () => (
   <div>
     <Helmet>
       <html lang="en" />
@@ -31,3 +31,5 @@ export default () => (
     <Footer />
   </div>
 );
+
+export default Index;

@@ -14,7 +14,7 @@ class AnchorLink extends React.Component {
   render() {
     return (
       <a
-        href
+        href={undefined}
         onClick={this.jumpTo}
         className="downArrow"
         aria-label="down arrow"

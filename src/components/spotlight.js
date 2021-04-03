@@ -3,7 +3,7 @@ import React from 'react';
 import AnchorLink from '../utilities/anchor-link.js';
 import * as spotlightStyles from './spotlight.module.css';
 
-export default () => (
+const Spotlight = () => (
   <div>
     <section id="spotlight-one" className={spotlightStyles.spotlight__cover}>
       <div
@@ -70,7 +70,6 @@ export default () => (
         className={`${spotlightStyles.spotlight__content} ${spotlightStyles.spotlight__content_left}`}
       >
         <header>
-          <h2></h2>
           <p>Dreamer. Believer. Achiever.</p>
         </header>
         <p>Outside of my professional life, I have the following pursuits:</p>
@@ -110,3 +109,5 @@ export default () => (
     </section>
   </div>
 );
+
+export default Spotlight;
