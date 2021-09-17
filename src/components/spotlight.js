@@ -1,5 +1,4 @@
 import React from 'react';
-
 import AnchorLink from '../utilities/anchor-link.js';
 import * as spotlightStyles from './spotlight.module.css';
 

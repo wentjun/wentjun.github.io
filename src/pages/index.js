@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet';
 import React from 'react';
 import smoothscroll from 'smoothscroll-polyfill';
-
 import Contact from '../components/contact';
 import Footer from '../components/footer';
 import Landing from '../components/landing';
