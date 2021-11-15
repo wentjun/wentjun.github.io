@@ -17,32 +17,9 @@ const Spotlight = () => (
         </header>
         <p>
           I strongly believe in making use of technology to create value and
-          improve the lives of people. I am currently a Full Stack Developer at{' '}
-          <a
-            href="https://splyt.com/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Splyt
-          </a>
-          , working on improving mobility solutions.
-          My previous experiences include working as a Frontend developer at {' '}
-          <a
-            href="https://www.mafint.com/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            MAF Intelligence
-          </a>
-          , as well as Full Stack Web Developer in{' '}
-          <a
-            href="https://worldsmarathons.com/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            World's Marathons
-          </a>
-          . I{' '}
+          improve the lives of people. I have been writing software for around 4 years, 
+          and my experiences include building web applications, hybrid applications,
+          and design systems. I{' '}
           <a
             href="https://medium.com/@wentjun"
             rel="noopener noreferrer"
@@ -74,7 +51,7 @@ const Spotlight = () => (
         <p>Outside of my professional life, I have the following pursuits:</p>
         <ul>
           <li>
-            Casual Photography. I work with my iPhone 7 Plus and Sony camera.
+            Casual Photography. I work with my iPhone 11 Pro Max and Sony camera.
           </li>
           <li>
             More programming. I enjoy working on data visualisations, and my tools include{' '}
