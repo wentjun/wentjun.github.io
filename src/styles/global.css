@@ -157,7 +157,7 @@ h3 {
 }
 
 .downArrow:before {
-  background-image: url('./arrow.svg');
+  background-image: url('../../static/arrow.svg');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;
