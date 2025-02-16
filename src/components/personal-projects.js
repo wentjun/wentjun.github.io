@@ -18,9 +18,7 @@ const PersonalProjects = () => (
       <div className="row text-center">
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
           <h3>COVID-19 Initiatives</h3>
-          <p>
-            {/*<i></i>*/}
-          </p>
+          <p>{/*<i></i>*/}</p>
           <p>
             <a
               href="https://github.com/wentjun/covid-19-sg"
@@ -29,23 +27,26 @@ const PersonalProjects = () => (
             >
               Open Data Source
             </a>{' '}
-            of COVID-19/Coronavirus cases and cluster locations in Singapore, which includes metadata such as hospitalisation/discharge dates and news summaries.
-            Data is scraped from local news sources and government websites using Cheerio and Node.js. This has extended into a visualisation project{' '}
+            of COVID-19/Coronavirus cases and cluster locations in Singapore,
+            which includes metadata such as hospitalisation/discharge dates and
+            news summaries. Data is scraped from local news sources and
+            government websites using Cheerio and Node.js. This has extended
+            into a visualisation project{' '}
             <a
               href="https://covid-tracker.com/"
               target="_blank"
               rel="noopener noreferrer"
             >
               covid-tracker.com
-            </a>
-            {' '}which provides insights about the development of COVID-19 in Singapore. The web project is built with React, TypeScript, Redux, Redux Observable, RxJS, Styled Components, and Mapbox.
+            </a>{' '}
+            which provides insights about the development of COVID-19 in
+            Singapore. The web project is built with React, TypeScript, Redux,
+            Redux Observable, RxJS, Styled Components, and Mapbox.
           </p>
         </section>
         <section className={PersonalProjectsStyles.PersonalProjects__column}>
           <h3>Visualisations with D3.js</h3>
-          <p>
-            {/*<i></i>*/}
-          </p>
+          <p>{/*<i></i>*/}</p>
           <p>
             Recreated{' '}
             <a
@@ -54,8 +55,8 @@ const PersonalProjects = () => (
               rel="noopener noreferrer"
             >
               historical price charts
-            </a>
-            {' '}of financial instruments (
+            </a>{' '}
+            of financial instruments (
             <a
               href="https://github.com/wentjun/d3-historical-prices-data-joins"
               target="_blank"
@@ -63,18 +64,19 @@ const PersonalProjects = () => (
             >
               source code
             </a>
-          ). Published several beginner friendly{' '}
+            ). Published several beginner friendly{' '}
             <a
               href="https://www.freecodecamp.org/news/author/wentjun/"
               target="_blank"
               rel="noopener noreferrer"
             >
               guides about D3.js
-            </a>
-             {' '}on freeCodeCamp.
+            </a>{' '}
+            on freeCodeCamp.
           </p>
           <p>
-            Visualised the lineage of the top Brazilian Jiu-jitsu competitors, practioners, and coaches using a dendogram/tree structure (
+            Visualised the lineage of the top Brazilian Jiu-jitsu competitors,
+            practioners, and coaches using a dendogram/tree structure (
             <a
               href="https://github.com/wentjun/bjj-lineage-tree"
               target="_blank"
@@ -82,7 +84,7 @@ const PersonalProjects = () => (
             >
               source code
             </a>
-          ).
+            ).
           </p>
         </section>
       </div>

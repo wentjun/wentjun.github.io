@@ -17,9 +17,9 @@ const Spotlight = () => (
         </header>
         <p>
           I strongly believe in making use of technology to create value and
-          improve the lives of people. I have been writing software for around 4 years, 
-          and my experiences include building web applications, hybrid applications,
-          and design systems. I{' '}
+          improve the lives of people. I have been writing software for around 4
+          years, and my experiences include building web applications, hybrid
+          applications, and design systems. I{' '}
           <a
             href="https://medium.com/@wentjun"
             rel="noopener noreferrer"
@@ -51,31 +51,33 @@ const Spotlight = () => (
         <p>Outside of my professional life, I have the following pursuits:</p>
         <ul>
           <li>
-            Casual Photography. I work with my iPhone 11 Pro Max and Sony camera.
+            Casual Photography. I work with my iPhone 11 Pro Max and Sony
+            camera.
           </li>
           <li>
-            More programming. I enjoy working on data visualisations, and my tools include{' '}
+            More programming. I enjoy working on data visualisations, and my
+            tools include{' '}
             <a
               href="https://wentjun.com/d3-historical-prices-data-joins/"
               rel="noopener noreferrer"
               target="_blank"
             >
               D3.js
-            </a>
-            {' '}and Mapbox. From time to time, I pop by{' '}
+            </a>{' '}
+            and Mapbox. From time to time, I pop by{' '}
             <a
               href="https://stackoverflow.com/users/10959940/wentjun"
               rel="noopener noreferrer"
               target="_blank"
             >
               StackOverflow
-            </a>
-            {' '}and answer a few questions.
+            </a>{' '}
+            and answer a few questions.
           </li>
           <li>
-            Fitness and Martial arts. I have been trained in various martial arts including
-            Muay Thai, Boxing, and Brazilian Jiu-jitsu. Talk to me about nutrition,
-            strength programmes, and fitness in general!
+            Fitness and Martial arts. I have been trained in various martial
+            arts including Muay Thai, Boxing, and Brazilian Jiu-jitsu. Talk to
+            me about nutrition, strength programmes, and fitness in general!
           </li>
         </ul>
       </div>
