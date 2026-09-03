@@ -54,9 +54,11 @@ typings/
 # dotenv environment variables file
 .env
 
-# gatsby files
-.cache/
-public
+# Next.js files
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
 
 # Mac files
 .DS_Store
@@ -67,3 +69,7 @@ yarn-error.log
 .pnp.js
 # Yarn Integrity file
 .yarn-integrity
+
+# Test artifacts
+playwright-report/
+test-results/

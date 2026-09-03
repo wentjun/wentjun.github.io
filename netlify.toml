@@ -1,2 +1,6 @@
+[build]
+  command = "pnpm run check && pnpm run build"
+  publish = "out"
+
 [build.environment]
   NODE_VERSION = "22"

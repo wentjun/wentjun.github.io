@@ -1,6 +1,5 @@
-import React from 'react';
-import AnchorLink from '../utilities/anchor-link.js';
-import * as landingStyles from './landing.module.css';
+import AnchorLink from '../utilities/anchor-link';
+import landingStyles from './landing.module.css';
 
 const Landing = () => (
   <section className={landingStyles.landing__cover}>

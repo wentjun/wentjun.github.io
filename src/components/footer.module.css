@@ -1,8 +1,8 @@
-a {
+.footer a {
   color: #ffffff;
 }
 
-footer {
+.footer {
   background: #272833;
   padding: 5em 0;
   text-align: center;

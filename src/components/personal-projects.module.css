@@ -20,17 +20,29 @@
   justify-content: center;
   align-items: center;
 
-  -webkit-transition: background 0.2s, color 0.2s;
-  -moz-transition: background 0.2s, color 0.2s;
-  transition: background 0.2s, color 0.2s;
+  -webkit-transition:
+    background 0.2s,
+    color 0.2s;
+  -moz-transition:
+    background 0.2s,
+    color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 
 .PersonalProjects__iconContainer:after {
   padding: 5px;
   box-shadow: 0 0 0 4px #fff;
-  -webkit-transition: -webkit-transform 0.2s, opacity 0.2s;
-  -moz-transition: -moz-transform 0.2s, opacity 0.2s;
-  transition: transform 0.2s, opacity 0.2s;
+  -webkit-transition:
+    -webkit-transform 0.2s,
+    opacity 0.2s;
+  -moz-transition:
+    -moz-transform 0.2s,
+    opacity 0.2s;
+  transition:
+    transform 0.2s,
+    opacity 0.2s;
   -webkit-transform: scale(0.8);
   -moz-transform: scale(0.8);
   -ms-transform: scale(0.8);
@@ -42,7 +54,7 @@
   width: 6em;
   height: 6em;
   border-radius: 100%;
-  content: '';
+  content: "";
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;

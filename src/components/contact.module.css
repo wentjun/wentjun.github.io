@@ -1,7 +1,7 @@
 .contact__cover {
   background-attachment: fixed;
   background-color: #272833;
-  background-image: url('../../static/trolltunga.jpeg');
+  background-image: url("/trolltunga.jpeg");
   background-position: center;
   background-size: cover;
   box-shadow: 0 0.25em 0.5em 0 rgba(0, 0, 0, 0.25);
@@ -16,7 +16,7 @@
 }
 
 .contact__cover:after {
-  content: '';
+  content: "";
   background: rgba(0, 0, 0, 0.4);
   display: block;
   height: 100%;
@@ -31,7 +31,7 @@
 }
 
 .contact__contentQuote header {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-size: 1.5em;
   color: #ffffff;
   margin-top: 4em;
@@ -48,9 +48,9 @@
   background: #e44c65;
 }
 
-input[type='text'],
-input[type='email'],
-textarea {
+.contact__formWrapper input[type="text"],
+.contact__formWrapper input[type="email"],
+.contact__formWrapper textarea {
   -moz-appearance: none;
   -webkit-appearance: none;
   -ms-appearance: none;
@@ -70,17 +70,17 @@ textarea {
   height: 3em;
 }
 
-input:focus,
-textarea:focus {
+.contact__formWrapper input:focus,
+.contact__formWrapper textarea:focus {
   box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.8);
 }
 
-textarea {
+.contact__formWrapper textarea {
   height: auto;
   padding: 0.75em 1em;
 }
 
-button {
+.contact__formWrapper button {
   display: inline-block;
   padding: 6px 12px;
   margin-bottom: 0;
@@ -97,10 +97,8 @@ button {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-image: none;
   border-radius: 4px;
   background: none;
-  border-color: transparent;
   width: 100%;
 
   -webkit-transition: all 0.2s ease-in-out;
@@ -112,37 +110,37 @@ button {
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 
-button:hover,
-button:active {
+.contact__formWrapper button:hover,
+.contact__formWrapper button:active {
   color: #e44c65;
   background: #fff;
 }
 
-button:focus {
+.contact__formWrapper button:focus {
   outline: 0;
 }
 
-::-webkit-input-placeholder {
+.contact__formWrapper ::-webkit-input-placeholder {
   color: rgba(255, 255, 255, 0.5) !important;
   opacity: 1;
 }
 
-:-moz-placeholder {
+.contact__formWrapper :-moz-placeholder {
   color: rgba(255, 255, 255, 0.5) !important;
   opacity: 1;
 }
 
-::-moz-placeholder {
+.contact__formWrapper ::-moz-placeholder {
   color: rgba(255, 255, 255, 0.5) !important;
   opacity: 1;
 }
 
-:-ms-input-placeholder {
+.contact__formWrapper :-ms-input-placeholder {
   color: rgba(255, 255, 255, 0.5) !important;
   opacity: 1;
 }
 
-form {
+.contact__formWrapper form {
   display: flex;
   flex-direction: column;
   align-items: center;

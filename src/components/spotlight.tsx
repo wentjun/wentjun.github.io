@@ -1,6 +1,5 @@
-import React from 'react';
-import AnchorLink from '../utilities/anchor-link.js';
-import * as spotlightStyles from './spotlight.module.css';
+import AnchorLink from '../utilities/anchor-link';
+import spotlightStyles from './spotlight.module.css';
 
 const Spotlight = () => (
   <div>

@@ -1,9 +1,30 @@
-import React from 'react';
-import AnchorLink from '../utilities/anchor-link.js';
-import * as contactStyles from './contact.module.css';
+'use client';
 
-class Contact extends React.Component {
-  constructor(props) {
+import type { ChangeEvent, FormEvent } from 'react';
+import { Component } from 'react';
+import AnchorLink from '../utilities/anchor-link';
+import contactStyles from './contact.module.css';
+
+interface FormErrors {
+  name: string;
+  _replyto: string;
+  message: string;
+}
+
+interface ContactState {
+  name: string;
+  _replyto: string;
+  message: string;
+  errors: FormErrors;
+}
+
+type ValidatedField = keyof FormErrors;
+
+const emailRegex =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+class Contact extends Component<Record<string, never>, ContactState> {
+  constructor(props: Record<string, never>) {
     super(props);
     this.state = {
       name: '',
@@ -19,11 +40,7 @@ class Contact extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  validateForm(field, value) {
-    const emailRegex = RegExp(
-      // eslint-disable-next-line
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
+  validateForm(field: ValidatedField, value: string) {
     let {
       name: nameErrorMessage,
       _replyto: emailErrorMessage,
@@ -66,19 +83,16 @@ class Contact extends React.Component {
     });
   }
 
-  handleChange(event) {
+  handleChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
+    const field = name as ValidatedField;
     this.setState({
-      [name]: value,
-    });
-    this.validateForm(name, value);
+      [field]: value,
+    } as Pick<ContactState, ValidatedField>);
+    this.validateForm(field, value);
   }
 
-  handleSubmit(event) {
-    const emailRegex = RegExp(
-      // eslint-disable-next-line
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
+  handleSubmit(event: FormEvent<HTMLFormElement>) {
     const { name, _replyto, message } = this.state;
     let {
       name: nameErrorMessage,
@@ -116,9 +130,6 @@ class Contact extends React.Component {
 
     if (nameErrorMessage || emailErrorMessage || messageErrorMessage) {
       event.preventDefault();
-      return;
-    } else {
-      return;
     }
   }
 
@@ -191,7 +202,7 @@ class Contact extends React.Component {
                 <div className={contactStyles.contact__formGroup}>
                   <textarea
                     name="message"
-                    rows="3"
+                    rows={3}
                     placeholder="Your message"
                     onChange={this.handleChange}
                     aria-label="Your message"

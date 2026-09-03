@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,100italic,300italic');
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,100italic,300italic");
 
 *,
 *::before,
@@ -26,11 +26,15 @@ body {
   background: #1c1d26;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body,
 input,
 textarea {
   color: rgba(255, 255, 255, 0.75);
-  font-family: 'Roboto', Helvetica, sans-serif;
+  font-family: "Roboto", Helvetica, sans-serif;
   font-size: 12pt;
   font-weight: 100;
   line-height: 1.75em;
@@ -44,9 +48,15 @@ p {
 p a,
 span a,
 li a {
-  -moz-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
-  -webkit-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
-  transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  -moz-transition:
+    border-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
+  -webkit-transition:
+    border-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
+  transition:
+    border-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
   -webkit-tap-highlight-color: rgba(228, 76, 101, 0.5);
   border-bottom: dotted 1px;
   color: #e44c65;
@@ -90,7 +100,7 @@ h2 {
   font-size: 1.5em;
   line-height: 1.5em;
   letter-spacing: -0.025em;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 
 h3 {
@@ -115,9 +125,15 @@ h3 {
   -webkit-transform: translate(0, 0);
   -ms-transform: translate(0, 0);
   transform: translate(0, 0);
-  -moz-transition: -moz-transform 1s ease, opacity 1s ease;
-  -webkit-transition: -webkit-transform 1s ease, opacity 1s ease;
-  transition: transform 1s ease, opacity 1s ease;
+  -moz-transition:
+    -moz-transform 1s ease,
+    opacity 1s ease;
+  -webkit-transition:
+    -webkit-transform 1s ease,
+    opacity 1s ease;
+  transition:
+    transform 1s ease,
+    opacity 1s ease;
   opacity: 1;
 }
 
@@ -127,8 +143,6 @@ h3 {
 
 .row {
   box-sizing: border-box;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -157,11 +171,11 @@ h3 {
 }
 
 .downArrow:before {
-  background-image: url('../../static/arrow.svg');
+  background-image: url("/arrow.svg");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;
-  content: '';
+  content: "";
   display: block;
   height: 1.5em;
   left: 50%;

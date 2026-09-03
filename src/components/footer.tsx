@@ -1,18 +1,17 @@
-import React from 'react';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import {
-  faTwitter,
-  faLinkedinIn,
   faFreeCodeCamp,
   faGithub,
+  faLinkedinIn,
   faMediumM,
   faStackOverflow,
+  faTwitter,
 } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import * as footerStyles from './footer.module.css';
+import footerStyles from './footer.module.css';
 
 const Footer = () => (
-  <footer>
+  <footer className={footerStyles.footer}>
     <div className="row">
       <a
         href="https://twitter.com/wentjun"
@@ -99,12 +98,8 @@ const Footer = () => (
       <span className={footerStyles.footer__label}>
         Made with{' '}
         <span className={footerStyles.footer__heartIcon}>&#9829;</span> using{' '}
-        <a
-          href="https://www.gatsbyjs.org/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          GatsbyJS
+        <a href="https://nextjs.org/" rel="noopener noreferrer" target="_blank">
+          Next.js
         </a>
       </span>
     </div>
