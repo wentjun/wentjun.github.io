@@ -1,0 +1,701 @@
+.page {
+  min-height: 100svh;
+  background: #e5eae9;
+  color: #243337;
+  -webkit-font-smoothing: antialiased;
+}
+.page h1,
+.page h2,
+.page p,
+.page figure {
+  margin: 0;
+}
+.page a {
+  color: inherit;
+  text-decoration: none;
+}
+.page a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.page button,
+.page input {
+  font: inherit;
+  accent-color: #a74425;
+}
+.page button {
+  cursor: pointer;
+}
+.page button:disabled {
+  cursor: default;
+}
+.page :is(a, button, input, [tabindex]):focus-visible {
+  outline: 2px solid #a74425;
+  outline-offset: 4px;
+}
+.page main:focus {
+  outline: none;
+}
+.skip {
+  position: absolute;
+  top: -100px;
+  left: 24px;
+  padding: 12px;
+  background: #fff;
+  z-index: 10;
+}
+.skip:focus {
+  top: 16px;
+}
+.header {
+  height: 107px;
+  margin: 0 44px;
+  border-bottom: 1px solid #abb7b6;
+  display: flex;
+  align-items: center;
+  gap: 45px;
+}
+.brand {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 30px;
+  letter-spacing: -1.3px;
+  font-weight: 600;
+}
+.brand span {
+  color: #a74425;
+}
+.place {
+  font-size: 14px;
+  color: #53615f;
+}
+.hello {
+  margin-left: auto;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  font-size: 15px;
+}
+.hero {
+  margin: 0 44px;
+  display: grid;
+  grid-template-columns: 38% 62%;
+  grid-template-rows: auto 1fr;
+  min-height: 750px;
+  padding-bottom: 38px;
+}
+.introduction {
+  grid-column: 1;
+  grid-row: 1;
+  padding: 50px 30px 0 0;
+}
+.introduction h1 {
+  font-size: 76px;
+  line-height: 1.02;
+  letter-spacing: -4px;
+  font-weight: 480;
+  max-width: 450px;
+}
+.introduction p {
+  max-width: 390px;
+  font-size: 18px;
+  line-height: 1.5;
+  margin-top: 24px;
+  color: #53615f;
+}
+.objectStage {
+  --object-height: 540px;
+  grid-column: 2;
+  grid-row: 1 / 3;
+  padding: 0 0 0 18px;
+  min-width: 0;
+  align-self: start;
+}
+.objectFrame {
+  height: var(--object-height);
+  position: relative;
+  width: 100%;
+}
+.sculpture {
+  pointer-events: none;
+  display: block;
+  width: 100%;
+  height: var(--object-height);
+  overflow: visible;
+  touch-action: pan-y;
+}
+.sculpture [data-sculpture-layer] {
+  pointer-events: auto;
+  cursor: pointer;
+}
+.sculpture [data-sculpture-layer]:hover > [data-object-layer] {
+  stroke: #a74425;
+  stroke-width: 2.2;
+}
+.sculpture[data-hover="0"] [data-object-layer="0"],
+.sculpture[data-hover="1"] [data-object-layer="1"],
+.sculpture[data-hover="2"] [data-object-layer="2"],
+.sculpture[data-hover="3"] [data-object-layer="3"] {
+  stroke: #a74425;
+  stroke-width: 2.5;
+}
+.markers {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.markers button {
+  z-index: 1;
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #53615f;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+.markerNumber {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #71867f;
+  border-radius: 50%;
+  background: #e5eae9;
+  font:
+    12px var(--font-mono),
+    monospace;
+}
+.markers button[aria-pressed="true"] .markerNumber {
+  background: #a74425;
+  color: #fff4e6;
+  border-color: #a74425;
+}
+.markers button:is(:hover, :focus-visible) .markerNumber {
+  border-color: #a74425;
+  box-shadow: 0 0 0 3px #a7442522;
+}
+.markerName {
+  display: none;
+  position: absolute;
+  left: 50px;
+  top: 8px;
+  padding: 5px 7px;
+  background: #243b39;
+  color: #f3f2e9;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.markers[data-assembled="true"] .markerName {
+  left: 50%;
+  top: auto;
+  bottom: 48px;
+  transform: translateX(-50%);
+}
+.markers button[data-tooltip-open="true"] {
+  z-index: 3;
+}
+.markers button[data-tooltip-open="true"] .markerName {
+  display: block;
+}
+.page .markers button:focus-visible {
+  outline-offset: -1px;
+  border-radius: 50%;
+}
+.viewGroup {
+  width: min(100%, 480px);
+  margin: 0 auto;
+}
+.instruction {
+  font-size: 14px;
+  color: #53615f;
+  line-height: 1.5;
+  padding-bottom: 10px;
+}
+.viewControls {
+  display: grid;
+  grid-template-columns: 132px minmax(100px, 1fr) 62px;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+.viewControls button {
+  min-height: 44px;
+  min-width: 44px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 3px;
+}
+.assembly {
+  --view-icon-fill: #243b39;
+  background: #243b39;
+  color: #f3f2e9;
+  padding: 0 10px;
+}
+.assembly span {
+  width: 65px;
+  text-align: left;
+}
+.assembly:hover {
+  --view-icon-fill: #36534e;
+  background: #36534e;
+}
+.reset {
+  white-space: nowrap;
+  background: transparent;
+  color: inherit;
+  padding: 0 5px;
+}
+.turn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 13px;
+}
+.turn input {
+  appearance: none;
+  flex: 1;
+  min-width: 44px;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: ew-resize;
+}
+.turn input::-webkit-slider-runnable-track {
+  height: 3px;
+  background: #9dafa8;
+}
+.turn input::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #a74425;
+  border: 2px solid #e5eae9;
+  border-radius: 50%;
+  margin-top: -7.5px;
+}
+.turn input::-moz-range-track {
+  height: 3px;
+  background: #9dafa8;
+}
+.turn input::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #a74425;
+  border: 2px solid #e5eae9;
+  border-radius: 50%;
+}
+.turn output {
+  font:
+    12px var(--font-mono),
+    monospace;
+  width: 36px;
+  flex: 0 0 36px;
+  text-align: right;
+  color: #53615f;
+}
+.explorer {
+  grid-column: 1;
+  grid-row: 2;
+  padding: 34px 42px 0 0;
+  align-self: start;
+}
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid #a6b3b0;
+  border-bottom: 1px solid #a6b3b0;
+}
+.tabs button {
+  min-width: 44px;
+  min-height: 60px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  padding: 9px 5px;
+  text-align: left;
+  background: transparent;
+  color: #53615f;
+  font-size: 14px;
+}
+.tabs button span {
+  display: block;
+  margin-bottom: 5px;
+  font:
+    11px var(--font-mono),
+    monospace;
+}
+.tabs button[aria-selected="true"] {
+  color: #973b20;
+  border-color: #a74425;
+  background: #dce3df;
+}
+.tabs button:hover {
+  background: #dce3df;
+}
+.page .tabs button:focus-visible {
+  outline-offset: -4px;
+}
+.page .viewControls :is(button, input):focus-visible {
+  outline-offset: -2px;
+}
+.reset:hover {
+  background: #cdd8d2;
+}
+.caption {
+  padding-top: 23px;
+  min-height: 200px;
+}
+.caption h2,
+.staticPerspectives h2 {
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.7px;
+}
+.caption > p,
+.staticPerspectives p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 14px;
+  color: #53615f;
+  max-width: 390px;
+  text-wrap: pretty;
+}
+.staticPerspectives section {
+  margin-bottom: 28px;
+}
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.footer {
+  margin: 0 44px;
+  padding: 20px 0;
+  border-top: 1px solid #869895;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.footer p {
+  font-size: 14px;
+  color: #53615f;
+}
+.footer nav {
+  display: flex;
+  gap: 28px;
+  margin-left: auto;
+  font-size: 14px;
+}
+.footer a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 44px;
+}
+@media (min-width: 1550px) {
+  .header,
+  .hero,
+  .footer {
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero {
+    min-height: 800px;
+  }
+  .objectStage {
+    --object-height: 590px;
+  }
+  .introduction h1 {
+    font-size: 82px;
+  }
+}
+@media (min-width: 701px) and (max-width: 1100px) {
+  .header,
+  .hero,
+  .footer {
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+  .hero {
+    grid-template-columns: 42% 58%;
+    min-height: 780px;
+  }
+  .introduction {
+    padding-right: 22px;
+  }
+  .introduction h1 {
+    font-size: clamp(46px, 5.5vw, 60px);
+    letter-spacing: -2.8px;
+  }
+  .introduction p {
+    font-size: 16px;
+  }
+  .objectStage {
+    padding-left: 12px;
+  }
+  .objectStage {
+    --object-height: 480px;
+  }
+  .explorer {
+    padding-right: 22px;
+    padding-top: 32px;
+  }
+  .tabs button {
+    font-size: 12px;
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+  .caption {
+    min-height: 245px;
+  }
+  .caption h2 {
+    font-size: 26px;
+  }
+  .caption > p {
+    font-size: 15px;
+  }
+  .viewControls button {
+    font-size: 13px;
+  }
+  .turn {
+    gap: 6px;
+    font-size: 12px;
+  }
+  .turn output {
+    display: none;
+  }
+  .instruction {
+    font-size: 13px;
+  }
+  .footer nav {
+    gap: 20px;
+  }
+}
+@media (min-width: 701px) and (max-width: 900px) {
+  .objectStage {
+    --object-height: 445px;
+  }
+}
+@media (max-width: 700px) {
+  .header {
+    height: 70px;
+    margin: 0 24px;
+    gap: 15px;
+  }
+  .brand {
+    font-size: 25px;
+  }
+  .place {
+    display: none;
+  }
+  .hello {
+    font-size: 13px;
+    gap: 9px;
+  }
+  .hero {
+    display: flex;
+    flex-direction: column;
+    margin: 0 24px;
+    min-height: 0;
+    padding-bottom: 22px;
+  }
+  .introduction {
+    padding: 22px 0 0;
+  }
+  .introduction h1 {
+    font-size: 40px;
+    letter-spacing: -1.8px;
+    line-height: 1.04;
+    max-width: 470px;
+  }
+  .introduction p {
+    font-size: 14px;
+    line-height: 1.45;
+    margin-top: 15px;
+    max-width: 450px;
+  }
+  .objectStage {
+    padding: 0;
+    align-self: stretch;
+  }
+  .objectFrame {
+    width: calc(100% + 36px);
+    margin: 0 -18px;
+  }
+  .objectStage {
+    --object-height: 265px;
+  }
+  .viewGroup {
+    width: 100%;
+  }
+  .instruction {
+    font-size: 12px;
+    padding-bottom: 7px;
+  }
+  .viewControls button {
+    font-size: 12px;
+  }
+  .turn {
+    padding: 0 6px;
+    font-size: 12px;
+    gap: 6px;
+  }
+  .turn output {
+    font-size: 11px;
+    min-width: 25px;
+  }
+  .explorer {
+    padding: 12px 0 0;
+  }
+  .tabs button {
+    font-size: 13px;
+    min-height: 53px;
+    padding: 7px 4px;
+  }
+  .tabs button span {
+    font-size: 10px;
+    margin-bottom: 4px;
+  }
+  .caption {
+    min-height: 160px;
+    padding-top: 18px;
+  }
+  .caption h2 {
+    font-size: 25px;
+  }
+  .caption > p {
+    font-size: 15px;
+    line-height: 1.45;
+    margin-top: 11px;
+    max-width: 100%;
+  }
+  .footer {
+    margin: 0 24px;
+    min-height: 84px;
+    padding: 16px 0;
+  }
+  .footer p {
+    display: none;
+  }
+  .footer nav {
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .footer a {
+    gap: 8px;
+  }
+}
+@media (max-width: 380px) {
+  .header,
+  .hero,
+  .footer {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  .introduction h1 {
+    font-size: 35px;
+    letter-spacing: -1.5px;
+  }
+  .introduction p {
+    font-size: 13px;
+  }
+  .objectStage {
+    --object-height: 250px;
+  }
+  .reset {
+    padding: 0 5px;
+  }
+  .turn {
+    padding: 0 4px;
+    gap: 4px;
+  }
+  .turn output {
+    display: none;
+  }
+  .tabs button {
+    font-size: 12px;
+  }
+  .caption {
+    min-height: 185px;
+  }
+  .caption > p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 700px) {
+  .caption {
+    min-height: 205px;
+  }
+  .turn output {
+    display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .viewControls {
+    grid-template-columns: 118px minmax(74px, 1fr) 62px;
+    gap: 8px;
+  }
+  .turn {
+    padding: 0;
+  }
+  .turn output {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .viewControls {
+    grid-template-columns: 110px minmax(74px, 1fr) 62px;
+    gap: 8px;
+  }
+  .viewControls button {
+    font-size: 12px;
+  }
+  .assembly {
+    padding: 0 7px;
+  }
+  .assembly span {
+    width: 57px;
+  }
+  .caption {
+    min-height: 205px;
+  }
+}
+
+@media (max-width: 700px) {
+  .markers,
+  .markerLeaders,
+  .instruction {
+    display: none;
+  }
+}

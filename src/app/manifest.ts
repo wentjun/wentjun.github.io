@@ -7,12 +7,12 @@ export default function manifest(): MetadataRoute.Manifest {
     name: 'Wen Tjun',
     short_name: 'Wen Tjun',
     start_url: '/',
-    background_color: '#1c1d26',
-    theme_color: '#1c1d26',
+    background_color: '#e5eae9',
+    theme_color: '#e5eae9',
     display: 'standalone',
     icons: [
       {
-        src: '/icon.png',
+        src: '/icon.png?v=name-led',
         sizes: '512x512',
         type: 'image/png',
       },

@@ -73,3 +73,4 @@ yarn-error.log
 # Test artifacts
 playwright-report/
 test-results/
+design/

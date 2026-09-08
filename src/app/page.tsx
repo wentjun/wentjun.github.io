@@ -1,17 +1,16 @@
-import Contact from '../components/contact';
-import Footer from '../components/footer';
-import Landing from '../components/landing';
-import PersonalProjects from '../components/personal-projects';
-import Spotlight from '../components/spotlight';
+import type { Metadata, Viewport } from 'next';
+import LayerHome from '../components/layers/layer-home';
+
+export const dynamic = 'force-static';
+
+export const metadata: Metadata = {
+  title: 'Wen Tjun — Full-stack builder',
+  description:
+    'Wen Tjun, a full-stack builder based in Singapore. Bringing models into products people can use, including the engineering needed to run them reliably.',
+};
+
+export const viewport: Viewport = { themeColor: '#e5eae9' };
 
 export default function Home() {
-  return (
-    <main>
-      <Landing />
-      <Spotlight />
-      <PersonalProjects />
-      <Contact />
-      <Footer />
-    </main>
-  );
+  return <LayerHome />;
 }
