@@ -3,19 +3,19 @@ import { expect, test } from '@playwright/test';
 const captions = [
   [
     'Interface',
-    'A good interface helps you understand what’s happening. I care about the small details, like knowing whether your request is still running or needs another try.',
+    'A good interface makes it clear what’s happening, whether you’re waiting for a request to finish, deciding when to retry, or using an agent to navigate the app on your behalf.',
   ],
   [
     'Systems',
-    'I enjoy the connections between application logic, data and APIs, especially working through what happens when a request arrives twice or another service stops responding.',
+    'I enjoy the boundaries between application logic, data, and models. I’ve brought WebMCP into production to help agents interact safely with existing applications.',
   ],
   [
     'Applied AI',
-    'I care about AI that solves actual problems. I want to know where a model helps, how to verify its answers, and when a simpler heuristic makes more sense.',
+    'I care about AI that solves actual problems. That means knowing where a model adds value, and pairing deterministic safeguards with agent judgment so workflows don’t silently fail.',
   ],
   [
     'Delivery',
-    'I turn ideas into products people actually use. I work alongside the team to challenge assumptions and break tradeoffs.',
+    'I work alongside the team to take ideas from concept to production. I challenge assumptions, break tradeoffs, and stay hands-on every step of the way.',
   ],
 ];
 
@@ -23,11 +23,12 @@ test('exports a useful introduction, sculpture and all perspectives without Java
   browser,
   baseURL,
   request,
+  browserName,
 }) => {
   const response = await request.get('/');
   expect(response.ok()).toBe(true);
   const html = await response.text();
-  expect(html).toContain('I bring models into products people can use');
+  expect(html).toContain('I build real products with models');
   expect(html).toContain('data-object-layer="2"');
   const context = await browser.newContext({
     javaScriptEnabled: false,
@@ -44,15 +45,16 @@ test('exports a useful introduction, sculpture and all perspectives without Java
     'href',
     'mailto:wentjun289@hotmail.com'
   );
-  await page.keyboard.press('Tab');
+  await page.keyboard.press(browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
   await page.keyboard.press('Enter');
   await expect(page.locator('main')).toBeFocused();
   await context.close();
 });
 
 for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
-  test(`preserves selection, page layout and assembly scale at ${width}px`, async ({
+  test(`preserves selection and page layout while framing assembly at ${width}px`, async ({
     page,
+    browserName,
   }) => {
     await page.setViewportSize({ width, height: width < 701 ? 844 : 1000 });
     await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -80,10 +82,12 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
           '#sculpture, #assembly, #rotation, #reset, output, header, footer, [role=tablist]'
         )
         .evaluateAll((es) =>
-          es.map((e) => {
-            const r = e.getBoundingClientRect();
-            return [r.x + scrollX, r.y + scrollY, r.width, r.height];
-          })
+          es
+            .filter((e) => e.getClientRects().length > 0)
+            .map((e) => {
+              const r = e.getBoundingClientRect();
+              return [r.x + scrollX, r.y + scrollY, r.width, r.height];
+            })
         );
     const footerY = () =>
       page
@@ -199,16 +203,66 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
         });
       });
     };
-    const initialToolbar = await page
-      .locator('[data-view-controls]')
-      .boundingBox();
+    // Keyboard focus may scroll a short viewport; compare positions in the document.
+    const toolbarBounds = () =>
+      page.locator('[data-view-controls]').evaluate((element) => {
+        const r = element.getBoundingClientRect();
+        return {
+          x: r.x + scrollX,
+          y: r.y + scrollY,
+          width: r.width,
+          height: r.height,
+        };
+      });
+    const initialToolbar = await toolbarBounds();
+    if (width <= 700) {
+      const sculpture = await page.locator('#sculpture').boundingBox();
+      const tablist = await page.getByRole('tablist').boundingBox();
+      const caption = await page.locator('#caption').boundingBox();
+      const rotation = await page.locator('#rotation').boundingBox();
+      if (!sculpture || !tablist || !caption || !rotation || !initialToolbar)
+        throw new Error('Missing mobile interaction layout');
+      expect(sculpture.y).toBeGreaterThanOrEqual(
+        initialToolbar.y + initialToolbar.height + 8
+      );
+      // No view controls interrupt the sculpture → selected layer → caption sequence.
+      expect(tablist.y - sculpture.y - sculpture.height).toBeCloseTo(8, 1);
+      expect(caption.y).toBeCloseTo(tablist.y + tablist.height, 1);
+      expect(caption.y - sculpture.y - sculpture.height).toBeLessThanOrEqual(
+        70
+      );
+      expect(rotation.width).toBeGreaterThanOrEqual(width < 381 ? 100 : 150);
+      const assembly = await page.locator('#assembly').boundingBox();
+      const reset = await page.locator('#reset').boundingBox();
+      if (!assembly || !reset) throw new Error('Missing view controls');
+      expect(rotation.x - assembly.x - assembly.width).toBeGreaterThanOrEqual(
+        8
+      );
+      expect(reset.x - rotation.x - rotation.width).toBeGreaterThanOrEqual(8);
+      expect(reset.y).toBeCloseTo(assembly.y, 1);
+      expect(initialToolbar.height).toBeLessThanOrEqual(60);
+      await page.locator('#assembly').focus();
+      for (const selector of [
+        '#rotation',
+        '#reset',
+        '[data-select="2"]',
+        '#caption',
+      ]) {
+        await page.keyboard.press(browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
+        await expect(page.locator(selector)).toBeFocused();
+      }
+    }
     for (const assembled of [false, true]) {
       if (assembled) await page.locator('#assembly').click();
       await expect(page.locator('#sculpture')).toHaveAttribute(
         'data-spread',
         assembled ? '0.000' : '1.000'
       );
-      expect(await geometryWidth()).toBeCloseTo(initialWidth, 0);
+      const displayedWidth = await geometryWidth();
+      if (assembled) {
+        expect(displayedWidth / initialWidth).toBeGreaterThanOrEqual(1.1);
+        expect(displayedWidth / initialWidth).toBeLessThanOrEqual(1.16);
+      } else expect(displayedWidth).toBeCloseTo(initialWidth, 0);
       await expectAttachedMarkers();
       if (assembled && width > 700) {
         const marker = await page.locator('[data-marker="0"]').boundingBox();
@@ -219,9 +273,7 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
       expect(await page.locator('#sculpture').getAttribute('viewBox')).toBe(
         viewBox
       );
-      const poseToolbar = await page
-        .locator('[data-view-controls]')
-        .boundingBox();
+      const poseToolbar = await toolbarBounds();
       for (const i of [3, 0, 2, 1]) {
         await page
           .locator(`[${width <= 700 ? 'data-select' : 'data-marker'}="${i}"]`)
@@ -231,13 +283,32 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
           'true'
         );
         await expect(page.locator('#caption-body')).toHaveText(captions[i][1]);
+        if (assembled) {
+          const band = page.locator(`[data-selection-band="${i}"]`);
+          await expect(band).toHaveCount(1);
+          expect(
+            await band.evaluate((e) => Number(getComputedStyle(e).opacity))
+          ).toBeGreaterThanOrEqual(0.8);
+          const highlight = await band.boundingBox();
+          const plate = await page
+            .locator(`[data-sculpture-layer="${i}"]`)
+            .boundingBox();
+          if (!highlight || !plate) throw new Error('Missing selected edge');
+          // The highlight spans the visible plate, rather than becoming a tiny
+          // isolated segment, and stays within the existing silhouette.
+          expect(highlight.width / plate.width).toBeGreaterThan(0.9);
+          expect(highlight.y).toBeGreaterThanOrEqual(plate.y - 0.5);
+          expect(highlight.y + highlight.height).toBeLessThanOrEqual(
+            plate.y + plate.height + 0.5
+          );
+        }
         expect(await footerY()).toBeCloseTo(initialFooterY, 1);
         await expect(page.locator('#assembly')).toHaveAttribute(
           'data-assembled',
           String(assembled)
         );
       }
-      const toolbar = await page.locator('[data-view-controls]').boundingBox();
+      const toolbar = await toolbarBounds();
       expect(toolbar?.y).toBeCloseTo(poseToolbar?.y ?? 0, 0);
       expect(toolbar?.y).toBeCloseTo(initialToolbar?.y ?? 0, 0);
       await expectStableControls();
@@ -357,6 +428,79 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
   });
 }
 
+for (const width of [320, 390, 700]) {
+  test(`mobile selection stays identifiable without extra labels at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 844 });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    await expect(page.locator('#assembly')).toBeEnabled();
+    await expect(
+      page.locator('[data-selected-layer-label], [data-selection-guidance]')
+    ).toHaveCount(0);
+    for (const spread of ['1.000', '0.000']) {
+      if (spread === '0.000') await page.locator('#assembly').click();
+      await expect(page.locator('#sculpture')).toHaveAttribute(
+        'data-spread',
+        spread
+      );
+      for (const [step, angle] of [-30, -15, 0, 15, 30].entries()) {
+        const index = step % 4;
+        const tab = page.getByRole('tab').nth(index);
+        await tab.click();
+        await page.locator('#rotation').fill(String(angle));
+        await expect(page.locator('#sculpture')).toHaveAttribute(
+          'data-angle',
+          angle.toFixed(2)
+        );
+        await expect(tab).toHaveAttribute('aria-selected', 'true');
+        const band = page.locator(`[data-selection-band="${index}"]`);
+        await expect(page.locator('[data-selection-band]')).toHaveCount(1);
+        expect(
+          await band.evaluate((e) => Number(getComputedStyle(e).opacity))
+        ).toBeGreaterThanOrEqual(0.65);
+        const accent = await band.evaluate((e) => getComputedStyle(e).fill);
+        expect(
+          await tab.evaluate((e) => getComputedStyle(e).borderBottomColor)
+        ).toBe(accent);
+        const edge = await band.boundingBox();
+        const plate = await page
+          .locator(`[data-sculpture-layer="${index}"]`)
+          .boundingBox();
+        const frame = await page.locator('#sculpture').boundingBox();
+        const top = await page
+          .locator('[data-sculpture-layer]')
+          .evaluateAll((es) =>
+            Math.min(...es.map((e) => e.getBoundingClientRect().top))
+          );
+        if (!edge || !plate || !frame)
+          throw new Error('Missing selected plate');
+        expect(edge.width / plate.width).toBeGreaterThan(0.9);
+        expect(edge.y).toBeGreaterThanOrEqual(plate.y - 0.5);
+        expect(edge.y + edge.height).toBeLessThanOrEqual(
+          plate.y + plate.height + 0.5
+        );
+        expect(top).toBeGreaterThanOrEqual(frame.y + 20);
+      }
+    }
+    await page.locator('#rotation').fill('0');
+    await page.locator('#rotation').focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(page.locator('#rotation')).toHaveValue('1');
+    await page.keyboard.press('ArrowLeft');
+    await expect(page.locator('#rotation')).toHaveValue('0');
+    await page.keyboard.press('ArrowLeft');
+    await expect(page.locator('#rotation')).toHaveValue('-1');
+    await page.locator('#reset').click();
+    await expect(page.locator('[data-selection-band="2"]')).toHaveCount(1);
+    await expect(page.getByRole('tab').nth(2)).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+  });
+}
+
 test('keyboard navigation and focus survive animation and reset', async ({
   page,
 }) => {
@@ -387,6 +531,7 @@ test('keyboard navigation and focus survive animation and reset', async ({
 test('plate surfaces select their captions', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#assembly')).toBeEnabled();
+  await expect(page.locator('#assembly')).toBeEnabled();
   for (const i of [0, 1, 2, 3]) {
     const point = await page.evaluate((index) => {
       const e = document.querySelector(`[data-sculpture-layer="${index}"]`);
@@ -395,11 +540,20 @@ test('plate surfaces select their captions', async ({ page }) => {
       for (let y = r.y + 2; y < r.bottom; y += 3)
         for (let x = r.x + 2; x < r.right; x += 3)
           if (
-            document
-              .elementFromPoint(x, y)
-              ?.closest('[data-sculpture-layer]') === e
+            [
+              [0, 0],
+              [5, 0],
+              [-5, 0],
+              [0, 5],
+              [0, -5],
+            ].every(
+              ([dx, dy]) =>
+                document
+                  .elementFromPoint(Math.round(x) + dx, Math.round(y) + dy)
+                  ?.closest('[data-sculpture-layer]') === e
+            )
           )
-            return { x, y };
+            return { x: Math.round(x), y: Math.round(y) };
       return null;
     }, i);
     expect(point).not.toBeNull();
@@ -414,10 +568,26 @@ test('static metadata and manifest match the page', async ({
   request,
 }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle('Wen Tjun — Full-stack builder');
+  await expect(page).toHaveTitle('Wen Tjun: Full-stack builder');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     'content',
-    /models into products/
+    'Wen Tjun, a full-stack builder based in Singapore. I build real products with models, backed by the engineering to run them reliably.'
+  );
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'https://wentjun.com/'
+  );
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+    'content',
+    'https://wentjun.com/'
+  );
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+    'content',
+    'Wen Tjun: Full-stack builder'
+  );
+  await expect(page.locator('meta[property="og:description"]')).toHaveAttribute(
+    'content',
+    'Wen Tjun, a full-stack builder based in Singapore. I build real products with models, backed by the engineering to run them reliably.'
   );
   const manifest = await request.get('/manifest.webmanifest');
   expect(manifest.ok()).toBe(true);
@@ -605,49 +775,94 @@ test('icon preview holds, reverses on leave and commits without resetting', asyn
   await expect(sculpture).toHaveAttribute('data-spread', '1.000');
 });
 
-test('assembly and separation move labels without moving the page during animation', async ({
-  page,
-}) => {
-  await page.goto('/');
-  await expect(page.locator('#assembly')).toBeEnabled();
-  await page.evaluate(() => document.fonts.ready);
-  const result = await page.evaluate(async () => {
-    const selector =
-      '#sculpture, #assembly, #rotation, #reset, header, footer, [role="tablist"]';
-    const bounds = () =>
-      [...document.querySelectorAll(selector)].map((e) => {
-        const r = e.getBoundingClientRect();
-        return [r.x + scrollX, r.y + scrollY, r.width, r.height];
-      });
-    const before = bounds();
-    const assembly = document.querySelector<HTMLButtonElement>('#assembly');
-    const marker = document.querySelector('[data-marker="0"]');
-    if (!assembly || !marker) throw new Error('Missing controls');
-    const frames: { layout: number[][]; markerY: number }[] = [];
-    for (let toggle = 0; toggle < 2; toggle++) {
-      assembly.click();
-      const started = performance.now();
-      while (performance.now() - started < 650) {
-        await new Promise<void>((resolve) =>
-          requestAnimationFrame(() => resolve())
-        );
-        frames.push({
-          layout: bounds(),
-          markerY: marker.getBoundingClientRect().y,
+for (const width of [320, 1366, 1440]) {
+  test(`assembly and separation stay inside a stationary page at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: width === 1366 ? 768 : 1000 });
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto('/');
+    await expect(page.locator('#assembly')).toBeEnabled();
+    await page.evaluate(() => document.fonts.ready);
+    const result = await page.evaluate(async () => {
+      const selector =
+        '#sculpture, #assembly, #rotation, #reset, #title, #caption, header, footer, [role="tablist"]';
+      const bounds = () =>
+        [...document.querySelectorAll(selector)].map((e) => {
+          const r = e.getBoundingClientRect();
+          return [r.x + scrollX, r.y + scrollY, r.width, r.height];
         });
+      const before = bounds();
+      const assembly = document.querySelector<HTMLButtonElement>('#assembly');
+      const marker = document.querySelector('[data-marker="0"]');
+      if (!assembly || !marker) throw new Error('Missing controls');
+      const sculpture = document.querySelector('#sculpture');
+      if (!sculpture) throw new Error('Missing sculpture');
+      const frame = sculpture.getBoundingClientRect();
+      const frames: {
+        layout: number[][];
+        markerY: number;
+        clipped: boolean;
+        width: number;
+        spread: string | null;
+        toggle: number;
+      }[] = [];
+      for (let toggle = 0; toggle < 2; toggle++) {
+        assembly.click();
+        const started = performance.now();
+        while (performance.now() - started < 650) {
+          await new Promise<void>((resolve) =>
+            requestAnimationFrame(() => resolve())
+          );
+          const base = document.querySelector('[data-object-layer="3"]');
+          if (!base) throw new Error('Missing base plate');
+          frames.push({
+            layout: bounds(),
+            markerY: marker.getBoundingClientRect().y,
+            width: base.getBoundingClientRect().width,
+            spread: sculpture.getAttribute('data-spread'),
+            toggle,
+            clipped: [
+              ...document.querySelectorAll('[data-sculpture-layer]'),
+            ].some((e) => {
+              const r = e.getBoundingClientRect();
+              return (
+                r.left < frame.left - 0.5 ||
+                r.right > frame.right + 0.5 ||
+                r.top < frame.top - 0.5 ||
+                r.bottom > frame.bottom + 0.5
+              );
+            }),
+          });
+        }
+      }
+      return { before, frames };
+    });
+    if (width > 700)
+      expect(new Set(result.frames.map((f) => f.markerY)).size).toBeGreaterThan(
+        3
+      );
+    for (const frame of result.frames) {
+      expect(frame.clipped).toBe(false);
+      expect(Number(frame.spread)).toBeGreaterThanOrEqual(0);
+      expect(Number(frame.spread)).toBeLessThanOrEqual(1);
+      frame.layout.forEach((rect, i) => {
+        rect.forEach((value, j) => {
+          expect(value).toBeCloseTo(result.before[i][j], 1);
+        });
+      });
+    }
+    for (const toggle of [0, 1]) {
+      const frames = result.frames.filter((f) => f.toggle === toggle);
+      for (let i = 1; i < frames.length; i++) {
+        const change = frames[i].width - frames[i - 1].width;
+        // A second animation or delayed scale reset would reverse this direction.
+        if (toggle === 0) expect(change).toBeGreaterThanOrEqual(-0.05);
+        else expect(change).toBeLessThanOrEqual(0.05);
       }
     }
-    return { before, frames };
   });
-  expect(new Set(result.frames.map((f) => f.markerY)).size).toBeGreaterThan(3);
-  for (const frame of result.frames) {
-    frame.layout.forEach((rect, i) => {
-      rect.forEach((value, j) => {
-        expect(value).toBeCloseTo(result.before[i][j], 1);
-      });
-    });
-  }
-});
+}
 
 for (const width of [320, 1440]) {
   test(`initial selectors stay stable through hydration at ${width}px`, async ({
@@ -665,7 +880,18 @@ for (const width of [320, 1440]) {
     try {
       await page.goto('/', { waitUntil: 'commit' });
       await expect(page.locator('#sculpture')).toBeVisible();
-      await page.evaluate(() => document.fonts.ready);
+      // WebKit's fonts.ready can wait for the script-blocked document load.
+      // Load the two visible font families directly before measuring SSR layout.
+      await page.evaluate(async () => {
+        await Promise.all(
+          ['h1', '[data-select] span'].map((selector) => {
+            const element = document.querySelector(selector);
+            if (!element) throw new Error('Missing font sample');
+            const style = getComputedStyle(element);
+            return document.fonts.load(`${style.fontSize} ${style.fontFamily}`);
+          })
+        );
+      });
       await expect(page.locator('#caption-body')).toHaveText(captions[2][1]);
       await expect(page.locator('#assembly')).toBeDisabled();
       for (let i = 0; i < 4; i++)

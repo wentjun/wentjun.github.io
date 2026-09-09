@@ -20,17 +20,17 @@ const mono = localFont({
 export const metadata: Metadata = {
   title: 'Wen Tjun',
   description:
-    'Wen Tjun is a full-stack builder based in Singapore, focused on bringing models into products people can use.',
+    'Wen Tjun, a full-stack builder based in Singapore. I build real products with models, backed by the engineering to run them reliably.',
   icons: {
     icon: [
       {
-        url: '/favicon.ico?v=name-led',
+        url: '/favicon.ico?v=mineral',
         sizes: '16x16 32x32 48x48',
         type: 'image/x-icon',
       },
-      { url: '/favicon.svg?v=name-led', sizes: 'any', type: 'image/svg+xml' },
+      { url: '/favicon.svg?v=mineral', sizes: 'any', type: 'image/svg+xml' },
     ],
-    apple: { url: '/apple-touch-icon.png?v=name-led', sizes: '180x180' },
+    apple: { url: '/apple-touch-icon.png?v=mineral', sizes: '180x180' },
   },
   manifest: '/manifest.webmanifest',
 };

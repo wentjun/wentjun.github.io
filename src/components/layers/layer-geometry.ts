@@ -118,7 +118,7 @@ export function createSculpture(
     }
     // Authored material detail: graphite fins, metal brushing and pin collars.
     const ink = selected === i ? '#ad532e' : i === 2 ? '#a8b7ad' : '#697b78';
-    const detail = (points: Point[], width = 2) =>
+    const detail = (points: Point[], width = 2.6) =>
       `<path d="${path(
         points.map(([x, z]) => project(x, y + 1, z)),
         false
@@ -143,120 +143,134 @@ export function createSculpture(
         ],
         2.6
       );
-    // Each drawing shares an entry and an outcome. Only its middle changes.
-    // All details are in plate coordinates, so they stay registered during rotation.
-    if (i === 0) {
-      out +=
-        node(-185, 108) +
-        detail([
-          [-174, 108],
-          [-90, 108],
-        ]);
-      // A bounded status display makes otherwise invisible work visible.
-      const display = rounded(54, 17, 8).map(([x, z]) =>
-        project(x, y + 1, z + 108)
+    // Shared drawing grammar: 2.4-unit enclosures, 2.6-unit paths, and quiet
+    // 1.8-unit internal detail. Every application uses the same frame and header.
+    const panel = (x: number, z: number, w: number, d: number, r = 4) => {
+      const points = rounded(w, d, r).map(
+        ([px, pz]): Point => [px + x, pz + z]
       );
-      out += `<path d="${path(display)}" fill="none" stroke="${ink}" stroke-width="1.6" pointer-events="none"/>`;
-      for (const x of [-26, 0, 26]) out += node(x, 108, x < 26, 4);
+      return detail([...points, points[0]], 2.4);
+    };
+    const application = (x: number, z: number, unfinished = false) => {
+      const points = rounded(48, 24, 4).map(
+        ([px, pz]): Point => [px + x, pz + z]
+      );
+      return (
+        detail(unfinished ? points.slice(0, 34) : [...points, points[0]], 2.4) +
+        detail(
+          [
+            [x - 48, z - 12],
+            [x + (unfinished ? -8 : 48), z - 12],
+          ],
+          1.8
+        )
+      );
+    };
+    const arrow = (x: number, z: number) =>
+      detail([
+        [x - 12, z - 8],
+        [x, z],
+        [x - 12, z + 8],
+      ]);
+    if (i === 0) {
+      // A person delegates to an agent, which acts on a control inside the app.
+      out += node(-174, 89, false, 10);
+      out += detail([
+        [-195, 131],
+        [-193, 116],
+        [-185, 108],
+        [-163, 108],
+        [-155, 116],
+        [-153, 131],
+      ]);
       out +=
         detail([
-          [70, 108],
-          [147, 108],
-        ]) + check(177, 108);
+          [-143, 110],
+          [-78, 110],
+        ]) + arrow(-78, 110);
+      out += panel(-35, 110, 25, 20);
+      out += node(-44, 109, true, 3) + node(-26, 109, true, 3);
+      out += application(145, 108);
+      out += panel(155, 115, 18, 9);
+      out +=
+        detail([
+          [-10, 110],
+          [77, 110],
+          [88, 115],
+          [136, 115],
+        ]) + arrow(136, 115);
     }
     if (i === 1) {
+      // The request enters through a defined port; the application retains its boundary.
+      out += node(-185, 108, false, 8);
       out +=
-        node(-185, 108) +
         detail([
-          [-174, 108],
-          [-104, 108],
-        ]);
-      // A returning branch rejoins the same request, rather than creating another output.
-      out += detail(
-        [
-          [-104, 108],
-          [-104, 76],
-          [42, 76],
-          [42, 108],
-          [174, 108],
-        ],
-        2.4
-      );
-      out += detail(
-        [
-          [42, 108],
-          [42, 129],
-          [-104, 129],
-          [-104, 108],
-        ],
-        1.5
-      );
-      out += detail(
-        [
-          [-91, 122],
-          [-104, 129],
-          [-91, 136],
-        ],
-        1.5
-      );
-      out +=
-        node(-104, 108, true, 3) +
-        node(42, 108, true, 3) +
-        node(185, 108, true);
+          [-175, 108],
+          [-96, 108],
+        ]) + arrow(-96, 108);
+      out += detail([
+        [-73, 80],
+        [-88, 80],
+        [-88, 136],
+        [-73, 136],
+      ]);
+      out += detail([
+        [-88, 108],
+        [29, 108],
+      ]);
+      out += application(77, 108);
+      out += detail([
+        [125, 108],
+        [175, 108],
+      ]);
+      out += node(185, 108, true, 8);
     }
     if (i === 2) {
+      // Arrowheads distinguish the two continuous routes into one checkpoint.
+      // The agent repeats Interface's symbol on the model-assisted route.
+      out += node(-185, 108, false, 8);
+      out += detail([
+        [-175, 108],
+        [-138, 108],
+      ]);
       out +=
-        node(-185, 108) +
         detail([
-          [-174, 108],
-          [-142, 108],
-        ]);
-      // The direct route and model stay on the visible front edge, including the model box.
-      out += detail(
-        [
-          [-142, 108],
-          [-120, 132],
-          [112, 132],
-          [142, 108],
-        ],
-        2.4
-      );
-      out += detail(
-        [
-          [-142, 108],
-          [-120, 86],
-          [-44, 86],
-        ],
-        1.5
-      );
-      out += detail(
-        [
-          [44, 86],
-          [112, 86],
-          [142, 108],
-        ],
-        1.5
-      );
-      const model = rounded(42, 16, 6).map(([x, z]) =>
-        project(x, y + 1, z + 86)
-      );
-      out += `<path d="${path(model)}" fill="none" stroke="${ink}" stroke-width="1.6" pointer-events="none"/>`;
-      for (const x of [-18, 0, 18])
-        out += detail(
-          [
-            [x, 78],
-            [x, 94],
-          ],
-          1.3
-        );
+          [-138, 108],
+          [-108, 74],
+          [51, 74],
+        ]) + arrow(51, 74);
+      out += detail([
+        [-138, 108],
+        [-108, 126],
+        [-40, 126],
+      ]);
+      out += panel(-15, 126, 25, 16);
+      out += node(-24, 125, true, 3) + node(-6, 125, true, 3);
       out +=
-        check(149, 108) +
         detail([
-          [165, 108],
-          [174, 108],
-        ]) +
-        node(185, 108, true);
-      out += node(-142, 108, true, 3);
+          [10, 126],
+          [51, 126],
+        ]) + arrow(51, 126);
+      out += detail([
+        [51, 74],
+        [88, 74],
+        [104, 94],
+      ]);
+      out += detail([
+        [51, 126],
+        [104, 126],
+      ]);
+      out += panel(132, 108, 28, 30);
+      out += detail([
+        [119, 107],
+        [129, 117],
+        [147, 97],
+      ]);
+      out += detail([
+        [160, 108],
+        [175, 108],
+      ]);
+      out += node(185, 108, true, 8);
     }
     if (i === 3) {
       for (let z = -133; z < 135; z += 6)
@@ -265,41 +279,15 @@ export function createSculpture(
           project(212, y + 0.1, z),
           'stroke="#ebeee5" stroke-width=".4" opacity=".15" pointer-events="none"'
         );
-      // An opening through a constraint, with a continuous path from idea to use.
+      // The same application moves from an incomplete outline to a usable result.
+      out += application(-145, 108, true);
       out +=
-        node(-185, 108) +
-        detail(
-          [
-            [-174, 108],
-            [169, 108],
-          ],
-          2.8
-        ) +
-        node(185, 108, true, 7);
-      out += detail(
-        [
-          [-18, 51],
-          [-18, 92],
-          [4, 92],
-        ],
-        2.4
-      );
-      out += detail(
-        [
-          [-18, 126],
-          [-18, 141],
-          [4, 141],
-        ],
-        2.4
-      );
-      out += detail(
-        [
-          [70, 98],
-          [84, 108],
-          [70, 118],
-        ],
-        2.4
-      );
+        detail([
+          [-79, 108],
+          [79, 108],
+        ]) + arrow(79, 108);
+      out += application(145, 108);
+      out += check(145, 115);
     }
     for (const [pin, x] of pinXs.entries()) {
       const opening = pinHoles[pin];
@@ -318,12 +306,32 @@ export function createSculpture(
     }
     anchors[i] = project(-211, y, 115);
     if (selected === i) {
+      // A continuous inset band marks the visible sidewalls. Mobile keeps it
+      // visible in both poses to identify the layer without a duplicate label.
+      // It follows the plate's own surface and never changes the silhouette.
+      const viewAngle = -0.53 + (angle * Math.PI) / 180;
+      const facingX = -Math.sin(viewAngle),
+        facingZ = Math.cos(viewAngle);
+      let band = '';
+      for (let j = 0; j < shape.length; j++) {
+        const k = (j + 1) % shape.length;
+        const [x1, z1] = shape[j],
+          [x2, z2] = shape[k];
+        if ((z2 - z1) * facingX - (x2 - x1) * facingZ <= 0) continue;
+        band += path([
+          project(x1, y - t * 0.15, z1),
+          project(x2, y - t * 0.15, z2),
+          project(x2, y - t * 0.85, z2),
+          project(x1, y - t * 0.85, z1),
+        ]);
+      }
+      out += `<path data-selection-band="${i}" d="${band}" fill="#a74425" opacity="${0.85 * (1 - spread)}" style="--mobile-selection-opacity:${0.85 - 0.18 * spread}" pointer-events="none"/>`;
       const a = project(-206, y - t, 144),
         b = project(-70, y - t, 144);
       out += line(
         a,
         b,
-        'stroke="#a74425" stroke-width="2.4" stroke-linecap="round" pointer-events="none"'
+        `data-selection-segment="${i}" stroke="#a74425" stroke-width="2.4" opacity="${spread}" stroke-linecap="round" pointer-events="none"`
       );
     }
     out += '</g>';

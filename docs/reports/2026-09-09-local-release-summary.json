@@ -1,0 +1,24 @@
+{
+  "status": "local release candidate verified; not deployed",
+  "node": "22.23.2",
+  "pnpm": "10.34.5",
+  "staticTests": {
+    "startTime": "2026-09-09T09:35:05.896Z",
+    "duration": 124312.086,
+    "expected": 93,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "a11y": {
+    "engine": "axe-core 4.13.0",
+    "states": 24,
+    "violations": 0,
+    "incomplete": 0
+  },
+  "remaining": [
+    "Real-device and screen-reader listening checks",
+    "Final visual acceptance and archive update",
+    "Deployment and hosting verification deferred by user"
+  ]
+}

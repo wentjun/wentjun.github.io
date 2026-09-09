@@ -34,7 +34,8 @@ function usePose(assembled: boolean, angle: number) {
       const from = current.current;
       const started = performance.now();
       const tick = (now: number) => {
-        const progress = Math.min(1, (now - started) / 450);
+        // A frame timestamp can precede effect setup within that same frame.
+        const progress = Math.max(0, Math.min(1, (now - started) / 450));
         const ease = 1 - (1 - progress) ** 3;
         publish(
           progress === 1
@@ -86,20 +87,30 @@ export default function LayerExplorer({
     width: 900,
     height: 700,
   });
-  // Reserve room for the bottom row inside the fixed stage on narrow screens.
+  // Enlarge assembly inside the unchanged frame; the separated stack already
+  // fills the available mobile height at the rotation extremes.
+  // Share the assembly progress so scale and plate movement finish together.
+  const sculptureScale = viewport.measured
+    ? 1 + (viewport.compact ? 0.15 : 0.12) * (1 - pose.spread)
+    : 1;
+  const sculptureX = 472 * (1 - sculptureScale);
+  const sculptureY = 392 * (1 - sculptureScale);
+  // Reserve the numbered row below the transformed base, including at rotation extremes.
   const sculptureOffset = viewport.measured
     ? Math.min(
-        0,
+        -56,
         (viewport.height - (viewport.compact ? 16 : 54) - viewport.y) /
           viewport.scale -
-          geometry.baseFront[1]
+          (geometry.baseFront[1] * sculptureScale + sculptureY)
       ) *
       (1 - pose.spread)
     : 0;
   const markers = useMemo(() => {
     const points = geometry.anchors.map(([x, y]) => ({
-      x: x * viewport.scale + viewport.x,
-      y: (y + sculptureOffset) * viewport.scale + viewport.y,
+      x: (x * sculptureScale + sculptureX) * viewport.scale + viewport.x,
+      y:
+        (y * sculptureScale + sculptureY + sculptureOffset) * viewport.scale +
+        viewport.y,
     }));
     // Follow the plates, spreading only enough to keep 44px targets apart.
     const ys = points.map((point) => point.y);
@@ -114,12 +125,14 @@ export default function LayerExplorer({
       94,
       Math.min(
         viewport.width - 94,
-        geometry.baseFront[0] * viewport.scale + viewport.x
+        (geometry.baseFront[0] * sculptureScale + sculptureX) * viewport.scale +
+          viewport.x
       )
     );
     const rowY = Math.min(
       viewport.height - 22,
-      (geometry.baseFront[1] + sculptureOffset) * viewport.scale +
+      (geometry.baseFront[1] * sculptureScale + sculptureY + sculptureOffset) *
+        viewport.scale +
         viewport.y +
         32
     );
@@ -136,7 +149,15 @@ export default function LayerExplorer({
         originY: (y - viewport.y) / viewport.scale,
       };
     });
-  }, [geometry, viewport, pose.spread, sculptureOffset]);
+  }, [
+    geometry,
+    viewport,
+    pose.spread,
+    sculptureOffset,
+    sculptureScale,
+    sculptureX,
+    sculptureY,
+  ]);
   const markerButtons = useRef<(HTMLButtonElement | null)[]>([]);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -234,7 +255,7 @@ export default function LayerExplorer({
             </desc>
             <g
               id="object-content"
-              transform={`translate(0 ${sculptureOffset})`}
+              transform={`translate(${sculptureX} ${sculptureY + sculptureOffset}) scale(${sculptureScale})`}
               // biome-ignore lint/security/noDangerouslySetInnerHtml: Deterministic local SVG geometry and fixed labels only, with no external input.
               dangerouslySetInnerHTML={{
                 __html: definitions + geometry.markup,
@@ -250,8 +271,8 @@ export default function LayerExplorer({
                   key={layers[i].name}
                   x1={markers[i].originX}
                   y1={markers[i].originY}
-                  x2={x}
-                  y2={y + sculptureOffset}
+                  x2={x * sculptureScale + sculptureX}
+                  y2={y * sculptureScale + sculptureY + sculptureOffset}
                   stroke={i === selected ? '#a74425' : '#728580'}
                   opacity={
                     (i === (hovered ?? selected) ? 1 : 0.5) *
@@ -309,7 +330,7 @@ export default function LayerExplorer({
             ))}
           </fieldset>
         </div>
-        <figcaption className={styles.viewGroup} data-interactive>
+        <div className={styles.viewGroup} data-interactive>
           <p className={styles.instruction}>
             {assembled
               ? 'Four perspectives, working together.'
@@ -340,23 +361,25 @@ export default function LayerExplorer({
               <span>{assembled ? 'Separate' : 'Assemble'}</span>
             </button>
             <label className={styles.turn} htmlFor="rotation">
-              <span>Rotate</span>
-              <input
-                id="rotation"
-                type="range"
-                min="-30"
-                max="30"
-                step="1"
-                value={angle}
-                disabled={!ready}
-                aria-label="Rotate sculpture"
-                aria-valuetext={
-                  angle === 0
-                    ? '0 degrees, centred'
-                    : `${Math.abs(angle)} degrees ${angle < 0 ? 'left' : 'right'}`
-                }
-                onChange={(event) => setAngle(Number(event.target.value))}
-              />
+              <span className={styles.turnLabel}>Rotate</span>
+              <span className={styles.rotationTrack}>
+                <input
+                  id="rotation"
+                  type="range"
+                  min="-30"
+                  max="30"
+                  step="1"
+                  value={angle}
+                  disabled={!ready}
+                  aria-label="Rotate sculpture"
+                  aria-valuetext={
+                    angle === 0
+                      ? '0 degrees, centred'
+                      : `${Math.abs(angle)} degrees ${angle < 0 ? 'left' : 'right'}`
+                  }
+                  onChange={(event) => setAngle(Number(event.target.value))}
+                />
+              </span>
               <output htmlFor="rotation" aria-hidden="true">
                 {angle > 0 ? '+' : ''}
                 {angle}°
@@ -383,7 +406,7 @@ export default function LayerExplorer({
           >
             {assembled ? 'Assembled' : 'Separated'}
           </p>
-        </figcaption>
+        </div>
       </figure>
       <div className={styles.explorer}>
         <div

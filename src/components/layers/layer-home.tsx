@@ -8,9 +8,9 @@ export default function LayerHome() {
         Skip to content
       </a>
       <header className={styles.header}>
-        <a className={styles.brand} href="https://github.com/wentjun">
+        <p className={styles.brand}>
           Wen Tjun<span aria-hidden="true">.</span>
-        </a>
+        </p>
         <p className={styles.place}>Based in Singapore.</p>
         <a className={styles.hello} href="mailto:wentjun289@hotmail.com">
           Say hello <span aria-hidden="true">↗</span>
@@ -22,16 +22,15 @@ export default function LayerHome() {
             <div className={styles.introduction}>
               <h1 id="title">Full-stack builder.</h1>
               <p>
-                I bring models into products people can use, including the
-                engineering needed to run them reliably.
+                I build real products with models, backed by the engineering to
+                run them reliably.
               </p>
             </div>
           }
         />
       </main>
       <footer className={styles.footer}>
-        <p>Elsewhere</p>
-        <nav aria-label="Elsewhere">
+        <nav aria-label="Profile links">
           <a href="https://www.freecodecamp.org/news/author/wentjun/">
             Writing <span aria-hidden="true">↗</span>
           </a>

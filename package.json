@@ -12,7 +12,8 @@
     "format": "biome format --write .",
     "format:check": "biome format .",
     "check": "biome check . && tsc --noEmit",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:a11y": "node scripts/audit-accessibility.cjs"
   },
   "dependencies": {
     "next": "^16.3.4",
@@ -25,11 +26,16 @@
     "@types/node": "^26.4.1",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
+    "axe-core": "4.13.0",
     "typescript": "^7.0.2"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/wentjun/wentjun.github.io"
   },
-  "packageManager": "pnpm@10.34.5"
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": "22.x",
+    "pnpm": "10.34.5"
+  }
 }
