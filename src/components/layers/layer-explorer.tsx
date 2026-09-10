@@ -426,7 +426,7 @@ export default function LayerExplorer({
               role="tab"
               data-select={i}
               aria-selected={selected === i}
-              aria-controls="caption"
+              aria-controls={`caption-${i}`}
               tabIndex={selected === i ? 0 : -1}
               disabled={!ready}
               onClick={() => setSelected(i)}
@@ -440,16 +440,26 @@ export default function LayerExplorer({
         <div
           id="caption"
           className={styles.caption}
-          role="tabpanel"
-          aria-labelledby={`layer-${selected}`}
-          // biome-ignore lint/a11y/noNoninteractiveTabindex: A text-only tabpanel is keyboard-focusable so users can move from tabs to its content.
-          tabIndex={0}
           aria-live="polite"
           aria-atomic="true"
           data-interactive
         >
-          <h2>{layers[selected].name}</h2>
-          <p id="caption-body">{layers[selected].caption}</p>
+          {layers.map((layer, i) => (
+            <div
+              key={layer.name}
+              id={`caption-${i}`}
+              role="tabpanel"
+              aria-labelledby={`layer-${i}`}
+              hidden={selected !== i}
+              // biome-ignore lint/a11y/noNoninteractiveTabindex: Each text-only tabpanel is keyboard-focusable; hidden panels are excluded from focus navigation.
+              tabIndex={0}
+            >
+              <h2>{layer.name}</h2>
+              <p id={selected === i ? 'caption-body' : undefined}>
+                {layer.caption}
+              </p>
+            </div>
+          ))}
         </div>
         <noscript>
           <style>{'[data-interactive]{display:none!important}'}</style>

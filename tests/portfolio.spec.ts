@@ -246,7 +246,7 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
         '#rotation',
         '#reset',
         '[data-select="2"]',
-        '#caption',
+        '#caption [role="tabpanel"]:not([hidden])',
       ]) {
         await page.keyboard.press(browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
         await expect(page.locator(selector)).toBeFocused();

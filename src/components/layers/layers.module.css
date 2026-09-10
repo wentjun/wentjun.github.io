@@ -401,7 +401,7 @@
   line-height: 1.1;
   letter-spacing: -0.7px;
 }
-.caption > p,
+.caption p,
 .staticPerspectives p {
   font-size: 16px;
   line-height: 1.5;
@@ -500,7 +500,7 @@
   .caption h2 {
     font-size: 26px;
   }
-  .caption > p {
+  .caption p {
     font-size: 15px;
   }
   .viewControls button {
@@ -614,7 +614,7 @@
   .caption h2 {
     font-size: 25px;
   }
-  .caption > p {
+  .caption p {
     font-size: 15px;
     line-height: 1.45;
     margin-top: 11px;
@@ -668,7 +668,7 @@
   .caption {
     min-height: 185px;
   }
-  .caption > p {
+  .caption p {
     font-size: 14px;
   }
 }

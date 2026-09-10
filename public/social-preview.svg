@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#e5eae9"/>
+  <g font-family="Helvetica, Arial, sans-serif" fill="#243337">
+    <text x="64" y="88" font-size="30" font-weight="600">Wen Tjun<tspan fill="#a74425">.</tspan></text>
+    <text x="64" y="265" font-size="76" letter-spacing="-3">Full-stack</text>
+    <text x="64" y="348" font-size="76" letter-spacing="-3">builder.</text>
+    <text x="64" y="411" font-size="22" fill="#53615f">Real products with models.</text>
+    <text x="64" y="444" font-size="22" fill="#53615f">Engineering to run them reliably.</text>
+    <text x="64" y="571" font-size="18" fill="#53615f">Based in Singapore.</text>
+    <text x="1136" y="571" font-size="18" text-anchor="end">wentjun.com</text>
+  </g>
+  <path d="M64 121H1136 M64 528H1136" stroke="#abb7b6"/>
+  <g stroke-width="2" stroke-linejoin="round">
+    <path d="M728 392 906 321 1100 398 922 470Z" fill="#c0cecc" stroke="#607b7b"/>
+    <path d="M728 321 906 250 1100 327 922 399Z" fill="#e0ab85" stroke="#a74425"/>
+    <path d="M728 250 906 179 1100 256 922 328Z" fill="#d3dcd9" stroke="#607b7b"/>
+    <path d="M728 179 906 108 1100 185 922 257Z" fill="#dfe5e2" stroke="#607b7b"/>
+    <path d="M906 135V212 M755 179 922 230 1073 185" fill="none" stroke="#8ba09b"/>
+  </g>
+</svg>
