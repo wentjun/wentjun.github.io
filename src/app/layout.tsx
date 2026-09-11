@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import type { ReactNode } from 'react';
 import '../styles/global.css';
 import LegacyServiceWorkerCleanup from './legacy-service-worker-cleanup';
+import UmamiAnalytics from './umami-analytics';
 
 const sans = localFont({
   src: './fonts/sans.woff2',
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body>
         <LegacyServiceWorkerCleanup />
         {children}
+        <UmamiAnalytics />
       </body>
     </html>
   );

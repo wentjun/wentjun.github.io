@@ -50,6 +50,20 @@ Next.js writes the static site to `out/`. Netlify runs the quality checks and bu
 
 The root `index.html` redirects the legacy GitHub Pages site to `wentjun.com`; Netlify serves the generated `out/index.html`.
 
+## Analytics
+
+Umami Cloud tracks pageviews and clicks on Say hello, Writing, GitHub, and
+LinkedIn. Public tracker settings live in `netlify.toml` under
+`[context.production.environment]`. Tracking runs only on `wentjun.com` in
+production; local builds and deploy previews omit it.
+
+The tracker respects Do Not Track and excludes URL query strings and fragments.
+To disable it, set `UMAMI_ENABLED = "false"` in `netlify.toml`, then rebuild and
+deploy.
+
+See the [integration plan](docs/superpowers/plans/2026-09-11-umami-cloud.md) for
+event names, testing instructions, and rollout checks.
+
 ## Editing the page
 
 | Content | File |

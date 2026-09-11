@@ -33,6 +33,8 @@ test('exports identity JSON-LD matching the page and visible profile links', asy
       '@id': 'https://wentjun.com/#person',
       '@type': 'Person',
       name: 'Wen Tjun',
+      givenName: 'Wen Tjun',
+      familyName: 'Chan',
       url: canonicalUrl,
       description,
       sameAs: expect.arrayContaining(profileUrls),

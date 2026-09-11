@@ -12,7 +12,12 @@ export default function LayerHome() {
           Wen Tjun<span aria-hidden="true">.</span>
         </p>
         <p className={styles.place}>Based in Singapore.</p>
-        <a className={styles.hello} href="mailto:wentjun289@hotmail.com">
+        <a
+          className={styles.hello}
+          href="mailto:wentjun289@hotmail.com"
+          data-umami-event="contact_click"
+          data-umami-event-destination="email"
+        >
           Say hello <span aria-hidden="true">↗&#xFE0E;</span>
         </a>
       </header>
@@ -31,13 +36,25 @@ export default function LayerHome() {
       </main>
       <footer className={styles.footer}>
         <nav aria-label="Profile links">
-          <a href="https://www.freecodecamp.org/news/author/wentjun/">
+          <a
+            href="https://www.freecodecamp.org/news/author/wentjun/"
+            data-umami-event="profile_click"
+            data-umami-event-destination="writing"
+          >
             Writing <span aria-hidden="true">↗&#xFE0E;</span>
           </a>
-          <a href="https://github.com/wentjun">
+          <a
+            href="https://github.com/wentjun"
+            data-umami-event="profile_click"
+            data-umami-event-destination="github"
+          >
             GitHub <span aria-hidden="true">↗&#xFE0E;</span>
           </a>
-          <a href="https://www.linkedin.com/in/wentjun/">
+          <a
+            href="https://www.linkedin.com/in/wentjun/"
+            data-umami-event="profile_click"
+            data-umami-event-destination="linkedin"
+          >
             LinkedIn <span aria-hidden="true">↗&#xFE0E;</span>
           </a>
         </nav>

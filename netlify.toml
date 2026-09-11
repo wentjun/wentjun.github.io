@@ -4,3 +4,8 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+[context.production.environment]
+  UMAMI_ENABLED = "true"
+  UMAMI_WEBSITE_ID = "bdc89fe3-adf2-48b8-a600-a90af114a350"
+  UMAMI_SCRIPT_URL = "https://cloud.umami.is/script.js"
