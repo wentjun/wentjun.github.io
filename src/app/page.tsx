@@ -43,6 +43,8 @@ export default function Home() {
       '@id': 'https://wentjun.com/#person',
       '@type': 'Person',
       name: 'Wen Tjun',
+      givenName: 'Wen Tjun',
+      familyName: 'Chan',
       url: canonicalUrl,
       description,
       sameAs: [
