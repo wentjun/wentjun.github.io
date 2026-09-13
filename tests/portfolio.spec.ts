@@ -11,11 +11,11 @@ const captions = [
   ],
   [
     'Applied AI',
-    'I care about AI that solves actual problems. That means knowing where a model adds value, and pairing deterministic safeguards with agent judgment so workflows don’t silently fail.',
+    'I care about AI that solves actual problems. That means knowing where a model adds value, and pairing deterministic safeguards with agent judgment so complex workflows stay dependable real-world use.',
   ],
   [
     'Delivery',
-    'I work alongside the team to take ideas from concept to production. I challenge assumptions, break tradeoffs, and stay hands-on every step of the way.',
+    'I collaborate with the team to take ideas from concept to launch. I challenge assumptions, break tradeoffs, and stay hands-on every step of the way.',
   ],
 ];
 

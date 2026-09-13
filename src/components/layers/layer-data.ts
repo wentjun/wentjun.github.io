@@ -18,14 +18,14 @@ export const layers = [
     drawing:
       'The direct route and the model route share a verification checkpoint.',
     caption:
-      'I care about AI that solves actual problems. That means knowing where a model adds value, and pairing deterministic safeguards with agent judgment so workflows don’t silently fail.',
+      'I care about AI that solves actual problems. That means knowing where a model adds value, and pairing deterministic safeguards with agent judgment so complex workflows stay dependable real-world use.',
   },
   {
     name: 'Delivery',
     drawing:
       'An unfinished application outline leads to the same application completed and ready to use.',
     caption:
-      'I work alongside the team to take ideas from concept to production. I challenge assumptions, break tradeoffs, and stay hands-on every step of the way.',
+      'I collaborate with the team to take ideas from concept to launch. I challenge assumptions, break tradeoffs, and stay hands-on every step of the way.',
   },
 ] as const;
 export const INITIAL_LAYER = 2;
