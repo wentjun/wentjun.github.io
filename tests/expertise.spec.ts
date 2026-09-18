@@ -10,10 +10,10 @@ test('all perspectives are exported as ordinary tab panels', async ({
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
   expect(html.match(/role="tabpanel"/g)).toHaveLength(4);
   for (const text of [
-    'A good interface makes it clear',
-    'I’ve brought WebMCP into production',
+    'An interface should serve humans and agents equally well',
+    'From communication protocols to runtime harnesses',
     'I care about AI that solves actual problems',
-    'I work alongside the team',
+    'I collaborate with the team',
   ]) {
     expect(html).toContain(text);
   }

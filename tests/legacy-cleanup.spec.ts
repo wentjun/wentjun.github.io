@@ -142,9 +142,7 @@ test('storage permission failures do not cause uncaught errors or block interact
     'data-spread',
     '0.000'
   );
-  await expect(page.getByRole('tabpanel')).toContainText(
-    'concept to production'
-  );
+  await expect(page.getByRole('tabpanel')).toContainText('concept to launch');
   expect(errors).toEqual([]);
 });
 
@@ -159,6 +157,8 @@ test('the page remains usable without service worker or Cache APIs', async ({
   });
   await page.goto('/');
   await page.getByRole('tab', { name: '02 Systems' }).click();
-  await expect(page.getByRole('tabpanel')).toContainText('WebMCP');
+  await expect(page.getByRole('tabpanel')).toContainText(
+    'From communication protocols to runtime harnesses'
+  );
   expect(errors).toEqual([]);
 });

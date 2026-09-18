@@ -23,9 +23,7 @@ test('text spacing preserves the narrow-screen name, content and controls', asyn
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(320);
   await page.getByRole('tab', { name: '04 Delivery' }).click();
-  await expect(page.getByRole('tabpanel')).toContainText(
-    'concept to production'
-  );
+  await expect(page.getByRole('tabpanel')).toContainText('concept to launch');
   await page.locator('#assembly').click();
   await expect(page.locator('#assembly')).toHaveAccessibleName(
     'Separate layers'

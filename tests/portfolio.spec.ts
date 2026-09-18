@@ -3,15 +3,15 @@ import { expect, test } from '@playwright/test';
 const captions = [
   [
     'Interface',
-    'A good interface makes it clear what’s happening, whether you’re waiting for a request to finish, deciding when to retry, or using an agent to navigate the app on your behalf.',
+    'An interface should serve humans and agents equally well. I design for accessibility, with semantic structure, explicit state, and clearly defined actions so both can navigate without guesswork.',
   ],
   [
     'Systems',
-    'I enjoy the boundaries between application logic, data, and models. I’ve brought WebMCP into production to help agents interact safely with existing applications.',
+    'I enjoy working at the boundaries between application logic, data, and models. From communication protocols to runtime harnesses, I build the integration layers that let agents interact safely with existing software and each other.',
   ],
   [
     'Applied AI',
-    'I care about AI that solves actual problems. That means knowing where a model adds value, and pairing deterministic safeguards with agent judgment so complex workflows stay dependable real-world use.',
+    'I care about AI that solves actual problems. That means knowing where a model adds value, and pairing deterministic safeguards with agent judgment so complex workflows stay dependable under real-world use.',
   ],
   [
     'Delivery',
@@ -505,6 +505,7 @@ test('keyboard navigation and focus survive animation and reset', async ({
   page,
 }) => {
   await page.goto('/');
+  await expect(page.locator('[data-select="0"]')).toBeEnabled();
   await page.locator('[data-select="0"]').focus();
   await page.keyboard.press('End');
   await expect(page.locator('[data-select="3"]')).toBeFocused();
