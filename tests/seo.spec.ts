@@ -57,7 +57,7 @@ test('exports complete Open Graph and Twitter preview metadata', async ({
 }) => {
   await page.goto('/');
   const imageUrl = 'https://wentjun.com/social-preview.png';
-  const imageAlt = 'Wen Tjun — full-stack builder portfolio';
+  const imageAlt = 'Wen Tjun - full-stack builder portfolio';
 
   await expect(page).toHaveTitle('Wen Tjun: Full-stack builder');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
@@ -108,7 +108,7 @@ test('exports complete Open Graph and Twitter preview metadata', async ({
   expect(dimensions).toEqual([1200, 630]);
 });
 
-test('exports crawl files for the canonical homepage', async ({ request }) => {
+test('exports crawl files for both public pages', async ({ request }) => {
   const robotsResponse = await request.get('/robots.txt');
   expect(robotsResponse.ok()).toBe(true);
   expect(robotsResponse.headers()['content-type']).toContain('text/plain');
@@ -122,7 +122,8 @@ test('exports crawl files for the canonical homepage', async ({ request }) => {
     'application/xml'
   );
   const sitemap = await sitemapResponse.text();
-  expect(sitemap.match(/<url>/g)).toHaveLength(1);
+  expect(sitemap.match(/<url>/g)).toHaveLength(2);
   expect(sitemap).toContain(`<loc>${canonicalUrl}</loc>`);
+  expect(sitemap).toContain(`<loc>${canonicalUrl}whereabouts</loc>`);
   expect(sitemap).not.toMatch(/<(lastmod|changefreq|priority)>/);
 });

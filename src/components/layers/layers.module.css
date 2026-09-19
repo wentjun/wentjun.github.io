@@ -439,6 +439,9 @@
   margin-left: auto;
   font-size: 14px;
 }
+.whereabouts {
+  font-size: 14px;
+}
 .footer a {
   display: flex;
   align-items: center;
@@ -624,11 +627,16 @@
     margin: 0 24px;
     min-height: 84px;
     padding: 16px 0;
+    flex-wrap: wrap;
+    gap: 8px;
   }
   .footer nav {
     width: 100%;
     justify-content: space-between;
     gap: 12px;
+    font-size: 13px;
+  }
+  .whereabouts {
     font-size: 13px;
   }
   .footer a {

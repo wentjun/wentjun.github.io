@@ -32,7 +32,12 @@ pnpm check     # Biome and TypeScript
 pnpm test:e2e  # Chromium, Firefox, and WebKit
 ```
 
-Tests start a development server automatically. Set `PLAYWRIGHT_BASE_URL` to test an existing local server.
+Tests automatically build and serve the production export. Set `PLAYWRIGHT_BASE_URL`
+to use an existing server. To run only the travel tests:
+
+```sh
+pnpm test:e2e tests/whereabouts.spec.ts tests/travel-data.spec.ts
+```
 
 Run the accessibility scanner against a running local server:
 
@@ -76,3 +81,18 @@ event names, testing instructions, and rollout checks.
 | Crawl policy and sitemap | `src/app/robots.ts`, `src/app/sitemap.ts` |
 | Share preview artwork | `public/social-preview.svg`, `public/social-preview.png` |
 | App manifest and icons | `src/app/manifest.ts`, `public/` |
+
+## Whereabouts
+
+See the [travel editing guide](content/README.md) to update your whereabouts.
+
+The bundled map uses the [Natural Earth 50m country dataset](https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_50m_admin_0_countries.geojson),
+which is [public domain](https://www.naturalearthdata.com/about/terms-of-use/).
+It requires no API key or remote tiles.
+
+Only when updating the map dataset or generator, regenerate the map, country atlas,
+and editor schema with:
+
+```sh
+python3 scripts/generate-travel-map.py /path/to/ne_50m_admin_0_countries.geojson
+```

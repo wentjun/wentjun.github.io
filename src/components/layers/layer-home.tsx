@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import LayerExplorer from './layer-explorer';
 import styles from './layers.module.css';
 
@@ -35,6 +36,13 @@ export default function LayerHome() {
         />
       </main>
       <footer className={styles.footer}>
+        <Link
+          className={styles.whereabouts}
+          href="/whereabouts"
+          prefetch={false}
+        >
+          Whereabouts <span aria-hidden="true">↗&#xFE0E;</span>
+        </Link>
         <nav aria-label="Profile links">
           <a
             href="https://www.freecodecamp.org/news/author/wentjun/"

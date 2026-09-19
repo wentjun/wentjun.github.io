@@ -1,0 +1,500 @@
+{
+  "$schema": "./travel.schema.json",
+  "currentLocation": {
+    "id": "singapore",
+    "city": "Singapore",
+    "country": "Singapore",
+    "latitude": 1.29,
+    "longitude": 103.85
+  },
+  "visits": [
+    {
+      "id": "guangzhou-2026-08",
+      "city": "Guangzhou",
+      "country": "China",
+      "month": "2026-08",
+      "latitude": 23.13,
+      "longitude": 113.26
+    },
+    {
+      "id": "aewol-2026-05",
+      "city": "Aewol",
+      "country": "South Korea",
+      "month": "2026-05",
+      "latitude": 33.46,
+      "longitude": 126.32
+    },
+    {
+      "id": "seogwipo-2026-05",
+      "city": "Seogwipo",
+      "country": "South Korea",
+      "month": "2026-05",
+      "latitude": 33.25,
+      "longitude": 126.56
+    },
+    {
+      "id": "udo-island-2026-05",
+      "city": "Udo Island",
+      "country": "South Korea",
+      "month": "2026-05",
+      "latitude": 33.5,
+      "longitude": 126.95
+    },
+    {
+      "id": "seongsan-2026-05",
+      "city": "Seongsan",
+      "country": "South Korea",
+      "month": "2026-05",
+      "latitude": 33.46,
+      "longitude": 126.93
+    },
+    {
+      "id": "jeju-city-2026-05",
+      "city": "Jeju City",
+      "country": "South Korea",
+      "month": "2026-05",
+      "latitude": 33.5,
+      "longitude": 126.53
+    },
+    {
+      "id": "busan-2026-05",
+      "city": "Busan",
+      "country": "South Korea",
+      "month": "2026-05",
+      "latitude": 35.18,
+      "longitude": 129.08
+    },
+    {
+      "id": "hanoi-2026-03",
+      "city": "Hanoi",
+      "country": "Vietnam",
+      "month": "2026-03",
+      "latitude": 21.03,
+      "longitude": 105.85
+    },
+    {
+      "id": "ha-long-bay-2026-03",
+      "city": "Ha Long Bay",
+      "country": "Vietnam",
+      "month": "2026-03",
+      "latitude": 20.95,
+      "longitude": 107.08
+    },
+    {
+      "id": "margaret-river-2025-10",
+      "city": "Margaret River",
+      "country": "Australia",
+      "month": "2025-10",
+      "latitude": -33.95,
+      "longitude": 115.07
+    },
+    {
+      "id": "yallingup-2025-10",
+      "city": "Yallingup",
+      "country": "Australia",
+      "month": "2025-10",
+      "latitude": -33.65,
+      "longitude": 115.03
+    },
+    {
+      "id": "busselton-2025-10",
+      "city": "Busselton",
+      "country": "Australia",
+      "month": "2025-10",
+      "latitude": -33.65,
+      "longitude": 115.35
+    },
+    {
+      "id": "mandurah-2025-10",
+      "city": "Mandurah",
+      "country": "Australia",
+      "month": "2025-10",
+      "latitude": -32.53,
+      "longitude": 115.72
+    },
+    {
+      "id": "rottnest-island-2025-10",
+      "city": "Rottnest Island",
+      "country": "Australia",
+      "month": "2025-10",
+      "latitude": -32.01,
+      "longitude": 115.52
+    },
+    {
+      "id": "fremantle-2025-10",
+      "city": "Fremantle",
+      "country": "Australia",
+      "month": "2025-10",
+      "latitude": -32.06,
+      "longitude": 115.74
+    },
+    {
+      "id": "lancelin-2025-10",
+      "city": "Lancelin",
+      "country": "Australia",
+      "month": "2025-10",
+      "latitude": -31.02,
+      "longitude": 115.33
+    },
+    {
+      "id": "cervantes-2025-10",
+      "city": "Cervantes",
+      "country": "Australia",
+      "month": "2025-10",
+      "latitude": -30.5,
+      "longitude": 115.07
+    },
+    {
+      "id": "kalbarri-2025-10",
+      "city": "Kalbarri",
+      "country": "Australia",
+      "month": "2025-10",
+      "latitude": -27.71,
+      "longitude": 114.16
+    },
+    {
+      "id": "perth-2025-10",
+      "city": "Perth",
+      "country": "Australia",
+      "month": "2025-10",
+      "latitude": -31.95,
+      "longitude": 115.86
+    },
+    {
+      "id": "phu-quoc-2025-09",
+      "city": "Phu Quoc",
+      "country": "Vietnam",
+      "month": "2025-09",
+      "latitude": 10.29,
+      "longitude": 103.98
+    },
+    {
+      "id": "istanbul-2025-05",
+      "city": "Istanbul",
+      "country": "Türkiye",
+      "month": "2025-05",
+      "latitude": 41.01,
+      "longitude": 28.98
+    },
+    {
+      "id": "uchisar-2025-05",
+      "city": "Uçhisar",
+      "country": "Türkiye",
+      "month": "2025-05",
+      "latitude": 38.63,
+      "longitude": 34.81
+    },
+    {
+      "id": "goreme-2025-05",
+      "city": "Göreme",
+      "country": "Türkiye",
+      "month": "2025-05",
+      "latitude": 38.64,
+      "longitude": 34.83
+    },
+    {
+      "id": "auckland-2024-11",
+      "city": "Auckland",
+      "country": "New Zealand",
+      "month": "2024-11",
+      "latitude": -36.85,
+      "longitude": 174.76
+    },
+    {
+      "id": "waitomo-2024-11",
+      "city": "Waitomo",
+      "country": "New Zealand",
+      "month": "2024-11",
+      "latitude": -38.26,
+      "longitude": 175.12
+    },
+    {
+      "id": "mount-taranaki-2024-11",
+      "city": "Mount Taranaki",
+      "country": "New Zealand",
+      "month": "2024-11",
+      "latitude": -39.3,
+      "longitude": 174.06
+    },
+    {
+      "id": "new-plymouth-2024-11",
+      "city": "New Plymouth",
+      "country": "New Zealand",
+      "month": "2024-11",
+      "latitude": -39.06,
+      "longitude": 174.08
+    },
+    {
+      "id": "whanganui-2024-10",
+      "city": "Whanganui",
+      "country": "New Zealand",
+      "month": "2024-10",
+      "latitude": -39.93,
+      "longitude": 175.05
+    },
+    {
+      "id": "tongariro-2024-10",
+      "city": "Tongariro",
+      "country": "New Zealand",
+      "month": "2024-10",
+      "latitude": -39.29,
+      "longitude": 175.57
+    },
+    {
+      "id": "taupo-2024-10",
+      "city": "Taupo",
+      "country": "New Zealand",
+      "month": "2024-10",
+      "latitude": -38.69,
+      "longitude": 176.07
+    },
+    {
+      "id": "rotorua-2024-10",
+      "city": "Rotorua",
+      "country": "New Zealand",
+      "month": "2024-10",
+      "latitude": -38.14,
+      "longitude": 176.25
+    },
+    {
+      "id": "matamata-2024-10",
+      "city": "Matamata",
+      "country": "New Zealand",
+      "month": "2024-10",
+      "latitude": -37.81,
+      "longitude": 175.77
+    },
+    {
+      "id": "mount-maunganui-2024-10",
+      "city": "Mount Maunganui",
+      "country": "New Zealand",
+      "month": "2024-10",
+      "latitude": -37.64,
+      "longitude": 176.19
+    },
+    {
+      "id": "coromandel-2024-10",
+      "city": "Coromandel",
+      "country": "New Zealand",
+      "month": "2024-10",
+      "latitude": -36.76,
+      "longitude": 175.5
+    },
+    {
+      "id": "auckland-2024-10",
+      "city": "Auckland",
+      "country": "New Zealand",
+      "month": "2024-10",
+      "latitude": -36.85,
+      "longitude": 174.76
+    },
+    {
+      "id": "phnom-penh-2024-06",
+      "city": "Phnom Penh",
+      "country": "Cambodia",
+      "month": "2024-06",
+      "latitude": 11.56,
+      "longitude": 104.92
+    },
+    {
+      "id": "nanjing-2024-04",
+      "city": "Nanjing",
+      "country": "China",
+      "month": "2024-04",
+      "latitude": 32.06,
+      "longitude": 118.8
+    },
+    {
+      "id": "sapporo-2023-11",
+      "city": "Sapporo",
+      "country": "Japan",
+      "month": "2023-11",
+      "latitude": 43.06,
+      "longitude": 141.35
+    },
+    {
+      "id": "lake-toya-2023-11",
+      "city": "Lake Toya",
+      "country": "Japan",
+      "month": "2023-11",
+      "latitude": 42.6,
+      "longitude": 140.85
+    },
+    {
+      "id": "otaru-2023-11",
+      "city": "Otaru",
+      "country": "Japan",
+      "month": "2023-11",
+      "latitude": 43.19,
+      "longitude": 141.0
+    },
+    {
+      "id": "noboribetsu-2023-11",
+      "city": "Noboribetsu",
+      "country": "Japan",
+      "month": "2023-11",
+      "latitude": 42.41,
+      "longitude": 141.11
+    },
+    {
+      "id": "furano-2023-11",
+      "city": "Furano",
+      "country": "Japan",
+      "month": "2023-11",
+      "latitude": 43.34,
+      "longitude": 142.38
+    },
+    {
+      "id": "obihiro-2023-11",
+      "city": "Obihiro",
+      "country": "Japan",
+      "month": "2023-11",
+      "latitude": 42.92,
+      "longitude": 143.2
+    },
+    {
+      "id": "hong-kong-2023-06",
+      "city": "Hong Kong",
+      "country": "China",
+      "month": "2023-06",
+      "latitude": 22.32,
+      "longitude": 114.17
+    },
+    {
+      "id": "hualien-2023-04",
+      "city": "Hualien",
+      "country": "Taiwan",
+      "month": "2023-04",
+      "latitude": 23.99,
+      "longitude": 121.6
+    },
+    {
+      "id": "pingxi-2023-04",
+      "city": "Pingxi",
+      "country": "Taiwan",
+      "month": "2023-04",
+      "latitude": 25.03,
+      "longitude": 121.74
+    },
+    {
+      "id": "shifen-2023-04",
+      "city": "Shifen",
+      "country": "Taiwan",
+      "month": "2023-04",
+      "latitude": 25.04,
+      "longitude": 121.78
+    },
+    {
+      "id": "jiufen-2023-04",
+      "city": "Jiufen",
+      "country": "Taiwan",
+      "month": "2023-04",
+      "latitude": 25.11,
+      "longitude": 121.84
+    },
+    {
+      "id": "taipei-2023-04",
+      "city": "Taipei",
+      "country": "Taiwan",
+      "month": "2023-04",
+      "latitude": 25.03,
+      "longitude": 121.57
+    },
+    {
+      "id": "penang-2022-04",
+      "city": "Penang",
+      "country": "Malaysia",
+      "month": "2019-12",
+      "latitude": 5.41,
+      "longitude": 100.33
+    },
+    {
+      "id": "lombok-2017-12",
+      "city": "Lombok",
+      "country": "Indonesia",
+      "month": "2017-12",
+      "latitude": -8.58,
+      "longitude": 116.12
+    },
+    {
+      "id": "canggu-2017-12",
+      "city": "Canggu",
+      "country": "Indonesia",
+      "month": "2017-12",
+      "latitude": -8.65,
+      "longitude": 115.14
+    },
+    {
+      "id": "denpasar-2017-12",
+      "city": "Denpasar",
+      "country": "Indonesia",
+      "month": "2017-12",
+      "latitude": -8.67,
+      "longitude": 115.22
+    },
+    {
+      "id": "banyuwangi-2017-12",
+      "city": "Banyuwangi",
+      "country": "Indonesia",
+      "month": "2017-12",
+      "latitude": -8.22,
+      "longitude": 114.37
+    },
+    {
+      "id": "cemoro-lawang-2017-12",
+      "city": "Cemoro Lawang",
+      "country": "Indonesia",
+      "month": "2017-12",
+      "latitude": -7.92,
+      "longitude": 112.96
+    },
+    {
+      "id": "surabaya-2017-12",
+      "city": "Surabaya",
+      "country": "Indonesia",
+      "month": "2017-12",
+      "latitude": -7.25,
+      "longitude": 112.75
+    },
+    {
+      "id": "barcelona-2017-07",
+      "city": "Barcelona",
+      "country": "Spain",
+      "month": "2017-07",
+      "latitude": 41.39,
+      "longitude": 2.17
+    },
+    {
+      "id": "tenerife-2017-07",
+      "city": "Tenerife",
+      "country": "Spain",
+      "month": "2017-07",
+      "latitude": 28.29,
+      "longitude": -16.63
+    },
+    {
+      "id": "madrid-2017-07",
+      "city": "Madrid",
+      "country": "Spain",
+      "month": "2017-07",
+      "latitude": 40.42,
+      "longitude": -3.7
+    },
+    {
+      "id": "gothenburg-2016-12",
+      "city": "Gothenburg",
+      "country": "Sweden",
+      "month": "2016-12",
+      "latitude": 57.71,
+      "longitude": 11.97
+    },
+    {
+      "id": "stockholm-2016-08",
+      "city": "Stockholm",
+      "country": "Sweden",
+      "month": "2016-08",
+      "latitude": 59.33,
+      "longitude": 18.07
+    }
+  ]
+}

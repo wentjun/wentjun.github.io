@@ -106,7 +106,7 @@ export function createSculpture(
       path(tp) +
       (i < 3 ? path(hole) : '') +
       pinHoles.map((hole) => path(hole)).join('');
-    out += `<path data-object-layer="${i}" d="${face}" fill="url(#${materials[i]})" fill-rule="evenodd" stroke="${['#adc5c9', '#d9d6c9', '#5c6c6d', '#cbd5d0'][i]}" stroke-width="1.1"><title>${names[i]} — select this layer</title></path>`;
+    out += `<path data-object-layer="${i}" d="${face}" fill="url(#${materials[i]})" fill-rule="evenodd" stroke="${['#adc5c9', '#d9d6c9', '#5c6c6d', '#cbd5d0'][i]}" stroke-width="1.1"><title>${names[i]} - select this layer</title></path>`;
     if (i < 3) {
       // Inner rear wall gives the aperture real thickness while leaving it open.
       for (let j = 0; j < hole.length; j++) {

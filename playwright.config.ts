@@ -5,7 +5,7 @@ export default defineConfig({
   fullyParallel: true,
   reporter: 'list',
   use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:3000',
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173',
     trace: 'on-first-retry',
   },
   projects: [
@@ -25,8 +25,9 @@ export default defineConfig({
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined
     : {
-        command: './node_modules/.bin/next dev --hostname 127.0.0.1',
-        url: 'http://127.0.0.1:3000',
-        reuseExistingServer: true,
+        command: 'npm run build && node scripts/serve-test-export.cjs',
+        url: 'http://127.0.0.1:4173',
+        timeout: 120_000,
+        reuseExistingServer: false,
       },
 });
