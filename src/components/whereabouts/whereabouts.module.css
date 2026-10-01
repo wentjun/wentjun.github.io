@@ -84,7 +84,6 @@
   min-height: 44px;
   display: flex;
   align-items: center;
-  gap: 24px;
   font-size: 14px;
 }
 .main {
@@ -228,6 +227,13 @@
   top: 0;
   transition: transform 650ms cubic-bezier(0.22, 0.68, 0, 1);
 }
+.mapMarkers {
+  position: absolute;
+  inset: 0;
+}
+.pin[data-header-covered] {
+  visibility: hidden;
+}
 .mapCamera image {
   opacity: 0.9;
 }
@@ -358,8 +364,8 @@
   transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
   border: 0;
   background: transparent;
   padding: 0;
@@ -432,7 +438,6 @@
   }
   .back {
     font-size: 12px;
-    gap: 12px;
   }
 
   .explorer {
@@ -567,4 +572,134 @@
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+/* The native popover sits above the map without intercepting story scrolling. */
+.visitStack {
+  width: 30px;
+  height: 30px;
+  fill: var(--paper);
+  color: var(--ink);
+  stroke: currentColor;
+  stroke-width: 1.5px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pin:is(:hover, :focus-visible, [aria-expanded="true"]) .visitStack {
+  color: var(--accent);
+  fill: var(--surface);
+}
+.pin[data-expanded-pin] {
+  width: 160px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--paper);
+  color: var(--accent);
+  font-size: 14px;
+}
+.pin[data-expanded-pin]::after {
+  display: none;
+}
+.pin[data-expanded-pin]:hover {
+  background: var(--surface);
+}
+.pin:disabled {
+  pointer-events: none;
+}
+.pin[data-selected-pin]:not(button) {
+  pointer-events: none;
+}
+.placePicker {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: min(320px, calc(100vw - 32px));
+  max-height: calc(100svh - 32px);
+  padding: 8px 12px 12px;
+  border: 1px solid var(--muted);
+  background: var(--paper);
+  color: var(--ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--muted) var(--paper);
+  scrollbar-width: thin;
+  scroll-padding-block: 80px 12px;
+}
+.pickerHeader {
+  position: sticky;
+  top: -8px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 8px 8px;
+  background: var(--paper);
+  font-size: 16px;
+  font-weight: 500;
+  border-bottom: 1px solid var(--rule);
+}
+.pickerHeader button {
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  font-size: 14px;
+  color: var(--muted);
+}
+.pickerOptions {
+  padding-top: 4px;
+}
+.pickerOptions button {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 2px;
+  width: 100%;
+  min-height: 52px;
+  padding: 10px 8px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  overflow-wrap: anywhere;
+  font-size: 16px;
+}
+.pickerPlace {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+.pickerCheck {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pickerOptions button > span:last-child {
+  color: var(--muted);
+  font-size: 14px;
+}
+.pickerOptions button[aria-pressed="true"] {
+  color: var(--accent);
+  background: var(--surface);
+}
+.pickerOptions button:hover,
+.pickerHeader button:hover {
+  background: var(--surface);
+}
+.page .placePicker button:focus-visible {
+  outline-offset: -2px;
+}
+
+.pickerHeader .pickerContext {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--muted);
 }

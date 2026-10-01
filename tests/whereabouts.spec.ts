@@ -5,6 +5,13 @@ const history = [...travel.visits].sort((a, b) =>
   b.month.localeCompare(a.month)
 );
 const current = travel.currentLocation;
+const latestVisitMonth = (
+  records: typeof history,
+  city: string,
+  country: string
+) =>
+  records.find((visit) => visit.city === city && visit.country === country)
+    ?.month ?? '';
 const countries = [
   ...new Set([current.country, ...history.map((v) => v.country)]),
 ];
@@ -24,7 +31,19 @@ const map = (page: Page) => page.getByRole('group', { name: 'Map of places' });
 
 async function openPage(page: Page) {
   await page.goto('/whereabouts');
-  await expect(map(page).locator('button')).toHaveCount(pinCount);
+  await expect
+    .poll(() =>
+      map(page)
+        .locator('[data-pin-count]')
+        .evaluateAll((markers) =>
+          markers.reduce(
+            (count, marker) =>
+              count + Number(marker.getAttribute('data-pin-count')),
+            0
+          )
+        )
+    )
+    .toBe(pinCount);
   await page.evaluate(() => document.fonts.ready);
 }
 
@@ -72,7 +91,19 @@ test('navigates from home and back, including browser history', async ({
   );
   await page.goBack();
   await expect(page).toHaveURL(/\/whereabouts$/);
-  await expect(map(page).locator('button')).toHaveCount(pinCount);
+  await expect
+    .poll(() =>
+      map(page)
+        .locator('[data-pin-count]')
+        .evaluateAll((markers) =>
+          markers.reduce(
+            (count, marker) =>
+              count + Number(marker.getAttribute('data-pin-count')),
+            0
+          )
+        )
+    )
+    .toBe(pinCount);
 });
 
 test('renders the editable record in date order, preserving same-month order', async ({
@@ -152,13 +183,23 @@ test('selects a nearby place from its map pin and switches country highlights', 
     'The record needs two nearby cities for this scenario'
   ).toBeDefined();
   await row(page, pair.a.id).getByRole('button').click();
-  const pin = map(page).getByRole('button', {
-    name: `${pair.b.city}, ${pair.b.country}`,
-    exact: true,
-  });
+  const latestPin = [current, ...history].find(
+    (v) => v.city === pair.b.city && v.country === pair.b.country
+  );
+  if (!latestPin) throw new Error('Missing nearby pin');
+  const pin = map(page).locator(`[data-place-ids~="${latestPin.id}"]`);
   await expect(pin).toBeInViewport();
   await pin.focus();
   await pin.press('Enter');
+  if ((await pin.getAttribute('data-pin-count')) !== '1') {
+    await page
+      .getByRole('dialog', { name: 'Explore visits' })
+      .getByRole('button', {
+        name: `${pair.b.city}, ${pair.b.country}, ${monthLabel(latestVisitMonth(history, pair.b.city, pair.b.country))}`,
+        exact: true,
+      })
+      .click();
+  }
   const latestVisit = history.find(
     (v) => v.city === pair.b.city && v.country === pair.b.country
   );
@@ -418,39 +459,7 @@ for (const width of [320, 768, 1024, 1440]) {
         nodes: v.nodes.map((n) => n.target),
       }));
     });
-    for (const violation of violations) {
-      // WCAG 2.5.8 permits an equivalent adequately sized control on the page.
-      // Verify that exception for each dense map pin; keep every axe rule enabled.
-      // https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html#exceptions
-      expect(violation.id).toBe('target-size');
-      for (const target of violation.nodes) {
-        if (target.length !== 1 || typeof target[0] !== 'string') {
-          throw new Error(
-            `Unexpected accessibility target: ${JSON.stringify(target)}`
-          );
-        }
-        const pin = page.locator(target[0]);
-        expect(
-          await pin.evaluate((el) =>
-            el.closest('fieldset')?.getAttribute('aria-label')
-          )
-        ).toBe('Map of places');
-        const label = await pin.getAttribute('aria-label');
-        const visit = history.find((v) => `${v.city}, ${v.country}` === label);
-        if (!visit) throw new Error(`No equivalent list control for ${label}`);
-        const control = row(page, visit.id).getByRole('button');
-        await control.scrollIntoViewIfNeeded();
-        const bounds = await control.boundingBox();
-        if (!bounds) throw new Error(`Missing list control for ${label}`);
-        expect(bounds.width).toBeGreaterThanOrEqual(24);
-        expect(bounds.height).toBeGreaterThanOrEqual(24);
-        await control.click();
-        await expect(pin).toHaveAttribute('aria-pressed', 'true');
-        await expect(page.getByRole('heading', { level: 1 })).toContainText(
-          visit.city
-        );
-      }
-    }
+    expect(violations).toEqual([]);
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth)
     ).toBeLessThanOrEqual(width);

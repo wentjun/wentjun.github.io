@@ -38,6 +38,7 @@ export default function Whereabouts({
   const { selectedId, selectPlace, historyRef, mapScrollRef, scrollEdges } =
     useTravelStory();
   const historyPanelRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const selectedVisit = history.find((visit) => visit.id === selectedId);
   const selectedPlace = selectedVisit ?? currentLocation;
   const stateLabel = stateLabels[getVisitState(selectedVisit, currentMonth)];
@@ -53,13 +54,14 @@ export default function Whereabouts({
         onSelect={selectPlace}
         scrollRef={mapScrollRef}
         historyPanelRef={historyPanelRef}
+        headerRef={headerRef}
       />
-      <header className={styles.header}>
+      <header ref={headerRef} className={styles.header}>
         <Link className={styles.brand} href="/" prefetch={false}>
           Wen Tjun<span>.</span>
         </Link>
         <Link className={styles.back} href="/" prefetch={false}>
-          Back to home <span aria-hidden="true">↗&#xFE0E;</span>
+          Back to home
         </Link>
       </header>
       <main id="main" tabIndex={-1} className={styles.main}>
