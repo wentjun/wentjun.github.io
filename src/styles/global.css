@@ -1,23 +1,46 @@
+:root {
+  --color-page: #e5eae9;
+  --color-text: #243337;
+  --color-text-muted: #53615f;
+  --color-accent: #a74425;
+  --color-selected-text: #973b20;
+  --color-on-accent: #fff4e6;
+  --color-surface: #dce3df;
+  --color-surface-hover: #cdd8d2;
+  --color-control-text: #243b39;
+  --color-tooltip-text: #f3f2e9;
+  --color-rule-header: #abb7b6;
+  --color-rule-tabs: #a6b3b0;
+  --color-rule-footer: #869895;
+  --color-control-outline: #8da09a;
+  --color-marker-outline: #71867f;
+  --color-leader: #728580;
+  --color-slider-track: #9dafa8;
+  --color-selected-wash: #a7442510;
+  --color-focus-halo: #a7442522;
+  --color-skip-surface: #ffffff;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 html {
-  background: #e5eae9;
+  background: var(--color-page);
   scroll-behavior: smooth;
 }
 body {
   margin: 0;
-  color: #243337;
-  background: #e5eae9;
+  color: var(--color-text);
+  background: var(--color-page);
   font-family: var(--font-sans), Arial, sans-serif;
   font-size: 16px;
   line-height: 1.4;
 }
 ::selection {
-  background: #a74425;
-  color: #fff4e6;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
 }
 button,
 a {

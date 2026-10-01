@@ -640,6 +640,17 @@ for (const width of [701, 820, 1440]) {
         expect(await marker.evaluate((e) => getComputedStyle(e).zIndex)).toBe(
           '3'
         );
+        // Cross the empty-looking gap slowly, then read the tooltip itself.
+        const gap =
+          mode === 'Assemble layers'
+            ? { x: m.x + m.width / 2, y: (b.y + b.height + m.y) / 2 }
+            : { x: (m.x + m.width + b.x) / 2, y: b.y + b.height / 2 };
+        await page.mouse.move(gap.x, gap.y, { steps: 5 });
+        await expect(tip).toBeVisible();
+        await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, {
+          steps: 5,
+        });
+        await expect(tip).toBeVisible();
         await page.keyboard.press('Escape');
         await expect(tip).toBeHidden();
         await marker.focus();
@@ -650,6 +661,37 @@ for (const width of [701, 820, 1440]) {
     }
   });
 }
+
+test('layer tooltips persist while either pointer or keyboard focus remains', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const marker = page.locator('[data-marker="2"]');
+  const tip = marker.locator('span[aria-hidden="true"]');
+  for (const mode of ['Assemble layers', 'Separate layers']) {
+    await page.getByRole('button', { name: mode, exact: true }).click();
+    await marker.focus();
+    await marker.hover();
+    await page.getByRole('heading', { level: 1 }).hover();
+    await expect(tip).toBeVisible();
+    await marker.press('Tab');
+    await expect(tip).toBeHidden();
+
+    await marker.hover();
+    await marker.focus();
+    await page.locator('main').focus();
+    await expect(tip).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(tip).toBeHidden();
+    await page.getByRole('heading', { level: 1 }).hover();
+    await marker.hover();
+    await expect(tip).toBeVisible();
+    await page.getByRole('heading', { level: 1 }).hover();
+    await expect(tip).toBeHidden();
+  }
+});
 
 test('touch selection keeps the chosen detail while changing views', async ({
   browser,
@@ -684,6 +726,47 @@ test('touch selection keeps the chosen detail while changing views', async ({
   );
   await context.close();
 });
+
+for (const width of [390, 1440]) {
+  test(`idle homepage avoids animation frames at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.addInitScript(() => {
+      const measured = window as typeof window & {
+        animationFrameRequests: number;
+      };
+      measured.animationFrameRequests = 0;
+      const request = window.requestAnimationFrame.bind(window);
+      window.requestAnimationFrame = (callback) => {
+        measured.animationFrameRequests++;
+        return request(callback);
+      };
+    });
+    const frameRequests = () =>
+      page.evaluate(
+        () =>
+          (window as typeof window & { animationFrameRequests: number })
+            .animationFrameRequests
+      );
+    await page.goto('/');
+    await expect(page.locator('#assembly')).toBeEnabled();
+    // Observe beyond the 450ms transition to catch invisible startup work.
+    await page.waitForTimeout(600);
+    expect(await frameRequests()).toBe(0);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.waitForTimeout(600);
+    expect(await frameRequests()).toBe(0);
+    await page.locator('#assembly').click();
+    await expect(page.locator('#sculpture')).toHaveAttribute(
+      'data-spread',
+      '0.000'
+    );
+    expect(await frameRequests()).toBeGreaterThan(0);
+  });
+}
 
 test('single view icon follows assembly motion and respects reduced motion', async ({
   page,

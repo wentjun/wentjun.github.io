@@ -26,7 +26,9 @@ export default function LayerHome() {
         <LayerExplorer
           introduction={
             <div className={styles.introduction}>
-              <h1 id="title">Full-stack builder.</h1>
+              <h1 id="title">
+                Full-stack <span>builder.</span>
+              </h1>
               <p>
                 I build real products with models, backed by the engineering to
                 run them reliably.

@@ -14,7 +14,7 @@ export default function ViewIcon({ spread }: { spread: number }) {
           key={i}
           transform={`translate(0 ${(1 - spread) * 4.5})`}
           d={`M3 ${7 + i * (3 + spread * 3)} L14 ${2 + i * (3 + spread * 3)} L25 ${7 + i * (3 + spread * 3)} L14 ${12 + i * (3 + spread * 3)} Z`}
-          fill="var(--view-icon-fill, #e5eae9)"
+          fill="var(--view-icon-fill, var(--color-page))"
           stroke="currentColor"
           strokeWidth="1.25"
           strokeLinejoin="round"

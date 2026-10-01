@@ -27,11 +27,13 @@ function usePose(assembled: boolean, angle: number) {
     };
     const start = () => {
       cancelAnimationFrame(frame);
+      const from = current.current;
+      // An already-settled pose needs no animation or state update.
+      if (from.spread === target.spread && from.angle === target.angle) return;
       if (preference.matches) {
         publish(target);
         return;
       }
-      const from = current.current;
       const started = performance.now();
       const tick = (now: number) => {
         // A frame timestamp can precede effect setup within that same frame.
@@ -273,7 +275,11 @@ export default function LayerExplorer({
                   y1={markers[i].originY}
                   x2={x * sculptureScale + sculptureX}
                   y2={y * sculptureScale + sculptureY + sculptureOffset}
-                  stroke={i === selected ? '#a74425' : '#728580'}
+                  stroke={
+                    i === selected
+                      ? 'var(--color-accent)'
+                      : 'var(--color-leader)'
+                  }
                   opacity={
                     (i === (hovered ?? selected) ? 1 : 0.5) *
                     Math.max(0, 1 - (1 - pose.spread) * 3)
@@ -316,9 +322,19 @@ export default function LayerExplorer({
                 }}
                 data-tooltip-open={hovered === i}
                 onMouseEnter={() => setHovered(i)}
-                onMouseLeave={() => setHovered(undefined)}
+                onMouseLeave={(event) => {
+                  if (!event.currentTarget.matches(':focus'))
+                    setHovered((current) =>
+                      current === i ? undefined : current
+                    );
+                }}
                 onFocus={() => setHovered(i)}
-                onBlur={() => setHovered(undefined)}
+                onBlur={(event) => {
+                  if (!event.currentTarget.matches(':hover'))
+                    setHovered((current) =>
+                      current === i ? undefined : current
+                    );
+                }}
               >
                 <span className={styles.markerNumber}>
                   {String(i + 1).padStart(2, '0')}
@@ -375,7 +391,7 @@ export default function LayerExplorer({
                   aria-valuetext={
                     angle === 0
                       ? '0 degrees, centred'
-                      : `${Math.abs(angle)} degrees ${angle < 0 ? 'left' : 'right'}`
+                      : `${Math.abs(angle)} ${Math.abs(angle) === 1 ? 'degree' : 'degrees'} ${angle < 0 ? 'left' : 'right'}`
                   }
                   onChange={(event) => setAngle(Number(event.target.value))}
                 />
