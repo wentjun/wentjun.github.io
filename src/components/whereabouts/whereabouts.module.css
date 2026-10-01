@@ -474,8 +474,8 @@
   .visitPlace > span:first-child {
     font-size: 18px;
   }
-  .visitPlace > span:last-child {
-    font-size: 11px;
+  .year time {
+    font-size: 12px;
   }
   .footer a {
     min-height: 28px;
