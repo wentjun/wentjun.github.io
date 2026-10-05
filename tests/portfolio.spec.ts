@@ -3,21 +3,210 @@ import { expect, test } from '@playwright/test';
 const captions = [
   [
     'Interface',
-    'An interface should serve humans and agents equally well. I design for accessibility, with semantic structure, explicit state, and clearly defined actions so both can navigate without guesswork.',
+    'I design interfaces that people and agents can use without guesswork. Accessible structure, clear feedback, and well-defined actions help both understand what is happening and what to do next.',
   ],
   [
     'Systems',
-    'I enjoy working at the boundaries between application logic, data, and models. From communication protocols to runtime harnesses, I build the integration layers that let agents interact safely with existing software and each other.',
+    'I connect application logic, data, and models so agents can work safely with existing software and each other. That includes the protocols they use to communicate and the environments they run in.',
   ],
   [
     'Applied AI',
-    'I care about AI that solves actual problems. That means knowing where a model adds value, and pairing deterministic safeguards with agent judgment so complex workflows stay dependable under real-world use.',
+    'I build AI workflows that stay dependable in everyday use. I choose where a model adds value and combine agent judgment with explicit rules and checks.',
   ],
   [
     'Delivery',
-    'I collaborate with the team to take ideas from concept to launch. I challenge assumptions, break tradeoffs, and stay hands-on every step of the way.',
+    'I work with teams to turn ideas into working products. From concept to launch, I challenge assumptions, weigh tradeoffs, and stay hands-on through implementation.',
   ],
 ];
+
+test('view controls need no repeated prompts and reset only after a change', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await expect(page.locator('#assembly')).toBeEnabled();
+  const reset = page.getByRole('button', { name: 'Reset all' });
+  await expect(reset).toBeDisabled();
+  for (const text of [
+    'Explore the layers of my work.',
+    'Choose a number or a layer.',
+    'Exploded view',
+  ]) {
+    await expect(page.getByText(text, { exact: true })).toHaveCount(0);
+  }
+  await expect(
+    page.getByRole('group', { name: 'Sculpture view controls' })
+  ).toBeVisible();
+  await page.locator('#rotation').fill('12');
+  await expect(reset).toBeEnabled();
+  await reset.click();
+  await expect(reset).toBeDisabled();
+  await expect(page.locator('#rotation')).toHaveValue('0');
+  await expect(page.locator('#sculpture')).toHaveAttribute(
+    'data-angle',
+    '0.00'
+  );
+  await page.locator('[data-marker="0"]').click();
+  await expect(reset).toBeEnabled();
+  await reset.click();
+  await expect(reset).toBeDisabled();
+  await expect(page.locator('[data-marker="2"]')).toBeChecked();
+  await page.locator('#assembly').click();
+  await expect(reset).toBeEnabled();
+  await expect(
+    page.getByText('One product. All four disciplines.', { exact: true })
+  ).toHaveCount(0);
+  await expect(
+    page.getByText('Four perspectives, working together.', { exact: true })
+  ).toHaveCount(0);
+  await reset.focus();
+  await page.keyboard.press('Enter');
+  await expect(reset).toBeDisabled();
+  await expect(reset).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#assembly')).toHaveAccessibleName(
+    'Assemble layers'
+  );
+});
+
+test('desktop uses named sculpture controls while mobile keeps its tabs', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/');
+  await expect(page.locator('#assembly')).toBeEnabled();
+  await expect(page.getByRole('tablist')).toHaveCount(0);
+  await page
+    .locator('label:has([data-marker="1"]) [data-attached-name]')
+    .click();
+  await expect(
+    page.getByRole('region', { name: 'Systems', exact: true })
+  ).toContainText(captions[1][1]);
+  await page.locator('[data-marker="1"]').focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.locator('[data-marker="2"]')).toBeFocused();
+  await expect(page.locator('[data-marker="2"]')).toBeChecked();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.getByRole('tab')).toHaveCount(4);
+  await expect
+    .poll(() =>
+      page
+        .locator('[data-view-controls] button, [data-view-controls] input')
+        .evaluateAll((controls) => controls.map((control) => control.id))
+    )
+    .toEqual(['assembly', 'reset', 'rotation']);
+  await expect(page.locator('[data-marker="2"]')).toBeHidden();
+  await expect(
+    page.getByRole('tab', { name: '03 Applied AI' })
+  ).toHaveAttribute('aria-selected', 'true');
+  await page.getByRole('tab', { name: '04 Delivery' }).click();
+  await expect(
+    page.getByRole('tabpanel', { name: '04 Delivery' })
+  ).toContainText(captions[3][1]);
+  await page.setViewportSize({ width: 901, height: 1000 });
+  await expect(page.getByRole('tablist')).toHaveCount(0);
+  await expect
+    .poll(() =>
+      page
+        .locator('[data-view-controls] button, [data-view-controls] input')
+        .evaluateAll((controls) => controls.map((control) => control.id))
+    )
+    .toEqual(['assembly', 'rotation', 'reset']);
+  await expect(
+    page.locator('label:has([data-marker="3"]) [data-attached-name]')
+  ).toBeVisible();
+  await expect(
+    page.getByRole('region', { name: 'Delivery', exact: true })
+  ).toContainText(captions[3][1]);
+});
+
+test('desktop layers expose a single radio choice and a hidden keyboard hint', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('#assembly')).toBeEnabled();
+  const group = page.getByRole('radiogroup', { name: 'Choose a layer' });
+  const radios = group.getByRole('radio');
+  await expect(radios).toHaveCount(4);
+  await expect(group).toHaveAccessibleDescription(
+    'Use arrow keys to choose a layer.'
+  );
+  await expect(
+    group.getByRole('radio', { checked: true })
+  ).toHaveAccessibleName('Applied AI');
+  for (const [index, [name]] of captions.entries()) {
+    await expect(radios.nth(index)).toHaveAccessibleName(name);
+  }
+
+  await radios.nth(2).focus();
+  await page.keyboard.press('Tab');
+  // Safari's keyboard preference can skip buttons; Tab must still leave the group.
+  await expect(group.locator(':focus')).toHaveCount(0);
+  await page.keyboard.press('Shift+Tab');
+  await expect(radios.nth(2)).toBeFocused();
+  for (const [key, index] of [
+    ['ArrowDown', 3],
+    ['ArrowRight', 0],
+    ['ArrowLeft', 3],
+    ['ArrowUp', 2],
+    ['Home', 0],
+    ['End', 3],
+  ] as const) {
+    await page.keyboard.press(key);
+    await expect(radios.nth(index)).toBeFocused();
+    await expect(group.getByRole('radio', { checked: true })).toHaveCount(1);
+    await expect(radios.nth(index)).toBeChecked();
+    await expect(
+      page.getByRole('region', { name: captions[index][0], exact: true })
+    ).toBeVisible();
+  }
+  await radios.nth(1).focus();
+  await page.keyboard.press('Space');
+  await expect(radios.nth(1)).toBeChecked();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.getByRole('radiogroup')).toHaveCount(0);
+  await expect(page.getByRole('radio')).toHaveCount(0);
+  await expect(page.getByRole('tab', { name: '02 Systems' })).toHaveAttribute(
+    'aria-selected',
+    'true'
+  );
+});
+
+test('layer names stay attached and gather into a connected assembly', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await expect(page.locator('#assembly')).toBeEnabled();
+  const labels = page.locator('[data-attached-name]');
+  await expect(labels).toHaveText(captions.map(([name]) => name));
+  for (const label of await labels.all()) await expect(label).toBeVisible();
+  await page.locator('#assembly').click();
+  await expect(page.locator('#sculpture')).toHaveAttribute(
+    'data-spread',
+    '0.000'
+  );
+  const bounds = await labels.evaluateAll((elements) =>
+    elements.map((element) => {
+      const rect = element.getBoundingClientRect();
+      return { x: rect.x, right: rect.right, y: rect.y };
+    })
+  );
+  for (let i = 1; i < bounds.length; i++) {
+    expect(bounds[i].y).toBeCloseTo(bounds[0].y, 1);
+    expect(bounds[i].x).toBeGreaterThan(bounds[i - 1].right);
+  }
+  await expect(page.locator('[data-assembly-connection]')).toHaveAttribute(
+    'opacity',
+    '1'
+  );
+  await page.locator('#reset').click();
+  await expect(page.locator('[data-assembly-connection]')).toHaveAttribute(
+    'opacity',
+    '0'
+  );
+});
 
 test('exports a useful introduction, sculpture and all perspectives without JavaScript', async ({
   browser,
@@ -51,12 +240,12 @@ test('exports a useful introduction, sculpture and all perspectives without Java
   await context.close();
 });
 
-for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
+for (const width of [320, 390, 700, 701, 820, 900, 901, 1101, 1440, 1600]) {
   test(`preserves selection and page layout while framing assembly at ${width}px`, async ({
     page,
     browserName,
   }) => {
-    await page.setViewportSize({ width, height: width < 701 ? 844 : 1000 });
+    await page.setViewportSize({ width, height: width < 901 ? 844 : 1000 });
     await page.emulateMedia({ reducedMotion: 'reduce' });
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
@@ -97,7 +286,7 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
     const initialControls = await controlBounds();
     const initialMarker = await page.locator('[data-marker="0"]').boundingBox();
     const expectAttachedMarkers = async () => {
-      if (width <= 700) {
+      if (width <= 900) {
         await expect(page.locator('[data-marker]:visible')).toHaveCount(0);
         await expect(page.getByRole('tab')).toHaveCount(4);
         return;
@@ -215,7 +404,10 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
         };
       });
     const initialToolbar = await toolbarBounds();
-    if (width <= 700) {
+    if (width <= 900) {
+      await expect(
+        page.getByText('Based in Singapore.', { exact: true })
+      ).toBeVisible();
       const sculpture = await page.locator('#sculpture').boundingBox();
       const tablist = await page.getByRole('tablist').boundingBox();
       const caption = await page.locator('#caption').boundingBox();
@@ -225,28 +417,35 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
       expect(sculpture.y).toBeGreaterThanOrEqual(
         initialToolbar.y + initialToolbar.height + 8
       );
-      // No view controls interrupt the sculpture → selected layer → caption sequence.
-      expect(tablist.y - sculpture.y - sculpture.height).toBeCloseTo(8, 1);
+      // Meaning comes before object manipulation in both visual and DOM order.
       expect(caption.y).toBeCloseTo(tablist.y + tablist.height, 1);
-      expect(caption.y - sculpture.y - sculpture.height).toBeLessThanOrEqual(
-        70
+      expect(caption.y + caption.height).toBeLessThanOrEqual(initialToolbar.y);
+      const explanation = await page.locator('#caption-body').boundingBox();
+      if (!explanation) throw new Error('Missing selected explanation');
+      expect(explanation.y + explanation.height).toBeLessThanOrEqual(844);
+      await expect(page.locator('[data-select="2"] span')).toHaveCSS(
+        'font-size',
+        '11px'
       );
-      expect(rotation.width).toBeGreaterThanOrEqual(width < 381 ? 100 : 150);
+      expect(rotation.width).toBeGreaterThanOrEqual(initialToolbar.width - 52);
       const assembly = await page.locator('#assembly').boundingBox();
       const reset = await page.locator('#reset').boundingBox();
       if (!assembly || !reset) throw new Error('Missing view controls');
-      expect(rotation.x - assembly.x - assembly.width).toBeGreaterThanOrEqual(
-        8
+      expect(rotation.y - assembly.y - assembly.height).toBeGreaterThanOrEqual(
+        4
       );
-      expect(reset.x - rotation.x - rotation.width).toBeGreaterThanOrEqual(8);
+      expect(rotation.x + rotation.width).toBeCloseTo(
+        initialToolbar.x + initialToolbar.width,
+        1
+      );
       expect(reset.y).toBeCloseTo(assembly.y, 1);
-      expect(initialToolbar.height).toBeLessThanOrEqual(60);
-      await page.locator('#assembly').focus();
+      expect(initialToolbar.height).toBeLessThanOrEqual(92);
+      await page.locator('[data-select="2"]').focus();
       for (const selector of [
-        '#rotation',
-        '#reset',
-        '[data-select="2"]',
         '#caption [role="tabpanel"]:not([hidden])',
+        '#assembly',
+        '#reset',
+        '#rotation',
       ]) {
         await page.keyboard.press(browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
         await expect(page.locator(selector)).toBeFocused();
@@ -264,7 +463,7 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
         expect(displayedWidth / initialWidth).toBeLessThanOrEqual(1.16);
       } else expect(displayedWidth).toBeCloseTo(initialWidth, 0);
       await expectAttachedMarkers();
-      if (assembled && width > 700) {
+      if (assembled && width > 900) {
         const marker = await page.locator('[data-marker="0"]').boundingBox();
         expect(
           Math.abs((marker?.y ?? 0) - (initialMarker?.y ?? 0))
@@ -276,7 +475,7 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
       const poseToolbar = await toolbarBounds();
       for (const i of [3, 0, 2, 1]) {
         await page
-          .locator(`[${width <= 700 ? 'data-select' : 'data-marker'}="${i}"]`)
+          .locator(`[${width <= 900 ? 'data-select' : 'data-marker'}="${i}"]`)
           .click();
         await expect(page.locator(`[data-select="${i}"]`)).toHaveAttribute(
           'aria-selected',
@@ -329,13 +528,13 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
     }
     for (const i of [0, 1, 2, 3]) {
       await page
-        .locator(`[${width <= 700 ? 'data-select' : 'data-marker'}="${i}"]`)
+        .locator(`[${width <= 900 ? 'data-select' : 'data-marker'}="${i}"]`)
         .click();
       await expect(page.locator('#caption-body')).toHaveText(captions[i][1]);
     }
     const targets = await page
       .locator(
-        'header a, footer a, [data-marker]:visible, [data-select], #assembly, #reset, #rotation'
+        'header a, footer a, [data-marker]:visible, [data-select]:visible, #assembly, #reset, #rotation'
       )
       .evaluateAll((es) =>
         es.map((e) => ({
@@ -386,12 +585,13 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
     );
     await expectStableControls();
     await page.keyboard.press('Tab');
-    await page.locator('[data-select="2"]').focus();
+    const selectedControl = page.locator(
+      `[${width <= 900 ? 'data-select' : 'data-marker'}="2"]`
+    );
+    await selectedControl.focus();
     expect(
-      await page
-        .locator('[data-select="2"]')
-        .evaluate((e) => getComputedStyle(e).outlineOffset)
-    ).toBe('-4px');
+      await selectedControl.evaluate((e) => getComputedStyle(e).outlineOffset)
+    ).toBe(width <= 900 ? '-4px' : '-1px');
     await page.locator('#reset').focus();
     expect(
       await page
@@ -428,7 +628,7 @@ for (const width of [320, 390, 700, 701, 820, 1101, 1440, 1600]) {
   });
 }
 
-for (const width of [320, 390, 700]) {
+for (const width of [320, 390, 700, 820]) {
   test(`mobile selection stays identifiable without extra labels at ${width}px`, async ({
     page,
   }) => {
@@ -505,12 +705,16 @@ test('keyboard navigation and focus survive animation and reset', async ({
   page,
 }) => {
   await page.goto('/');
-  await expect(page.locator('[data-select="0"]')).toBeEnabled();
-  await page.locator('[data-select="0"]').focus();
+  await expect(page.locator('[data-marker="0"]')).toBeEnabled();
+  await page.locator('[data-marker="0"]').focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.locator('[data-marker="1"]')).toBeFocused();
+  await page.keyboard.press('ArrowUp');
+  await expect(page.locator('[data-marker="0"]')).toBeFocused();
   await page.keyboard.press('End');
-  await expect(page.locator('[data-select="3"]')).toBeFocused();
+  await expect(page.locator('[data-marker="3"]')).toBeFocused();
   await page.keyboard.press('ArrowRight');
-  await expect(page.locator('[data-select="0"]')).toBeFocused();
+  await expect(page.locator('[data-marker="0"]')).toBeFocused();
   await page.locator('#assembly').click();
   await page.locator('[data-marker="2"]').focus();
   await page.keyboard.press('ArrowDown');
@@ -530,9 +734,11 @@ test('keyboard navigation and focus survive animation and reset', async ({
 });
 
 test('plate surfaces select their captions', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   await expect(page.locator('#assembly')).toBeEnabled();
-  await expect(page.locator('#assembly')).toBeEnabled();
+  // Scroll the SVG viewport: Firefox does not scroll nested SVG groups reliably.
+  await page.locator('#sculpture').scrollIntoViewIfNeeded();
   for (const i of [0, 1, 2, 3]) {
     const point = await page.evaluate((index) => {
       const e = document.querySelector(`[data-sculpture-layer="${index}"]`);
@@ -603,7 +809,7 @@ test('captions stand alone without extra diagrams or a reveal control', async ({
 }) => {
   await page.goto('/');
   for (let i = 0; i < 4; i++) {
-    await page.locator(`[data-select="${i}"]`).click();
+    await page.locator(`[data-marker="${i}"]`).click();
     await expect(page.locator('#caption-body')).toHaveText(captions[i][1]);
     await expect(
       page.locator('[data-drawing-key], [data-layer-detail]')
@@ -612,86 +818,55 @@ test('captions stand alone without extra diagrams or a reveal control', async ({
   }
 });
 
-for (const width of [701, 820, 1440]) {
-  test(`tooltips stay clear of selectors and viewport edges at ${width}px`, async ({
+for (const width of [901, 1024, 1440]) {
+  test(`named sculpture selectors remain readable and clickable at ${width}px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 1000 });
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
-    for (const mode of ['Assemble layers', 'Separate layers']) {
-      await page.getByRole('button', { name: mode, exact: true }).click();
-      for (let i = 0; i < 4; i++) {
-        const marker = page.locator(`[data-marker="${i}"]`);
-        await marker.hover();
-        const tip = marker.locator('span[aria-hidden="true"]');
-        await expect(tip).toBeVisible();
-        const b = await tip.boundingBox(),
-          m = await marker.boundingBox();
-        if (!b || !m) throw new Error('Tooltip missing');
-        if (mode === 'Assemble layers') {
-          expect(b.y + b.height).toBeLessThanOrEqual(m.y);
-        } else {
-          expect(b.x).toBeGreaterThanOrEqual(m.x + m.width);
-        }
-        expect(b.x).toBeGreaterThanOrEqual(0);
-        expect(b.x + b.width).toBeLessThanOrEqual(width);
-        expect(b.y).toBeGreaterThanOrEqual(0);
-        expect(await marker.evaluate((e) => getComputedStyle(e).zIndex)).toBe(
-          '3'
+    await expect(page.locator('#assembly')).toBeEnabled();
+    for (const assembled of [false, true]) {
+      if (assembled) await page.locator('#assembly').click();
+      await expect(page.locator('#sculpture')).toHaveAttribute(
+        'data-spread',
+        assembled ? '0.000' : '1.000'
+      );
+      for (const angle of ['-30', '0', '30']) {
+        await page.locator('#rotation').fill(angle);
+        await expect(page.locator('#sculpture')).toHaveAttribute(
+          'data-angle',
+          Number(angle).toFixed(2)
         );
-        // Cross the empty-looking gap slowly, then read the tooltip itself.
-        const gap =
-          mode === 'Assemble layers'
-            ? { x: m.x + m.width / 2, y: (b.y + b.height + m.y) / 2 }
-            : { x: (m.x + m.width + b.x) / 2, y: b.y + b.height / 2 };
-        await page.mouse.move(gap.x, gap.y, { steps: 5 });
-        await expect(tip).toBeVisible();
-        await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, {
-          steps: 5,
-        });
-        await expect(tip).toBeVisible();
-        await page.keyboard.press('Escape');
-        await expect(tip).toBeHidden();
-        await marker.focus();
-        await expect(tip).toBeVisible();
-        await page.keyboard.press('Escape');
-        await expect(tip).toBeHidden();
+        for (let i = 0; i < 4; i++) {
+          const marker = page.locator(`[data-marker="${i}"]`);
+          const label = page.locator(
+            `label:has([data-marker="${i}"]) [data-attached-name]`
+          );
+          await expect(label).toBeVisible();
+          await label.click();
+          await expect(marker).toBeChecked();
+          await expect(
+            page.getByRole('region', { name: captions[i][0], exact: true })
+          ).toContainText(captions[i][1]);
+          const bounds = await label.boundingBox();
+          const frame = await page.locator('#sculpture').boundingBox();
+          if (!bounds || !frame)
+            throw new Error('Missing layer label or sculpture');
+          expect(bounds.x).toBeGreaterThanOrEqual(frame.x);
+          expect(bounds.x + bounds.width).toBeLessThanOrEqual(
+            frame.x + frame.width
+          );
+          expect(bounds.y + bounds.height).toBeLessThanOrEqual(
+            frame.y + frame.height
+          );
+          await page.keyboard.press('Escape');
+          await expect(label).toBeVisible();
+        }
       }
     }
   });
 }
-
-test('layer tooltips persist while either pointer or keyboard focus remains', async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
-  const marker = page.locator('[data-marker="2"]');
-  const tip = marker.locator('span[aria-hidden="true"]');
-  for (const mode of ['Assemble layers', 'Separate layers']) {
-    await page.getByRole('button', { name: mode, exact: true }).click();
-    await marker.focus();
-    await marker.hover();
-    await page.getByRole('heading', { level: 1 }).hover();
-    await expect(tip).toBeVisible();
-    await marker.press('Tab');
-    await expect(tip).toBeHidden();
-
-    await marker.hover();
-    await marker.focus();
-    await page.locator('main').focus();
-    await expect(tip).toBeVisible();
-    await page.keyboard.press('Escape');
-    await expect(tip).toBeHidden();
-    await page.getByRole('heading', { level: 1 }).hover();
-    await marker.hover();
-    await expect(tip).toBeVisible();
-    await page.getByRole('heading', { level: 1 }).hover();
-    await expect(tip).toBeHidden();
-  }
-});
 
 test('touch selection keeps the chosen detail while changing views', async ({
   browser,
@@ -922,7 +1097,7 @@ for (const width of [320, 1366, 1440]) {
       }
       return { before, frames };
     });
-    if (width > 700)
+    if (width > 900)
       expect(new Set(result.frames.map((f) => f.markerY)).size).toBeGreaterThan(
         3
       );
@@ -1004,15 +1179,12 @@ for (const width of [320, 1440]) {
           if (state.labelFrames.length < 12) requestAnimationFrame(sample);
         };
         requestAnimationFrame(sample);
-      }, width <= 700);
+      }, width <= 900);
       releaseScripts();
       await expect(page.locator('#assembly')).toBeEnabled();
-      if (width <= 700)
+      if (width <= 900)
         await expect(page.locator('[data-marker]:visible')).toHaveCount(0);
-      await expect(page.locator('[data-marker="2"]')).toHaveAttribute(
-        'aria-pressed',
-        'true'
-      );
+      await expect(page.locator('[data-marker="2"]')).toBeChecked();
       await expect
         .poll(() =>
           page.evaluate(

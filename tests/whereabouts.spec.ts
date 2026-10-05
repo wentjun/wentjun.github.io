@@ -193,7 +193,7 @@ test('selects a nearby place from its map pin and switches country highlights', 
   await pin.press('Enter');
   if ((await pin.getAttribute('data-pin-count')) !== '1') {
     await page
-      .getByRole('dialog', { name: 'Explore visits' })
+      .getByRole('dialog', { name: /^Visits (near|to) / })
       .getByRole('button', {
         name: `${pair.b.city}, ${pair.b.country}, ${monthLabel(latestVisitMonth(history, pair.b.city, pair.b.country))}`,
         exact: true,

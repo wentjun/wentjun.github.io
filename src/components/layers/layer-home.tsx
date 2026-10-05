@@ -2,6 +2,39 @@ import Link from 'next/link';
 import LayerExplorer from './layer-explorer';
 import styles from './layers.module.css';
 
+function DestinationIcon({
+  kind,
+}: {
+  kind: 'internal' | 'external' | 'email';
+}) {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+      data-destination-icon={kind}
+    >
+      {kind === 'email' ? (
+        <>
+          <rect x="2" y="3.5" width="12" height="9" rx="1" />
+          <path d="m2.5 4.5 5.5 4 5.5-4" />
+        </>
+      ) : (
+        <path
+          d={kind === 'internal' ? 'M3 8h10M9 4l4 4-4 4' : 'm4 12 8-8M4 4h8v8'}
+        />
+      )}
+    </svg>
+  );
+}
+
 export default function LayerHome() {
   return (
     <div className={styles.page}>
@@ -19,7 +52,7 @@ export default function LayerHome() {
           data-umami-event="contact_click"
           data-umami-event-destination="email"
         >
-          Say hello <span aria-hidden="true">↗&#xFE0E;</span>
+          Say hello <DestinationIcon kind="email" />
         </a>
       </header>
       <main id="main" tabIndex={-1}>
@@ -43,7 +76,7 @@ export default function LayerHome() {
           href="/whereabouts"
           prefetch={false}
         >
-          Whereabouts <span aria-hidden="true">↗&#xFE0E;</span>
+          Whereabouts <DestinationIcon kind="internal" />
         </Link>
         <nav aria-label="Profile links">
           <a
@@ -51,21 +84,21 @@ export default function LayerHome() {
             data-umami-event="profile_click"
             data-umami-event-destination="writing"
           >
-            Writing <span aria-hidden="true">↗&#xFE0E;</span>
+            Writing <DestinationIcon kind="external" />
           </a>
           <a
             href="https://github.com/wentjun"
             data-umami-event="profile_click"
             data-umami-event-destination="github"
           >
-            GitHub <span aria-hidden="true">↗&#xFE0E;</span>
+            GitHub <DestinationIcon kind="external" />
           </a>
           <a
             href="https://www.linkedin.com/in/wentjun/"
             data-umami-event="profile_click"
             data-umami-event-destination="linkedin"
           >
-            LinkedIn <span aria-hidden="true">↗&#xFE0E;</span>
+            LinkedIn <DestinationIcon kind="external" />
           </a>
         </nav>
       </footer>

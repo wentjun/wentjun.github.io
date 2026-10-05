@@ -57,7 +57,7 @@ test('exports complete Open Graph and Twitter preview metadata', async ({
 }) => {
   await page.goto('/');
   const imageUrl = 'https://wentjun.com/social-preview.png';
-  const imageAlt = 'Wen Tjun - full-stack builder portfolio';
+  const imageAlt = 'Wen Tjun — full-stack builder portfolio';
 
   await expect(page).toHaveTitle('Wen Tjun: Full-stack builder');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(

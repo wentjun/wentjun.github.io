@@ -1,19 +1,19 @@
 import { expect, test } from '@playwright/test';
 
-test('all perspectives are exported as ordinary tab panels', async ({
-  request,
-}) => {
+test('all perspectives are exported as named regions', async ({ request }) => {
   const response = await request.get('/');
   expect(response.ok()).toBe(true);
   const html = (await response.text())
     .replace(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/gi, '')
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
-  expect(html.match(/role="tabpanel"/g)).toHaveLength(4);
+  expect(
+    html.match(/role="region" aria-labelledby="caption-title-\d"/g)
+  ).toHaveLength(4);
   for (const text of [
-    'An interface should serve humans and agents equally well',
-    'From communication protocols to runtime harnesses',
-    'I care about AI that solves actual problems',
-    'I collaborate with the team',
+    'I design interfaces that people and agents can use without guesswork',
+    'I connect application logic, data, and models',
+    'I build AI workflows that stay dependable in everyday use',
+    'I work with teams to turn ideas into working products',
   ]) {
     expect(html).toContain(text);
   }
@@ -23,6 +23,7 @@ test('all perspectives are exported as ordinary tab panels', async ({
 test('tabs expose only their associated panel without duplicating the page', async ({
   page,
 }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   await expect(page.locator('#assembly')).toBeEnabled();
   await expect(page.locator('[role="tabpanel"]')).toHaveCount(4);

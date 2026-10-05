@@ -158,7 +158,7 @@ test('the page remains usable without service worker or Cache APIs', async ({
   await page.goto('/');
   await page.getByRole('tab', { name: '02 Systems' }).click();
   await expect(page.getByRole('tabpanel')).toContainText(
-    'From communication protocols to runtime harnesses'
+    'I connect application logic, data, and models'
   );
   expect(errors).toEqual([]);
 });

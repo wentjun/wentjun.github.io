@@ -13,7 +13,7 @@ const phase = process.argv[2] || 'audit';
   page.on('pageerror', (e) => errors.push(e.message));
   const reports = [];
   for (const width of [1440, 390, 320]) {
-    await page.setViewportSize({ width, height: width > 700 ? 1000 : 844 });
+    await page.setViewportSize({ width, height: width > 900 ? 1000 : 844 });
     await page.goto(baseURL);
     await page.locator('#assembly:not([disabled])').waitFor();
     await page.evaluate(() => document.fonts.ready);
@@ -22,7 +22,11 @@ const phase = process.argv[2] || 'audit';
     for (const assembled of [false, true]) {
       if (assembled) await page.locator('#assembly').click();
       for (let layer = 0; layer < 4; layer++) {
-        await page.getByRole('tab').nth(layer).click();
+        await page
+          .locator(
+            `[${width <= 900 ? 'data-select' : 'data-marker'}="${layer}"]`
+          )
+          .click();
         const result = await page.evaluate(async () => {
           const r = await axe.run(document, {
             runOnly: {

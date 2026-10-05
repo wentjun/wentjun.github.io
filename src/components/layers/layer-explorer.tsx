@@ -70,6 +70,7 @@ export default function LayerExplorer({
   const [assembled, setAssembled] = useState(false);
   const [angle, setAngle] = useState(0);
   const [ready, setReady] = useState(false);
+  const isDefault = !assembled && angle === 0 && selected === INITIAL_LAYER;
   const [hovered, setHovered] = useState<number | undefined>();
   const [iconPreview, setIconPreview] = useState(false);
   const pose = usePose(assembled, angle);
@@ -101,7 +102,7 @@ export default function LayerExplorer({
   const sculptureOffset = viewport.measured
     ? Math.min(
         -56,
-        (viewport.height - (viewport.compact ? 16 : 54) - viewport.y) /
+        (viewport.height - (viewport.compact ? 16 : 80) - viewport.y) /
           viewport.scale -
           (geometry.baseFront[1] * sculptureScale + sculptureY)
       ) *
@@ -123,16 +124,18 @@ export default function LayerExplorer({
       Math.min(0, viewport.height - 22 - (ys[3] - centerOffset))
     );
     const progress = 1 - pose.spread;
+    const rowGap = viewport.width >= 650 ? 112 : 88;
+    const rowInset = rowGap * 1.5 + 44;
     const rowX = Math.max(
-      94,
+      rowInset,
       Math.min(
-        viewport.width - 94,
+        viewport.width - rowInset,
         (geometry.baseFront[0] * sculptureScale + sculptureX) * viewport.scale +
           viewport.x
       )
     );
     const rowY = Math.min(
-      viewport.height - 22,
+      viewport.height - 48,
       (geometry.baseFront[1] * sculptureScale + sculptureY + sculptureOffset) *
         viewport.scale +
         viewport.y +
@@ -140,8 +143,8 @@ export default function LayerExplorer({
     );
     return points.map((point, i) => {
       const x =
-        Math.max(22, point.x - 28) * (1 - progress) +
-        (rowX + (i - 1.5) * 48) * progress;
+        Math.max(viewport.compact ? 22 : 110, point.x - 28) * (1 - progress) +
+        (rowX + (i - 1.5) * rowGap) * progress;
       const y =
         (ys[i] - centerOffset + shift) * (1 - progress) + rowY * progress;
       return {
@@ -160,17 +163,9 @@ export default function LayerExplorer({
     sculptureX,
     sculptureY,
   ]);
-  const markerButtons = useRef<(HTMLButtonElement | null)[]>([]);
+  const markerInputs = useRef<(HTMLInputElement | null)[]>([]);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  useEffect(() => {
-    if (hovered === undefined) return;
-    const dismiss = (event: globalThis.KeyboardEvent) => {
-      if (event.key === 'Escape') setHovered(undefined);
-    };
-    document.addEventListener('keydown', dismiss);
-    return () => document.removeEventListener('keydown', dismiss);
-  }, [hovered]);
   useLayoutEffect(() => {
     const element = frame.current;
     if (!element) return;
@@ -182,7 +177,7 @@ export default function LayerExplorer({
       const bounds = element.getBoundingClientRect();
       setViewport({
         measured: true,
-        compact: matchMedia('(max-width: 700px)').matches,
+        compact: matchMedia('(max-width: 900px)').matches,
         scale: matrix.a,
         x: matrix.e - bounds.left,
         y: matrix.f - bounds.top,
@@ -202,30 +197,148 @@ export default function LayerExplorer({
   }, []);
 
   function navigate(
-    event: KeyboardEvent<HTMLButtonElement>,
+    event: KeyboardEvent<HTMLButtonElement | HTMLInputElement>,
     index: number,
     markers = false
   ) {
     let next: number;
-    if (event.key === 'ArrowRight' || (markers && event.key === 'ArrowDown'))
+    if (
+      event.key === 'ArrowRight' ||
+      ((!viewport.compact || markers) && event.key === 'ArrowDown')
+    )
       next = (index + 1) % 4;
-    else if (event.key === 'ArrowLeft' || (markers && event.key === 'ArrowUp'))
+    else if (
+      event.key === 'ArrowLeft' ||
+      ((!viewport.compact || markers) && event.key === 'ArrowUp')
+    )
       next = (index + 3) % 4;
     else if (event.key === 'Home') next = 0;
     else if (event.key === 'End') next = 3;
     else return;
     event.preventDefault();
     setSelected(next);
-    (markers ? markerButtons : tabs).current[next]?.focus();
+    (markers ? markerInputs : tabs).current[next]?.focus();
   }
+
+  const rotationControl = (
+    <label key="rotation" className={styles.turn} htmlFor="rotation">
+      <span className={styles.turnLabel}>Rotate</span>
+      <span className={styles.rotationTrack}>
+        <input
+          id="rotation"
+          type="range"
+          min="-30"
+          max="30"
+          step="1"
+          value={angle}
+          disabled={!ready}
+          aria-label="Rotate sculpture"
+          aria-valuetext={
+            angle === 0
+              ? '0 degrees, centred'
+              : `${Math.abs(angle)} ${Math.abs(angle) === 1 ? 'degree' : 'degrees'} ${angle < 0 ? 'left' : 'right'}`
+          }
+          onChange={(event) => setAngle(Number(event.target.value))}
+        />
+      </span>
+      <output htmlFor="rotation" aria-hidden="true">
+        {angle > 0 ? '+' : ''}
+        {angle}°
+      </output>
+    </label>
+  );
+  const resetControl = (
+    <button
+      key="reset"
+      id="reset"
+      className={styles.reset}
+      type="button"
+      disabled={!ready}
+      aria-disabled={isDefault}
+      onClick={() => {
+        if (isDefault) return;
+        setAngle(0);
+        setAssembled(false);
+        setSelected(INITIAL_LAYER);
+      }}
+    >
+      Reset all
+    </button>
+  );
 
   return (
     <section className={styles.hero} aria-labelledby="title">
       {introduction}
+      <div className={styles.explorer}>
+        <div
+          className={styles.tabs}
+          role="tablist"
+          aria-orientation="horizontal"
+          aria-label="Choose a layer"
+          data-interactive
+        >
+          {layers.map((layer, i) => (
+            <button
+              key={layer.name}
+              type="button"
+              id={`layer-${i}`}
+              ref={(element) => {
+                tabs.current[i] = element;
+              }}
+              role="tab"
+              data-select={i}
+              aria-selected={selected === i}
+              aria-controls={`caption-${i}`}
+              tabIndex={selected === i ? 0 : -1}
+              disabled={!ready}
+              onClick={() => setSelected(i)}
+              onKeyDown={(event) => navigate(event, i)}
+            >
+              <span>{String(i + 1).padStart(2, '0')}</span>
+              {layer.name}
+            </button>
+          ))}
+        </div>
+        <div
+          id="caption"
+          className={styles.caption}
+          aria-live="polite"
+          aria-atomic="true"
+          data-interactive
+        >
+          {layers.map((layer, i) => (
+            <section
+              key={layer.name}
+              id={`caption-${i}`}
+              role={viewport.compact ? 'tabpanel' : 'region'}
+              aria-labelledby={
+                viewport.compact ? `layer-${i}` : `caption-title-${i}`
+              }
+              hidden={selected !== i}
+              tabIndex={0}
+            >
+              <h2 id={`caption-title-${i}`}>{layer.name}</h2>
+              <p id={selected === i ? 'caption-body' : undefined}>
+                {layer.caption}
+              </p>
+            </section>
+          ))}
+        </div>
+        <noscript>
+          <style>{'[data-interactive]{display:none!important}'}</style>
+          <div className={styles.staticPerspectives}>
+            {layers.map((layer) => (
+              <section key={layer.name}>
+                <h2>{layer.name}</h2>
+                <p>{layer.caption}</p>
+              </section>
+            ))}
+          </div>
+        </noscript>
+      </div>
       <figure
         className={styles.objectStage}
         aria-label="Explore four connected layers"
-        data-assembled={assembled}
       >
         <div className={styles.objectFrame} ref={frame}>
           {/* Numbered buttons and tabs provide keyboard equivalents for selecting the illustrated surfaces. */}
@@ -253,7 +366,7 @@ export default function LayerExplorer({
               {`${layers[selected].name} selected, four connected layers`}
             </title>
             <desc id="sculpture-description">
-              {`${layers[selected].drawing} Choose a named tab to read each perspective.`}
+              {`${layers[selected].drawing} Choose a layer to read each perspective.`}
             </desc>
             <g
               id="object-content"
@@ -289,41 +402,44 @@ export default function LayerExplorer({
                 />
               ))}
             </g>
+            <line
+              className={styles.markerLeaders}
+              data-assembly-connection
+              x1={(markers[0].x - viewport.x) / viewport.scale}
+              y1={(markers[0].y - viewport.y) / viewport.scale}
+              x2={(markers[3].x - viewport.x) / viewport.scale}
+              y2={(markers[3].y - viewport.y) / viewport.scale}
+              stroke="var(--color-leader)"
+              strokeWidth="1"
+              vectorEffect="non-scaling-stroke"
+              opacity={viewport.measured ? Math.max(0, 1 - pose.spread * 3) : 0}
+              pointerEvents="none"
+            />
           </svg>
-          <fieldset
+          <div
             className={styles.markers}
-            aria-label="Select a numbered layer"
+            role="radiogroup"
+            aria-label="Choose a layer"
+            aria-describedby="layer-keyboard-help"
             data-assembled={assembled}
             style={{ visibility: viewport.measured ? 'visible' : 'hidden' }}
             data-interactive
           >
+            <p id="layer-keyboard-help" className={styles.visuallyHidden}>
+              Use arrow keys to choose a layer.
+            </p>
             {layers.map((layer, i) => (
-              <button
+              <label
                 key={layer.name}
-                type="button"
-                ref={(element) => {
-                  markerButtons.current[i] = element;
-                }}
-                data-marker={i}
+                className={styles.marker}
                 style={
                   viewport.measured
                     ? { left: markers[i].x - 22, top: markers[i].y - 22 }
                     : { left: '12%', top: `${20 + i * 17}%` }
                 }
-                aria-label={`Select ${layer.name} on sculpture`}
-                aria-pressed={selected === i}
-                aria-controls="caption"
-                tabIndex={selected === i ? 0 : -1}
-                disabled={!ready}
-                onClick={() => setSelected(i)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Escape') setHovered(undefined);
-                  else navigate(event, i, true);
-                }}
-                data-tooltip-open={hovered === i}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={(event) => {
-                  if (!event.currentTarget.matches(':focus'))
+                  if (!event.currentTarget.matches(':focus-within'))
                     setHovered((current) =>
                       current === i ? undefined : current
                     );
@@ -336,23 +452,42 @@ export default function LayerExplorer({
                     );
                 }}
               >
+                <input
+                  type="radio"
+                  name="sculpture-layer"
+                  value={i}
+                  ref={(element) => {
+                    markerInputs.current[i] = element;
+                  }}
+                  data-marker={i}
+                  aria-label={layer.name}
+                  aria-controls="caption"
+                  checked={selected === i}
+                  tabIndex={selected === i ? 0 : -1}
+                  disabled={!ready}
+                  onChange={() => setSelected(i)}
+                  onKeyDown={(event) => navigate(event, i, true)}
+                />
                 <span className={styles.markerNumber}>
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <span className={styles.markerName} aria-hidden="true">
+                <small
+                  className={styles.attachedName}
+                  data-attached-name
+                  aria-hidden="true"
+                >
                   {layer.name}
-                </span>
-              </button>
+                </small>
+              </label>
             ))}
-          </fieldset>
+          </div>
         </div>
         <div className={styles.viewGroup} data-interactive>
-          <p className={styles.instruction}>
-            {assembled
-              ? 'Four perspectives, working together.'
-              : 'Choose a number or a layer.'}
-          </p>
-          <div className={styles.viewControls} data-view-controls>
+          <fieldset
+            className={styles.viewControls}
+            aria-label="Sculpture view controls"
+            data-view-controls
+          >
             <button
               id="assembly"
               className={styles.assembly}
@@ -360,7 +495,6 @@ export default function LayerExplorer({
               aria-label={assembled ? 'Separate layers' : 'Assemble layers'}
               aria-describedby="view-state"
               data-assembled={assembled}
-              data-icon-preview={iconPreview}
               disabled={!ready}
               onPointerEnter={(event) => {
                 if (event.pointerType === 'mouse') setIconPreview(true);
@@ -376,45 +510,10 @@ export default function LayerExplorer({
               <ViewIcon spread={iconPose.spread} />
               <span>{assembled ? 'Separate' : 'Assemble'}</span>
             </button>
-            <label className={styles.turn} htmlFor="rotation">
-              <span className={styles.turnLabel}>Rotate</span>
-              <span className={styles.rotationTrack}>
-                <input
-                  id="rotation"
-                  type="range"
-                  min="-30"
-                  max="30"
-                  step="1"
-                  value={angle}
-                  disabled={!ready}
-                  aria-label="Rotate sculpture"
-                  aria-valuetext={
-                    angle === 0
-                      ? '0 degrees, centred'
-                      : `${Math.abs(angle)} ${Math.abs(angle) === 1 ? 'degree' : 'degrees'} ${angle < 0 ? 'left' : 'right'}`
-                  }
-                  onChange={(event) => setAngle(Number(event.target.value))}
-                />
-              </span>
-              <output htmlFor="rotation" aria-hidden="true">
-                {angle > 0 ? '+' : ''}
-                {angle}°
-              </output>
-            </label>
-            <button
-              id="reset"
-              className={styles.reset}
-              type="button"
-              disabled={!ready}
-              onClick={() => {
-                setAngle(0);
-                setAssembled(false);
-                setSelected(INITIAL_LAYER);
-              }}
-            >
-              Reset all
-            </button>
-          </div>
+            {viewport.compact
+              ? [resetControl, rotationControl]
+              : [rotationControl, resetControl]}
+          </fieldset>
           <p
             id="view-state"
             className={styles.visuallyHidden}
@@ -424,71 +523,6 @@ export default function LayerExplorer({
           </p>
         </div>
       </figure>
-      <div className={styles.explorer}>
-        <div
-          className={styles.tabs}
-          role="tablist"
-          aria-label="Choose a layer"
-          data-interactive
-        >
-          {layers.map((layer, i) => (
-            <button
-              key={layer.name}
-              type="button"
-              id={`layer-${i}`}
-              ref={(element) => {
-                tabs.current[i] = element;
-              }}
-              role="tab"
-              data-select={i}
-              aria-selected={selected === i}
-              aria-controls={`caption-${i}`}
-              tabIndex={selected === i ? 0 : -1}
-              disabled={!ready}
-              onClick={() => setSelected(i)}
-              onKeyDown={(event) => navigate(event, i)}
-            >
-              <span>{String(i + 1).padStart(2, '0')}</span>
-              {layer.name}
-            </button>
-          ))}
-        </div>
-        <div
-          id="caption"
-          className={styles.caption}
-          aria-live="polite"
-          aria-atomic="true"
-          data-interactive
-        >
-          {layers.map((layer, i) => (
-            <div
-              key={layer.name}
-              id={`caption-${i}`}
-              role="tabpanel"
-              aria-labelledby={`layer-${i}`}
-              hidden={selected !== i}
-              // biome-ignore lint/a11y/noNoninteractiveTabindex: Each text-only tabpanel is keyboard-focusable; hidden panels are excluded from focus navigation.
-              tabIndex={0}
-            >
-              <h2>{layer.name}</h2>
-              <p id={selected === i ? 'caption-body' : undefined}>
-                {layer.caption}
-              </p>
-            </div>
-          ))}
-        </div>
-        <noscript>
-          <style>{'[data-interactive]{display:none!important}'}</style>
-          <div className={styles.staticPerspectives}>
-            {layers.map((layer) => (
-              <section key={layer.name}>
-                <h2>{layer.name}</h2>
-                <p>{layer.caption}</p>
-              </section>
-            ))}
-          </div>
-        </noscript>
-      </div>
     </section>
   );
 }

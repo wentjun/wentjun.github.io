@@ -61,6 +61,20 @@ export default function Whereabouts({
           Wen Tjun<span>.</span>
         </Link>
         <Link className={styles.back} href="/" prefetch={false}>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M13 8H3m4-4L3 8l4 4" />
+          </svg>
           Back to home
         </Link>
       </header>

@@ -1,6 +1,64 @@
 import { expect, test } from '@playwright/test';
 
 const names = ['Aewol', 'Seogwipo', 'Udo Island', 'Seongsan', 'Jeju City'];
+for (const viewport of [
+  { width: 320, height: 540 },
+  { width: 390, height: 844 },
+  { width: 820, height: 1000 },
+  { width: 1440, height: 844 },
+]) {
+  test(`visit picker keeps map pins visible at ${viewport.width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/whereabouts');
+    for (const [id, title] of [
+      ['aewol-2026-05', 'Visits near Aewol'],
+      ['guangzhou-2026-08', 'Visits near Guangzhou'],
+      ['auckland-2024-11', 'Visits near Auckland'],
+    ]) {
+      await page.locator(`[data-visit="${id}"] button`).click();
+      const trigger = page.locator('[data-map-cluster][data-active="true"]');
+      await trigger.click();
+      const picker = page.getByRole('dialog');
+      await expect(picker).toBeVisible();
+      await expect(async () => {
+        const panel = await picker.boundingBox();
+        if (!panel) throw new Error('Missing picker bounds');
+        expect(panel.x).toBeGreaterThanOrEqual(16);
+        expect(panel.y).toBeGreaterThanOrEqual(16);
+        expect(panel.x + panel.width).toBeLessThanOrEqual(viewport.width - 16);
+        expect(panel.y + panel.height).toBeLessThanOrEqual(
+          viewport.height - 16
+        );
+        const pins = await page
+          .locator(
+            'fieldset button:not(:disabled), [data-selected-pin]:not(button)'
+          )
+          .evaluateAll((elements) =>
+            elements.map((element) => {
+              const { x, y, width, height } = element.getBoundingClientRect();
+              return { x, y, width, height };
+            })
+          );
+        for (const pin of pins) {
+          expect(
+            panel.x >= pin.x + pin.width + 8 ||
+              panel.x + panel.width + 8 <= pin.x ||
+              panel.y >= pin.y + pin.height + 8 ||
+              panel.y + panel.height + 8 <= pin.y,
+            `Picker overlaps a map pin for ${id}`
+          ).toBe(true);
+        }
+      }).toPass({ timeout: 1500 });
+      await expect(picker).toHaveAccessibleName(title);
+      await picker.getByRole('button', { name: 'Close', exact: true }).click();
+      await expect(trigger).toBeFocused();
+    }
+  });
+}
+
 for (const width of [390, 1440]) {
   test(`cluster picker selects every Jeju place and restores focus at ${width}px`, async ({
     page,
@@ -13,7 +71,7 @@ for (const width of [390, 1440]) {
     await expect(cluster).toHaveAccessibleName(/Nearby visits to/);
     for (const name of names) {
       await cluster.click();
-      const picker = page.getByRole('dialog', { name: 'Explore visits' });
+      const picker = page.getByRole('dialog', { name: /^Visits (near|to) / });
       await expect(picker).toBeVisible();
       const option = picker.getByRole('button', {
         name: `${name}, South Korea, May 2026`,
@@ -31,7 +89,7 @@ for (const width of [390, 1440]) {
       await expect(cluster).toBeFocused();
     }
     await cluster.press('Enter');
-    const picker = page.getByRole('dialog', { name: 'Explore visits' });
+    const picker = page.getByRole('dialog', { name: /^Visits (near|to) / });
     await expect(
       picker.getByRole('button', {
         name: 'Aewol, South Korea, May 2026',
@@ -55,7 +113,7 @@ test('picker scroll stays local and resizing dismisses stale placement', async (
   await page.goto('/whereabouts');
   await page.locator('[data-visit="aewol-2026-05"] button').click();
   const trigger = page.locator('[data-map-cluster][data-active="true"]');
-  const picker = page.getByRole('dialog', { name: 'Explore visits' });
+  const picker = page.getByRole('dialog', { name: /^Visits (near|to) / });
   const history = page.getByRole('region', {
     name: 'Scrollable travel history',
     exact: true,
@@ -100,8 +158,8 @@ test('nearby visits keep Guangzhou 2026 and Hong Kong 2023 distinct', async ({
   await expect(trigger).toHaveText('Nearby visits');
   await expect(page.locator('[data-selected-pin]')).toHaveCount(1);
   await trigger.click();
-  const picker = page.getByRole('dialog', { name: 'Explore visits' });
-  await expect(picker).toContainText('Across all dates');
+  const picker = page.getByRole('dialog', { name: /^Visits (near|to) / });
+  await expect(picker).toHaveAccessibleName('Visits near Guangzhou');
   const guangzhou = picker.getByRole('button', {
     name: 'Guangzhou, China, August 2026',
     exact: true,
@@ -130,7 +188,7 @@ test('return visits to the same city preserve the exact month', async ({
   await page.locator('[data-visit="auckland-2024-11"] button').click();
   const trigger = page.locator('[data-map-cluster][data-active="true"]');
   await trigger.click();
-  const picker = page.getByRole('dialog', { name: 'Explore visits' });
+  const picker = page.getByRole('dialog', { name: /^Visits (near|to) / });
   const older = picker.getByRole('button', {
     name: 'Auckland, New Zealand, October 2024',
     exact: true,

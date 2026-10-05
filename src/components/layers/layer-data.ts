@@ -4,28 +4,28 @@ export const layers = [
     drawing:
       'A person delegates to an agent, which operates a control inside the application on their behalf.',
     caption:
-      'An interface should serve humans and agents equally well. I design for accessibility, with semantic structure, explicit state, and clearly defined actions so both can navigate without guesswork.',
+      'I design interfaces that people and agents can use without guesswork. Accessible structure, clear feedback, and well-defined actions help both understand what is happening and what to do next.',
   },
   {
     name: 'Systems',
     drawing:
       'A request passes a defined boundary before reaching the application.',
     caption:
-      'I enjoy working at the boundaries between application logic, data, and models. From communication protocols to runtime harnesses, I build the integration layers that let agents interact safely with existing software and each other.',
+      'I connect application logic, data, and models so agents can work safely with existing software and each other. That includes the protocols they use to communicate and the environments they run in.',
   },
   {
     name: 'Applied AI',
     drawing:
       'The direct route and the model route share a verification checkpoint.',
     caption:
-      'I care about AI that solves actual problems. That means knowing where a model adds value, and pairing deterministic safeguards with agent judgment so complex workflows stay dependable under real-world use.',
+      'I build AI workflows that stay dependable in everyday use. I choose where a model adds value and combine agent judgment with explicit rules and checks.',
   },
   {
     name: 'Delivery',
     drawing:
       'An unfinished application outline leads to the same application completed and ready to use.',
     caption:
-      'I collaborate with the team to take ideas from concept to launch. I challenge assumptions, break tradeoffs, and stay hands-on every step of the way.',
+      'I work with teams to turn ideas into working products. From concept to launch, I challenge assumptions, weigh tradeoffs, and stay hands-on through implementation.',
   },
 ] as const;
 export const INITIAL_LAYER = 2;

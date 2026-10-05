@@ -140,16 +140,90 @@ export default function TravelMap({
   const positionPicker = () => {
     if (!pickerRef.current?.matches(':popover-open') || !triggerRef.current)
       return;
+    const picker = pickerRef.current;
+    picker.style.maxHeight = '';
+    const panel = picker.getBoundingClientRect();
     const anchor = triggerRef.current.getBoundingClientRect();
-    const panel = pickerRef.current.getBoundingClientRect();
-    pickerRef.current.scrollTop = 0;
-    // Position the top-layer panel directly before paint, including rapid reopen.
-    pickerRef.current.style.left = `${Math.max(16, Math.min(innerWidth - panel.width - 16, anchor.left))}px`;
-    pickerRef.current.style.top = `${
-      anchor.bottom + 8 + panel.height <= innerHeight - 16
-        ? anchor.bottom + 8
-        : Math.max(16, anchor.top - panel.height - 8)
-    }px`;
+    const selectedPin =
+      triggerRef.current.dataset.active === 'true'
+        ? mapRef.current
+            ?.querySelector('[data-selected-pin]')
+            ?.getBoundingClientRect()
+        : undefined;
+    // The expanded button sits above the actual location dot. Protect both.
+    const protectedArea = {
+      left: Math.min(anchor.left, selectedPin?.left ?? anchor.left),
+      right: Math.max(anchor.right, selectedPin?.right ?? anchor.right),
+      top: Math.min(anchor.top, selectedPin?.top ?? anchor.top),
+      bottom: Math.max(anchor.bottom, selectedPin?.bottom ?? anchor.bottom),
+    };
+    const gap = 12;
+    const top = Math.max(
+      16,
+      (headerRef.current?.getBoundingClientRect().bottom ?? 0) + gap
+    );
+    const bottom = innerHeight - 16;
+    const height = Math.min(panel.height, bottom - top);
+    const left = Math.max(
+      16,
+      Math.min(innerWidth - panel.width - 16, anchor.left)
+    );
+    const sideTop = Math.max(top, Math.min(bottom - height, anchor.top));
+    const pins = Array.from(
+      mapRef.current?.querySelectorAll(
+        'button:not(:disabled), [data-selected-pin]:not(button)'
+      ) ?? []
+    ).map((pin) => pin.getBoundingClientRect());
+    // Also try the edges of neighboring pins, so a narrow menu can clear them.
+    const belowEdges = [
+      protectedArea.bottom,
+      ...pins.map((pin) => pin.bottom),
+    ].filter((edge) => edge >= protectedArea.bottom);
+    const aboveEdges = [
+      protectedArea.top,
+      ...pins.map((pin) => pin.top),
+    ].filter((edge) => edge <= protectedArea.top);
+    const candidates = [
+      { x: protectedArea.right + gap, y: sideTop, height },
+      { x: protectedArea.left - gap - panel.width, y: sideTop, height },
+      ...belowEdges.map((edge) => ({
+        x: left,
+        y: edge + gap,
+        height: Math.min(height, bottom - edge - gap),
+      })),
+      ...aboveEdges.map((edge) => {
+        const availableHeight = Math.min(height, edge - gap - top);
+        return {
+          x: left,
+          y: edge - gap - availableHeight,
+          height: availableHeight,
+        };
+      }),
+    ];
+    const placement = candidates
+      .filter(
+        (candidate) =>
+          candidate.x >= 16 &&
+          candidate.x + panel.width <= innerWidth - 16 &&
+          candidate.height >= Math.min(height, 144)
+      )
+      .map((candidate) => ({
+        ...candidate,
+        overlaps: pins.filter(
+          (pin) =>
+            candidate.x < pin.right + gap &&
+            candidate.x + panel.width > pin.left - gap &&
+            candidate.y < pin.bottom + gap &&
+            candidate.y + candidate.height > pin.top - gap
+        ).length,
+      }))
+      .sort((a, b) => a.overlaps - b.overlaps || b.height - a.height)[0];
+    if (!placement) return;
+    // Constrain long lists to the available space instead of covering the pin.
+    picker.scrollTop = 0;
+    picker.style.left = `${placement.x}px`;
+    picker.style.top = `${placement.y}px`;
+    picker.style.maxHeight = `${placement.height}px`;
     pickerRef.current
       .querySelector<HTMLButtonElement>('[data-place-option]')
       ?.focus({ preventScroll: true });
@@ -175,6 +249,13 @@ export default function TravelMap({
   const pickerEntries = entries.filter((entry) =>
     pickerPlaces.some((place) => sameCity(place, entry))
   );
+  const pickerAnchor =
+    pickerPlaces.find((place) => sameCity(place, selected)) ?? pickerPlaces[0];
+  const pickerTitle = pickerAnchor
+    ? pickerPlaces.length > 1
+      ? `Visits near ${pickerAnchor.city}`
+      : `Visits to ${pickerAnchor.city}`
+    : 'Visits';
   return (
     <>
       <section
@@ -362,7 +443,7 @@ export default function TravelMap({
         ref={pickerRef}
         popover="auto"
         role="dialog"
-        aria-label="Explore visits"
+        aria-labelledby={`${pickerId}-title`}
         className={styles.placePicker}
         onBeforeToggle={(event) => {
           if (event.newState === 'open') requestAnimationFrame(positionPicker);
@@ -374,10 +455,7 @@ export default function TravelMap({
         }}
       >
         <div className={styles.pickerHeader}>
-          <div>
-            <p>Explore visits</p>
-            <p className={styles.pickerContext}>Across all dates</p>
-          </div>
+          <p id={`${pickerId}-title`}>{pickerTitle}</p>
           <button type="button" onClick={closePicker}>
             Close
           </button>
