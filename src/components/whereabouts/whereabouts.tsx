@@ -39,6 +39,7 @@ export default function Whereabouts({
     useTravelStory();
   const historyPanelRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLElement>(null);
+  const detailRef = useRef<HTMLDivElement>(null);
   const selectedVisit = history.find((visit) => visit.id === selectedId);
   const selectedPlace = selectedVisit ?? currentLocation;
   const stateLabel = stateLabels[getVisitState(selectedVisit, currentMonth)];
@@ -55,6 +56,7 @@ export default function Whereabouts({
         scrollRef={mapScrollRef}
         historyPanelRef={historyPanelRef}
         headerRef={headerRef}
+        detailRef={detailRef}
       />
       <header ref={headerRef} className={styles.header}>
         <Link className={styles.brand} href="/" prefetch={false}>
@@ -82,13 +84,14 @@ export default function Whereabouts({
         <div className={styles.explorer}>
           <div className={styles.mapColumn}>
             <div
+              ref={detailRef}
               role="status"
               aria-live="polite"
               aria-atomic="true"
               className={styles.detail}
             >
               <div>
-                <p className={styles.eyebrow}>
+                <p className={styles.status}>
                   {stateLabel}
                   {selectedVisit && ` · ${formatMonth(selectedVisit.month)}`}
                 </p>

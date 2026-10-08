@@ -11,12 +11,6 @@ const sans = localFont({
   weight: '100 900',
   display: 'swap',
 });
-const mono = localFont({
-  src: './fonts/mono.woff2',
-  variable: '--font-mono',
-  weight: '100 900',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: 'Wen Tjun',
@@ -42,7 +36,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
+    <html lang="en" className={sans.variable}>
       <body>
         <LegacyServiceWorkerCleanup />
         {children}

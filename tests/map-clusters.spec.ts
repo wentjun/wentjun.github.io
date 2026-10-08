@@ -232,3 +232,79 @@ for (const width of [390, 1440]) {
     }
   });
 }
+
+test('short-phone picker keeps its heading visible while reaching the last visit', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/whereabouts');
+  await page.locator('[data-visit="aewol-2026-05"] button').click();
+  await page.locator('[data-map-cluster][data-active="true"]').click();
+  const picker = page.getByRole('dialog', { name: 'Visits near Aewol' });
+  const close = picker.getByRole('button', { name: 'Close', exact: true });
+  await expect(picker.getByText('6 visits', { exact: true })).toBeVisible();
+  const panel = await picker.boundingBox();
+  const detail = await page.getByRole('status').boundingBox();
+  expect(panel?.y).toBeGreaterThanOrEqual(
+    (detail?.y ?? 0) + (detail?.height ?? 0)
+  );
+  const before = await close.boundingBox();
+  const last = picker.locator('[data-place-option]').last();
+  await last.focus();
+  await expect(last).toBeInViewport();
+  await expect(close).toBeInViewport();
+  const after = await close.boundingBox();
+  expect(after?.y).toBe(before?.y);
+  await expect
+    .poll(() =>
+      picker.locator('[data-picker-options]').evaluate((el) => el.scrollTop)
+    )
+    .toBeGreaterThan(0);
+  await page.keyboard.press('Enter');
+  await expect(picker).not.toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Busan');
+});
+
+for (const width of [320, 390, 1440]) {
+  test(`expanded map label contains enlarged text at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: width === 320 ? 568 : 844 });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/whereabouts');
+    await page.locator('[data-visit="aewol-2026-05"] button').click();
+    const trigger = page.locator('button[data-expanded-pin]');
+    const fontSize = await trigger.evaluate((el) =>
+      parseFloat(getComputedStyle(el).fontSize)
+    );
+    await page.addStyleTag({
+      content: `button[data-expanded-pin] { font-size: ${fontSize * 2}px !important; }`,
+    });
+    await expect(trigger).toBeEnabled();
+    await expect(async () => {
+      const bounds = await trigger.evaluate((el) => {
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        return {
+          button: el.getBoundingClientRect().toJSON(),
+          text: range.getBoundingClientRect().toJSON(),
+        };
+      });
+      expect(bounds.text.top).toBeGreaterThanOrEqual(bounds.button.top);
+      expect(bounds.text.bottom).toBeLessThanOrEqual(bounds.button.bottom);
+      expect(bounds.text.left).toBeGreaterThanOrEqual(bounds.button.left);
+      expect(bounds.text.right).toBeLessThanOrEqual(bounds.button.right);
+      const pin = await page
+        .locator('[data-selected-pin]:not(button)')
+        .boundingBox();
+      if (!pin) throw new Error('Missing selected pin');
+      // Engines round transformed bounds differently by fractions of a pixel.
+      expect(bounds.button.bottom).toBeLessThanOrEqual(pin.y + 0.5);
+    }).toPass();
+    await trigger.click();
+    await expect(page.getByRole('dialog')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(trigger).toBeFocused();
+  });
+}

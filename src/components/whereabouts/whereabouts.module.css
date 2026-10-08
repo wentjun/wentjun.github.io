@@ -1,10 +1,12 @@
 .page {
-  --ink: var(--color-text);
-  --muted: var(--color-text-muted);
+  --ink: var(--color-page);
+  --muted: var(--color-rule-header);
   --accent: var(--color-accent);
-  --paper: var(--color-page);
-  --rule: color-mix(in srgb, var(--muted) 15%, transparent);
-  --surface: var(--color-surface);
+  --paper: var(--color-text);
+  --rule: color-mix(in srgb, var(--ink) 16%, transparent);
+  --surface: color-mix(in srgb, var(--ink) 7%, var(--paper));
+  color-scheme: dark;
+  font-family: var(--font-sans), Arial, sans-serif;
   position: relative;
   isolation: isolate;
   height: 100svh;
@@ -32,22 +34,23 @@
   cursor: pointer;
 }
 .page :is(a, button, [tabindex]):focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--ink);
   outline-offset: 4px;
 }
 .page main:focus {
   outline: none;
 }
-.skip {
+.page .skip {
   position: absolute;
   top: -100px;
   left: 24px;
   padding: 12px;
-  background: var(--color-skip-surface);
+  background: var(--ink);
+  color: var(--paper);
   z-index: 10;
 }
 .skip:focus {
-  top: 16px;
+  top: 84px;
 }
 .header,
 .main,
@@ -72,7 +75,7 @@
 .brand {
   font-size: 30px;
   font-weight: 600;
-  letter-spacing: -1.3px;
+  letter-spacing: -0.04em;
   min-height: 44px;
   display: flex;
   align-items: center;
@@ -99,12 +102,9 @@
   z-index: 2;
 }
 
-.eyebrow {
-  font:
-    11px var(--font-mono),
-    monospace;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.status {
+  font-size: 15px;
+  line-height: 1.4;
   color: var(--muted);
 }
 
@@ -124,8 +124,7 @@
   display: flex;
   flex-direction: column;
   padding: 0 22px;
-  background: color-mix(in srgb, var(--paper) 87%, transparent);
-  backdrop-filter: blur(18px);
+  background: transparent;
   border-top: 1px solid var(--rule);
 }
 .mapColumn {
@@ -147,7 +146,7 @@
   font-size: clamp(58px, 8vw, 130px);
   font-weight: 450;
   line-height: 0.98;
-  letter-spacing: -0.065em;
+  letter-spacing: -0.04em;
   margin-top: 12px;
   overflow-wrap: anywhere;
 }
@@ -161,9 +160,6 @@
 }
 .placeTitle > span:empty {
   display: none;
-}
-.placeTitle {
-  animation: place-arrive 450ms ease-out both;
 }
 .detail .note {
   margin-top: 12px;
@@ -195,19 +191,11 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+  /* Keep the geography crisp; only protect the header, reading column and title. */
   background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--paper) 93%, transparent),
-      transparent 30%,
-      transparent 60%,
-      color-mix(in srgb, var(--paper) 96%, transparent)
-    ),
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--paper) 63%, transparent),
-      transparent 55%
-    );
+    linear-gradient(180deg, var(--paper) 76px, transparent 160px),
+    linear-gradient(90deg, var(--paper) 370px, transparent 590px),
+    linear-gradient(0deg, var(--paper) 31%, transparent 54%);
 }
 .mapStage,
 .map {
@@ -233,23 +221,23 @@
   position: absolute;
   left: 0;
   top: 0;
-  transition: transform 650ms cubic-bezier(0.22, 0.68, 0, 1);
 }
 .mapMarkers {
   position: absolute;
+  z-index: 1;
   inset: 0;
 }
 .pin[data-header-covered] {
   visibility: hidden;
 }
 .mapCamera image {
-  opacity: 0.9;
+  opacity: 1;
 }
 .countryHighlight {
-  fill: var(--accent);
-  fill-opacity: 0.2;
-  stroke: var(--accent);
-  stroke-opacity: 0.6;
+  fill: var(--ink);
+  fill-opacity: 0.28;
+  stroke: var(--ink);
+  stroke-opacity: 0.5;
   stroke-width: 1;
   opacity: 0;
   transition: opacity 450ms ease;
@@ -304,9 +292,8 @@
   margin-top: 8px;
 }
 .year h2 {
-  font:
-    13px var(--font-mono),
-    monospace;
+  font-size: 16px;
+  font-weight: 500;
   color: var(--muted);
   padding-bottom: 6px;
 }
@@ -319,11 +306,12 @@
   border-bottom: 1px solid var(--rule);
 }
 .year button {
+  position: relative;
   display: flex;
   align-items: center;
   width: 100%;
   gap: 10px;
-  padding: 14px 6px;
+  padding: 14px 8px 14px 16px;
   min-height: 76px;
   border: 0;
   background: transparent;
@@ -331,24 +319,29 @@
   scroll-margin-block: 24px;
 }
 .year button:hover {
-  background: var(--surface);
+  background: color-mix(in srgb, var(--ink) 4%, var(--paper));
 }
 .page .year button:focus-visible {
   outline-offset: -2px;
 }
 .year button[aria-pressed="true"] {
-  background: color-mix(in srgb, var(--accent) 4%, transparent);
-  box-shadow: inset 2px 0 var(--accent);
+  background: var(--surface);
+}
+.year button[aria-pressed="true"]::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  background: var(--accent);
 }
 .visitPlace {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 6px;
-}
-.visitPlace > span:last-child::before {
-  content: "·";
-  margin-right: 6px;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .visitPlace > span:first-child {
@@ -357,18 +350,17 @@
   font-weight: 500;
 }
 .year button[aria-pressed="true"] .visitPlace > span:first-child {
-  color: var(--accent);
+  font-weight: 600;
 }
 .visitPlace > span:last-child {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
 }
 .year time {
   margin-left: auto;
   color: var(--muted);
-  font:
-    11px var(--font-mono),
-    monospace;
+  font-size: 14px;
+  flex-shrink: 0;
 }
 .pin {
   position: absolute;
@@ -384,37 +376,32 @@
 }
 .pinDot {
   display: block;
-  width: 8px;
-  height: 8px;
-  border: 1.5px solid var(--paper);
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--ink);
   border-radius: 50%;
-  background: var(--ink);
-  box-shadow: 0 0 0 1px var(--ink);
+  background: var(--paper);
+  outline: 1px solid var(--paper);
 }
 .pin[data-current="true"] .pinDot {
   background: var(--accent);
-  box-shadow:
-    0 0 0 1px var(--accent),
-    0 0 0 5px var(--color-focus-halo);
 }
 .pin[data-active="true"],
 .pin:focus-visible {
   z-index: 2;
 }
 .pin[data-active="true"] .pinDot {
+  width: 13px;
+  height: 13px;
   background: var(--accent);
-  box-shadow:
-    0 0 0 1px var(--accent),
-    0 0 0 7px var(--color-focus-halo);
 }
 .pin[data-active="true"]::after {
   content: "";
   position: absolute;
-  inset: 2px;
-  border: 1px solid var(--accent);
+  inset: 7px;
+  border: 1px solid var(--ink);
   border-radius: 50%;
   pointer-events: none;
-  animation: place-pulse 2s ease-out 2 both;
 }
 
 @media (min-width: 801px) and (max-width: 1100px) {
@@ -429,6 +416,12 @@
   }
   .history {
     padding-inline: 16px;
+  }
+  .mapSection::after {
+    background:
+      linear-gradient(180deg, var(--paper) 76px, transparent 150px),
+      linear-gradient(90deg, var(--paper) 340px, transparent 470px),
+      linear-gradient(0deg, var(--paper) 31%, transparent 54%);
   }
 }
 @media (max-width: 800px) {
@@ -473,7 +466,7 @@
     margin-top: 6px;
   }
   .placeTitle > span {
-    font-size: 12px;
+    font-size: 14px;
     margin-top: 8px;
   }
   .year {
@@ -486,17 +479,12 @@
     font-size: 18px;
   }
   .year time {
-    font-size: 12px;
+    font-size: 13px;
   }
   .mapSection::after {
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--paper) 93%, transparent),
-      transparent 24%,
-      transparent 39%,
-      color-mix(in srgb, var(--paper) 87%, transparent) 63%,
-      var(--paper)
-    );
+    background:
+      linear-gradient(180deg, var(--paper) 60px, transparent 110px),
+      linear-gradient(0deg, var(--paper) 61%, transparent 77%);
   }
 }
 @media (max-width: 540px) {
@@ -548,33 +536,8 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .mapCamera,
   .countryHighlight {
     transition: none;
-  }
-  .placeTitle,
-  .pin[data-active="true"]::after {
-    animation: none;
-  }
-}
-@keyframes place-pulse {
-  from {
-    transform: scale(0.8);
-    opacity: 0.6;
-  }
-  to {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-@keyframes place-arrive {
-  from {
-    transform: translateY(6px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
   }
 }
 
@@ -590,15 +553,21 @@
   stroke-linejoin: round;
 }
 .pin:is(:hover, :focus-visible, [aria-expanded="true"]) .visitStack {
-  color: var(--accent);
-  fill: var(--surface);
+  color: var(--ink);
+  fill: var(--paper);
 }
 .pin[data-expanded-pin] {
-  width: 160px;
+  width: max-content;
+  min-width: 160px;
+  max-width: calc(100vw - 32px);
+  height: auto;
+  min-height: 44px;
+  padding: 8px 12px;
+  overflow-wrap: anywhere;
   border: 1px solid var(--rule);
   border-radius: 4px;
   background: var(--paper);
-  color: var(--accent);
+  color: var(--ink);
   font-size: 14px;
 }
 .pin[data-expanded-pin]::after {
@@ -608,6 +577,7 @@
   background: var(--surface);
 }
 .pin:disabled {
+  visibility: hidden;
   pointer-events: none;
 }
 .pin[data-selected-pin]:not(button) {
@@ -623,16 +593,14 @@
   border: 1px solid var(--muted);
   background: var(--paper);
   color: var(--ink);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-color: var(--muted) var(--paper);
-  scrollbar-width: thin;
-  scroll-padding-block: 80px 12px;
+  overflow: hidden;
+}
+.placePicker:popover-open {
+  display: flex;
+  flex-direction: column;
 }
 .pickerHeader {
-  position: sticky;
-  top: -8px;
-  z-index: 1;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -657,7 +625,30 @@
   color: var(--muted);
 }
 .pickerOptions {
+  min-height: 0;
   padding-top: 4px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--muted) var(--paper);
+  scrollbar-width: thin;
+  scroll-padding-block: 4px;
+}
+.pickerCount {
+  display: none;
+}
+@media (max-width: 540px) and (max-height: 700px) {
+  .placePicker {
+    width: calc(100vw - 32px);
+  }
+}
+@media (max-width: 800px) {
+  .pickerHeader .pickerCount {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 400;
+  }
 }
 .pickerOptions button {
   display: flex;
@@ -695,7 +686,8 @@
   font-size: 14px;
 }
 .pickerOptions button[aria-pressed="true"] {
-  color: var(--accent);
+  color: var(--ink);
+  font-weight: 600;
   background: var(--surface);
 }
 .pickerOptions button:hover,

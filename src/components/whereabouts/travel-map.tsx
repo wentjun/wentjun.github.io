@@ -1,6 +1,7 @@
 import {
   Fragment,
   type RefObject,
+  useCallback,
   useEffect,
   useId,
   useLayoutEffect,
@@ -9,6 +10,7 @@ import {
   useState,
 } from 'react';
 import { currentLocation, formatMonth, type Place, visits } from './places';
+import { useTravelCamera } from './travel-camera';
 import styles from './whereabouts.module.css';
 
 const sameCity = (a: Place, b: Place) =>
@@ -66,6 +68,7 @@ export default function TravelMap({
   scrollRef,
   historyPanelRef,
   headerRef,
+  detailRef,
   countryPaths,
 }: {
   selected: Place;
@@ -73,61 +76,98 @@ export default function TravelMap({
   scrollRef: RefObject<HTMLElement | null>;
   historyPanelRef: RefObject<HTMLElement | null>;
   headerRef: RefObject<HTMLElement | null>;
+  detailRef: RefObject<HTMLElement | null>;
   countryPaths: Record<string, string>;
 }) {
   const [mapSize, setMapSize] = useState({ width: 900, height: 450 });
   const [measured, setMeasured] = useState(false);
   const [headerClearance, setHeaderClearance] = useState(0);
-  const [historyBounds, setHistoryBounds] = useState<{
-    left: number;
-    right: number;
-    top: number;
-    bottom: number;
-  } | null>(null);
+  const [readingBounds, setReadingBounds] = useState<
+    {
+      left: number;
+      right: number;
+      top: number;
+      bottom: number;
+    }[]
+  >([]);
   const pickerId = useId();
   const pickerContext = useRef('');
   const pickerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const [pickerPlaces, setPickerPlaces] = useState<Place[]>([]);
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [expandedSize, setExpandedSize] = useState({ width: 160, height: 44 });
+  const observeExpanded = useCallback((element: HTMLButtonElement | null) => {
+    if (!element) return;
+    const measure = () => {
+      const { width, height } = element.getBoundingClientRect();
+      setExpandedSize((previous) =>
+        previous.width === width && previous.height === height
+          ? previous
+          : { width, height }
+      );
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
   const mapWidth = Math.max(mapSize.width, mapSize.height * 2);
   const compact = mapSize.width <= 800;
   const panelEnd = Math.min(420, mapSize.width * 0.37);
   const focalX = compact ? mapSize.width / 2 : (panelEnd + mapSize.width) / 2;
   const focalY = mapSize.height * (compact ? 0.33 : 0.46);
   const mapRef = useRef<HTMLFieldSetElement>(null);
-  useLayoutEffect(() => {
+  const measure = useCallback(() => {
     const element = mapRef.current;
     if (!element) return;
-    const measure = () => {
-      setMapSize({ width: element.clientWidth, height: element.clientHeight });
-      const mapBounds = element.getBoundingClientRect();
-      if (headerRef.current) {
-        setHeaderClearance(
-          headerRef.current.getBoundingClientRect().bottom - mapBounds.top + 8
-        );
-      }
-      const panel = historyPanelRef.current;
-      if (panel) {
+    setMapSize({ width: element.clientWidth, height: element.clientHeight });
+    const mapBounds = element.getBoundingClientRect();
+    if (headerRef.current) {
+      setHeaderClearance(
+        headerRef.current.getBoundingClientRect().bottom - mapBounds.top + 8
+      );
+    }
+    setReadingBounds(
+      [historyPanelRef.current, detailRef.current].flatMap((panel) => {
+        if (!panel) return [];
         const bounds = panel.getBoundingClientRect();
-        setHistoryBounds({
-          left: bounds.left - mapBounds.left,
-          right: bounds.right - mapBounds.left,
-          top: bounds.top - mapBounds.top,
-          bottom: bounds.bottom - mapBounds.top,
-        });
-      }
-      setMeasured(true);
-    };
-    measure();
+        return [
+          {
+            left: bounds.left - mapBounds.left,
+            right: bounds.right - mapBounds.left,
+            top: bounds.top - mapBounds.top,
+            bottom: bounds.bottom - mapBounds.top,
+          },
+        ];
+      })
+    );
+    setMeasured(true);
+  }, [historyPanelRef, headerRef, detailRef]);
+  useLayoutEffect(measure, [measure]);
+  // The header and reading surfaces are later siblings. Subscribe after all
+  // sibling refs attach; their title/notes can resize independently of the map.
+  useEffect(() => {
+    const element = mapRef.current;
+    if (!element) return;
     const observer = new ResizeObserver(measure);
     observer.observe(element);
     if (headerRef.current) observer.observe(headerRef.current);
     if (historyPanelRef.current) observer.observe(historyPanelRef.current);
+    if (detailRef.current) observer.observe(detailRef.current);
+    measure();
     return () => observer.disconnect();
-  }, [historyPanelRef, headerRef]);
-  const center = project(selected);
-  const pixelsPerUnit = (mapWidth * mapScale) / 900;
+  }, [measure, historyPanelRef, headerRef, detailRef]);
+  const center = project(
+    pins.find((pin) => sameCity(pin, selected)) ?? selected
+  );
+  const camera = useTravelCamera(
+    { ...center, scale: (mapWidth * mapScale) / 900 },
+    mapSize.width,
+    mapSize.height
+  );
+  const pixelsPerUnit = camera.scale;
   const groups = useMemo(() => groupPins(pixelsPerUnit), [pixelsPerUnit]);
   // A history selection or resize invalidates the open picker's map context.
   useEffect(() => {
@@ -137,10 +177,12 @@ export default function TravelMap({
     )
       pickerRef.current?.hidePopover();
   }, [selected.id, mapSize.width, mapSize.height]);
-  const positionPicker = () => {
+  const positionPicker = (focus = true) => {
     if (!pickerRef.current?.matches(':popover-open') || !triggerRef.current)
       return;
     const picker = pickerRef.current;
+    const options = picker.querySelector<HTMLElement>('[data-picker-options]');
+    const scrollTop = options?.scrollTop ?? 0;
     picker.style.maxHeight = '';
     const panel = picker.getBoundingClientRect();
     const anchor = triggerRef.current.getBoundingClientRect();
@@ -200,44 +242,67 @@ export default function TravelMap({
         };
       }),
     ];
-    const placement = candidates
-      .filter(
-        (candidate) =>
-          candidate.x >= 16 &&
-          candidate.x + panel.width <= innerWidth - 16 &&
-          candidate.height >= Math.min(height, 144)
-      )
-      .map((candidate) => ({
-        ...candidate,
-        overlaps: pins.filter(
-          (pin) =>
-            candidate.x < pin.right + gap &&
-            candidate.x + panel.width > pin.left - gap &&
-            candidate.y < pin.bottom + gap &&
-            candidate.y + candidate.height > pin.top - gap
-        ).length,
-      }))
-      .sort((a, b) => a.overlaps - b.overlaps || b.height - a.height)[0];
+    const compact = innerWidth <= 540 && innerHeight <= 700;
+    const compactHeight = Math.min(
+      height,
+      innerHeight * 0.55,
+      bottom - protectedArea.bottom - gap,
+      bottom - (detailRef.current?.getBoundingClientRect().bottom ?? top) - gap
+    );
+    const placement =
+      compact && compactHeight >= 144
+        ? {
+            x: (innerWidth - panel.width) / 2,
+            y: bottom - compactHeight,
+            height: compactHeight,
+          }
+        : candidates
+            .filter(
+              (candidate) =>
+                candidate.x >= 16 &&
+                candidate.x + panel.width <= innerWidth - 16 &&
+                candidate.height >= Math.min(height, 144)
+            )
+            .map((candidate) => ({
+              ...candidate,
+              overlaps: pins.filter(
+                (pin) =>
+                  candidate.x < pin.right + gap &&
+                  candidate.x + panel.width > pin.left - gap &&
+                  candidate.y < pin.bottom + gap &&
+                  candidate.y + candidate.height > pin.top - gap
+              ).length,
+            }))
+            .sort((a, b) => a.overlaps - b.overlaps || b.height - a.height)[0];
     if (!placement) return;
     // Constrain long lists to the available space instead of covering the pin.
-    picker.scrollTop = 0;
     picker.style.left = `${placement.x}px`;
     picker.style.top = `${placement.y}px`;
     picker.style.maxHeight = `${placement.height}px`;
-    pickerRef.current
-      .querySelector<HTMLButtonElement>('[data-place-option]')
-      ?.focus({ preventScroll: true });
+    if (options) options.scrollTop = focus ? 0 : scrollTop;
+    if (focus)
+      pickerRef.current
+        .querySelector<HTMLButtonElement>('[data-place-option]')
+        ?.focus({ preventScroll: true });
   };
+  // An open picker follows its moving anchor without resetting keyboard focus.
+  useLayoutEffect(() => {
+    if (!pickerOpen) return;
+    if (!triggerRef.current?.isConnected) pickerRef.current?.hidePopover();
+    else positionPicker(false);
+  });
   const closePicker = () => {
     pickerRef.current?.hidePopover();
     triggerRef.current?.focus({ preventScroll: true });
   };
-  const cameraX = focalX - center.x * pixelsPerUnit;
-  const cameraY = focalY - center.y * pixelsPerUnit;
+  const cameraX = focalX - camera.x * pixelsPerUnit;
+  const cameraY = focalY - camera.y * pixelsPerUnit;
   const cameraStyle = {
-    width: mapWidth * mapScale,
-    height: (mapWidth * mapScale) / 2,
+    width: 900 * pixelsPerUnit,
+    height: 450 * pixelsPerUnit,
     transform: `translate(${cameraX}px, ${cameraY}px)`,
+    // Land, targets and occlusion share this exact frame; no CSS interpolation.
+    transition: 'none',
   };
   const selectedGroup = groups.find((group) =>
     group.some((place) => sameCity(place, selected))
@@ -313,30 +378,40 @@ export default function TravelMap({
                       const point = project(pin);
                       const x = point.x * pixelsPerUnit;
                       const markerY = point.y * pixelsPerUnit;
-                      const y = markerY - (expanded ? 44 : 0);
-                      const halfWidth = expanded ? 80 : 22;
+                      const activeOffset = expandedSize.height / 2 + 22;
+                      const y = markerY - (expanded ? activeOffset : 0);
+                      const halfWidth = expanded ? expandedSize.width / 2 : 22;
+                      const halfHeight = expanded
+                        ? expandedSize.height / 2
+                        : 22;
                       // The active visit's label takes priority over other map targets.
                       const behindActiveControl =
                         !active &&
                         selectedHasPicker &&
-                        Math.abs(x + cameraX - focalX) < 102 &&
-                        Math.abs(y + cameraY - (focalY - 44)) < 44;
-                      // Keep covered pins drawn, but use their list controls for access.
-                      const covered =
-                        historyBounds &&
-                        x + cameraX + halfWidth > historyBounds.left &&
-                        x + cameraX - halfWidth < historyBounds.right &&
-                        y + cameraY + 22 > historyBounds.top &&
-                        y + cameraY - 22 < historyBounds.bottom;
-                      const underHeader = y + cameraY - 22 < headerClearance;
+                        Math.abs(x - center.x * pixelsPerUnit) <
+                          expandedSize.width / 2 + 22 &&
+                        Math.abs(
+                          y - (center.y * pixelsPerUnit - activeOffset)
+                        ) <
+                          expandedSize.height / 2 + 22;
+                      // Reading surfaces take priority; these visits remain in the list.
+                      const covered = readingBounds.some(
+                        (bounds) =>
+                          x + cameraX + halfWidth > bounds.left &&
+                          x + cameraX - halfWidth < bounds.right &&
+                          y + cameraY + halfHeight > bounds.top &&
+                          y + cameraY - halfHeight < bounds.bottom
+                      );
+                      const underHeader =
+                        y + cameraY - halfHeight < headerClearance;
                       const visible =
                         !covered &&
                         !underHeader &&
                         !behindActiveControl &&
                         x + cameraX >= halfWidth &&
                         x + cameraX <= mapSize.width - halfWidth &&
-                        y + cameraY >= 22 &&
-                        y + cameraY <= mapSize.height - 22;
+                        y + cameraY >= halfHeight &&
+                        y + cameraY <= mapSize.height - halfHeight;
                       const label = hasPicker
                         ? `${controlText} ${group.length > 1 ? 'to' : 'for'} ${pin.city}`
                         : `${pin.city}, ${pin.country}`;
@@ -356,12 +431,16 @@ export default function TravelMap({
                           <button
                             type="button"
                             className={styles.pin}
+                            ref={expanded ? observeExpanded : undefined}
                             style={{ left: x, top: y }}
                             aria-label={label}
                             aria-pressed={hasPicker ? undefined : active}
                             aria-expanded={
                               hasPicker
-                                ? pickerOpen && pickerPlaces === group
+                                ? pickerOpen &&
+                                  triggerRef.current?.dataset.placeIds?.split(
+                                    ' '
+                                  )[0] === group[0].id
                                 : undefined
                             }
                             aria-haspopup={hasPicker ? 'dialog' : undefined}
@@ -446,7 +525,8 @@ export default function TravelMap({
         aria-labelledby={`${pickerId}-title`}
         className={styles.placePicker}
         onBeforeToggle={(event) => {
-          if (event.newState === 'open') requestAnimationFrame(positionPicker);
+          if (event.newState === 'open')
+            requestAnimationFrame(() => positionPicker());
         }}
         onToggle={(event) => {
           const open = event.newState === 'open';
@@ -455,12 +535,15 @@ export default function TravelMap({
         }}
       >
         <div className={styles.pickerHeader}>
-          <p id={`${pickerId}-title`}>{pickerTitle}</p>
+          <div>
+            <p id={`${pickerId}-title`}>{pickerTitle}</p>
+            <p className={styles.pickerCount}>{pickerEntries.length} visits</p>
+          </div>
           <button type="button" onClick={closePicker}>
             Close
           </button>
         </div>
-        <div className={styles.pickerOptions}>
+        <div className={styles.pickerOptions} data-picker-options>
           {pickerEntries.map((place) => (
             <button
               key={place.id}

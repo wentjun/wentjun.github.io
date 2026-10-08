@@ -229,7 +229,7 @@ test('selects a nearby place from its map pin and switches country highlights', 
 });
 
 for (const width of [390, 1440]) {
-  test(`keeps map pins covered by the travel list out of keyboard navigation at ${width}px`, async ({
+  test(`keeps map pins clear of reading surfaces and out of keyboard navigation at ${width}px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 900 });
@@ -237,19 +237,25 @@ for (const width of [390, 1440]) {
     for (const visit of history) {
       await row(page, visit.id).getByRole('button').click();
       const obscuredControls = await map(page).evaluate((element) => {
-        const panel = document.querySelector('[aria-label="Travel history"]');
-        if (!panel) throw new Error('Missing travel panel');
-        const cover = panel.getBoundingClientRect();
+        const panels = document.querySelectorAll(
+          '[aria-label="Travel history"], [role="status"]'
+        );
+        if (panels.length !== 2) throw new Error('Missing reading surfaces');
+        const covers = [...panels].map((panel) =>
+          panel.getBoundingClientRect()
+        );
         return [...element.querySelectorAll('button')]
           .filter((pin) => {
             const bounds = pin.getBoundingClientRect();
-            return (
-              bounds.right > cover.left &&
-              bounds.left < cover.right &&
-              bounds.bottom > cover.top &&
-              bounds.top < cover.bottom &&
-              (pin.tabIndex !== -1 ||
-                pin.getAttribute('aria-hidden') !== 'true')
+            return covers.some(
+              (cover) =>
+                bounds.right > cover.left &&
+                bounds.left < cover.right &&
+                bounds.bottom > cover.top &&
+                bounds.top < cover.bottom &&
+                (pin.tabIndex !== -1 ||
+                  pin.getAttribute('aria-hidden') !== 'true' ||
+                  getComputedStyle(pin).visibility !== 'hidden')
             );
           })
           .map((pin) => pin.getAttribute('aria-label'));
@@ -438,6 +444,7 @@ for (const width of [320, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await openPage(page);
     await row(page, history[2].id).getByRole('button').click();
+    await page.getByRole('link', { name: 'Skip to content' }).focus();
     await page.addScriptTag({ path: require.resolve('axe-core/axe.min.js') });
     const violations = await page.evaluate(async () => {
       const axe = (window as unknown as { axe: typeof import('axe-core') }).axe;

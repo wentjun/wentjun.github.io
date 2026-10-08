@@ -138,34 +138,44 @@ typography:
     fontFamily: "var(--font-sans), Arial, sans-serif"
     fontSize: "15px"
   marker:
-    fontFamily: "var(--font-mono), monospace"
+    fontFamily: "var(--font-sans), Arial, sans-serif"
     fontSize: "12px"
   tab-index:
-    fontFamily: "var(--font-mono), monospace"
+    fontFamily: "var(--font-sans), Arial, sans-serif"
     fontSize: "11px"
   tab-index-mobile:
-    fontFamily: "var(--font-mono), monospace"
+    fontFamily: "var(--font-sans), Arial, sans-serif"
     fontSize: "11px"
   map-place-desktop-max:
     fontFamily: "var(--font-sans), Arial, sans-serif"
     fontSize: "130px"
     fontWeight: 450
+    lineHeight: 0.98
+    letterSpacing: "-0.04em"
   map-place-tablet-min:
     fontFamily: "var(--font-sans), Arial, sans-serif"
     fontSize: "44px"
     fontWeight: 450
+    lineHeight: 0.98
+    letterSpacing: "-0.04em"
   map-place-tablet-max:
     fontFamily: "var(--font-sans), Arial, sans-serif"
     fontSize: "76px"
     fontWeight: 450
+    lineHeight: 0.98
+    letterSpacing: "-0.04em"
   map-place-phone-max:
     fontFamily: "var(--font-sans), Arial, sans-serif"
     fontSize: "64px"
     fontWeight: 450
+    lineHeight: 0.98
+    letterSpacing: "-0.04em"
   map-place-short:
     fontFamily: "var(--font-sans), Arial, sans-serif"
     fontSize: "50px"
     fontWeight: 450
+    lineHeight: 0.98
+    letterSpacing: "-0.04em"
   map-brand-compact:
     fontFamily: "var(--font-sans), Arial, sans-serif"
     fontSize: "26px"
@@ -182,9 +192,33 @@ typography:
     fontFamily: "var(--font-sans), Arial, sans-serif"
     fontSize: "12px"
     fontWeight: 400
-  map-status-short:
-    fontFamily: "var(--font-mono), monospace"
-    fontSize: "9px"
+  map-picker-count:
+    fontFamily: "var(--font-sans), Arial, sans-serif"
+    fontSize: "13px"
+    fontWeight: 400
+    lineHeight: 1.3
+  map-status:
+    fontFamily: "var(--font-sans), Arial, sans-serif"
+    fontSize: "15px"
+    lineHeight: 1.4
+  map-year:
+    fontFamily: "var(--font-sans), Arial, sans-serif"
+    fontSize: "16px"
+    fontWeight: 500
+  map-date:
+    fontFamily: "var(--font-sans), Arial, sans-serif"
+    fontSize: "14px"
+  map-date-compact:
+    fontFamily: "var(--font-sans), Arial, sans-serif"
+    fontSize: "13px"
+  map-picker-title:
+    fontFamily: "var(--font-sans), Arial, sans-serif"
+    fontSize: "16px"
+    fontWeight: 500
+    lineHeight: 1.3
+  map-picker-detail:
+    fontFamily: "var(--font-sans), Arial, sans-serif"
+    fontSize: "14px"
 rounded:
   control: "3px"
   map-visit-control: "4px"
@@ -224,6 +258,15 @@ components:
     textColor: "{colors.dark-brick}"
   profile-links:
     textColor: "{colors.deep-slate}"
+  map-atlas:
+    backgroundColor: "{colors.deep-slate}"
+    textColor: "{colors.pale-mineral}"
+    height: "100svh"
+  map-visit-picker:
+    backgroundColor: "{colors.deep-slate}"
+    textColor: "{colors.pale-mineral}"
+    padding: "8px 12px 12px"
+    width: "min(320px, calc(100vw - 32px))"
 ---
 
 # Design System: Wen Tjun — Full-stack builder
@@ -311,7 +354,7 @@ Copper-colored rods use a dark brown shaft (`#644735`), warm highlight (`#d5a780
 
 ## Typography
 
-Use the bundled variable sans-serif for all principal text, and the bundled variable monospace for small numbers and angular readouts. The font files are `src/app/fonts/sans.woff2` and `src/app/fonts/mono.woff2`; the layout declares both across weights 100–900. Family names are not declared in the source, so these assets are the reference. Sans-serif fallbacks are Arial and a generic sans-serif; numerical labels fall back to monospace.
+Use the bundled variable sans-serif throughout the homepage and Whereabouts, including small numbers and angular readouts. The font file is `src/app/fonts/sans.woff2`; the layout declares weights 100–900. Its family name is not declared in the source, so this asset is the reference. Fallbacks are Arial and a generic sans-serif. Sculpture marker numbers, perspective indices, and the rotation readout use tabular numerals to keep digits aligned.
 
 The headline uses `clamp(42px, 4vw, 58px)` at weight 620, line height 1.04, and −0.035em tracking; “builder.” starts a second line in rust. Tablet uses `clamp(38px, 4.8vw, 52px)`. Mobile uses `clamp(40px, 10.5vw, 56px)` at line height 0.98, reducing to 38px on narrow screens.
 
@@ -383,7 +426,7 @@ Selected engravings always use engraving rust. In the separated desktop pose, a 
 
 ### Inputs and interaction states
 
-The rotation input is a thin sage track (3px) with a round rust thumb, a pale mineral border, and a small center tick. Its interactive area is 44px tall. The WebKit thumb is 18px including its border; Firefox uses a 14px content box plus a 2px border on each side. It rotates from −30° to +30° in one-degree steps. A monospace angle readout appears above 1100px; smaller layouts hide the readout. There are no text-entry forms on the current page.
+The rotation input is a thin sage track (3px) with a round rust thumb, a pale mineral border, and a small center tick. Its interactive area is 44px tall. The WebKit thumb is 18px including its border; Firefox uses a 14px content box plus a 2px border on each side. It rotates from −30° to +30° in one-degree steps. A sans-serif angle readout with tabular numerals appears above 1100px; smaller layouts hide the readout. There are no text-entry forms on the current page.
 
 Default and Reset all select **03 Applied AI**, with the plates separated at **0°**. Assembly and rotation preserve the selected perspective. Pose changes use cubic ease-out (`1 - (1 - progress)^3`) over 450ms; reduced-motion preferences apply the destination immediately. The sculpture frame remains fixed during interaction so surrounding content does not move.
 
@@ -422,32 +465,53 @@ Homepage destination icons use a consistent 16px SVG stroke: a right arrow for i
 
 ## Whereabouts
 
-The travel record shares the homepage's mineral, slate, and rust identity while keeping an atlas composition: map, large selected place, and chronological history. Preserve the existing place-title scale and compact header; the homepage's taller mobile header is not appropriate for the fixed-height map.
+The approved travel surface is a continuous slate dark-water atlas: geography, a large selected place, and chronological history share one canvas. The homepage sections and tokens above remain unchanged; these rules apply only to `/whereabouts`. Recorded from the implemented surface on 8 October 2026.
 
 ### Shared colors
 
-Local map aliases resolve to global semantic tokens: `--ink` → `--color-text`, `--muted` → `--color-text-muted`, `--accent` → `--color-accent`, `--paper` → `--color-page`, and `--surface` → `--color-surface`. Rules, selected rows, and map readability overlays derive their transparency with `color-mix(in srgb, …, transparent)`. The pin halo and skip-link background use `--color-focus-halo` and `--color-skip-surface`. Black in the history mask describes opacity, not a visible palette color. The bundled geographic artwork retains its authored colors.
+Local map aliases reverse the homepage's foreground and background: `--ink` → `--color-page` (pale mineral), `--paper` → `--color-text` (deep slate), `--muted` → `--color-rule-header` (mist rule), and `--accent` → `--color-accent` (burnt rust). `--rule` mixes 16% ink with transparent; `--surface` mixes 7% ink with paper. The surface declares a dark color scheme. The skip link uses mineral behind slate text; map focus outlines and the selected pin ring use mineral, not the homepage's rust halo.
+
+The transparent-water SVG reveals the slate canvas. Its muted sage land uses the existing `sage-rule` color and `marker-outline` coastlines; the generator and bundled artwork agree. Selected countries use mineral fill at 28% opacity and mineral stroke at 50%. Current and selected location dots use rust with mineral borders; selection adds a mineral ring and enlarges the dot from 9px to 13px. History selection uses the subtle 7% mineral/slate surface, heavier city text, and a rust dot edged in mineral. Unselected history hover uses a quieter 4% mineral/slate fill so it does not mimic selection. Rust never supplies the sole contrast cue.
+
+**The Continuous Atlas Rule.** Keep header, history, title, and water on one slate field. Readability comes from broad map-wide slate fades, with a transparent history panel and no local title rectangle or frosted sidebar. Desktop fades protect the header and left reading column, and blend the bottom slate field from 31% to transparent at 54%; at ≤800px the bottom fade runs from 61% to 77%. The picker remains an opaque slate native popover.
 
 ### Typography and layout
 
+Every Whereabouts text role inherits the existing bundled proportional sans via `var(--font-sans), Arial, sans-serif`. `src/app/layout.tsx` loads `src/app/fonts/sans.woff2` as a local variable font with weights 100–900. Titles, statuses, dates, years, controls, popover content, and mobile text are real DOM text using that font, not lettering baked into artwork. The homepage uses the same sans-serif family, including its numerical labels and rotation readout; no monospace font is loaded.
+
 | Role | Desktop | Compact / short screens |
 | --- | --- | --- |
-| Selected place | `clamp(58px, 8vw, 130px)`, weight 450, line height 0.98 | At ≤800px: `clamp(44px, 10vw, 76px)`; ≤540px: `clamp(42px, 12vw, 64px)`; height ≤650px: 50px, or 40px at ≤540px width |
-| Wordmark | 30px, weight 600 | 26px at ≤800px |
-| Visit city | 20px, weight 500 | 18px at ≤800px |
-| Country | 16px below the selected place; 12px in history | 12px |
-| Temporal status | 11px monospace | 11px, including short phones |
-| Year / date | 13px / 11px monospace | Dates become 12px at ≤800px |
+| Selected place | `clamp(58px, 8vw, 130px)`, weight 450, line height 0.98, tracking −0.04em | At ≤800px: `clamp(44px, 10vw, 76px)`; ≤540px: `clamp(42px, 12vw, 64px)`; height ≤650px: 50px, or 40px at ≤540px width |
+| Wordmark | 30px, weight 600, tracking −0.04em | 26px at ≤800px |
+| Visit city | 20px, weight 500 (600 selected), tracking −0.5px | 18px at ≤800px |
+| Country | 16px below the selected place; 13px in history | Selected-place country becomes 14px at ≤800px; history stays 13px |
+| Temporal status | 15px, line height 1.4 | Unchanged, including short phones |
+| Year / date | 16px, weight 500 / 14px | Dates become 13px at ≤800px |
 | Map attribution | 12px | 12px |
-| Picker title and city | 16px | 16px |
+| Picker title and city | 16px; title weight 500, line height 1.3; selected option weight 600 | Unchanged |
 | Picker detail and Close | 14px | 14px |
+| Picker visit count | Hidden above 800px | 13px, weight 400, line height 1.3 at ≤800px, regardless of height |
 
-The selected place keeps its existing −0.065em tracking as an intentional map display treatment. These map-specific sizes supplement the homepage ramp rather than replacing it.
+**The Proportional Atlas Rule.** Use the bundled sans everywhere on Whereabouts, including statuses, year/date, popover, and mobile. Keep captions in natural case with normal spacing; no monospace, uppercase transformations, or tracked captions. Preserve the selected-place title's existing 130px maximum with its implemented −0.04em tracking.
 
-The page fills `100svh`; travel history scrolls independently. Visit rows use an inset keyboard-focus outline so the scroll container does not clip its sides. Above 800px, history and map detail occupy separate columns. At ≤800px they stack. Header minimum heights are 76px desktop, 60px at ≤800px, 56px at ≤540px, and 48px on screens ≤650px high. The attribution link has a 44px minimum height. On short screens (height ≤650px), the footer remains hidden to preserve map and history space.
+The page fills `100svh`; travel history scrolls independently. Visit rows use an inset keyboard-focus outline so the scroll container does not clip its sides. Above 800px, history and map detail occupy separate columns: 340px history with a 52px gap, reducing to 310px with a 32px gap at 801–1100px. At ≤800px they stack, with map detail above history. Header minimum heights are 76px desktop, 60px at ≤800px, 56px at ≤540px, and 48px on screens ≤650px high. Visit rows have a 76px minimum height, or 68px at ≤800px. The attribution link has a 44px minimum height. On short screens (height ≤650px), the footer remains hidden to preserve map and history space.
 
 ### Navigation and visit picker
 
+The existing scroll-driven navigation remains: scrolling history changes the selected visit; vertical wheel and single-finger gestures over the map feed that same history. Pinch-to-zoom and horizontal gestures retain their browser behavior. History rows and visible map markers also select visits; the map measures history and status/title bounds, disables and hides map controls intersecting either reading surface, and keeps those visits selectable from the history list. Status copy remains “Currently in”, “Was in”, or “Heading to” with the selected visit date when applicable.
+
 “Back to home” pairs its text with a 16px left arrow using the homepage icon vocabulary: 1.3px current-color stroke, round caps and joins. The decorative icon is hidden from assistive technology; the link retains its text name and 44px target height.
 
-Grouped map markers open a native popover titled “Visits near [city]”; repeat visits confined to one city use “Visits to [city]”. Each option retains its country and date. No additional “Across all dates” subtitle is needed. Placement accounts for the trigger, selected location dot, neighboring pins, header, and viewport edges. Long lists scroll within the available space. Close and Escape restore focus; selection or viewport changes dismiss stale context. The expanded map trigger retains its intentional 4px corner radius.
+Grouped map markers open a native popover titled “Visits near [city]”; repeat visits confined to one city use “Visits to [city]”. Each option retains its country and date. No additional “Across all dates” subtitle is needed. Placement accounts for the trigger, selected location dot, neighboring pins, header, and viewport edges. The picker heading and Close button remain fixed while only the options scroll. At widths ≤540px and heights ≤700px, the picker uses the viewport width minus 32px, sits 16px above the bottom when there is room below its selected pin and place detail, and caps its height at 55% of the viewport. At all mobile widths (≤800px), regardless of height, a visit count with a 4px gap below the picker heading makes the full set apparent. If fewer than 144px remain for the short-phone placement, the picker falls back to its pin-aware placement candidates. Long lists scroll within the available space using a thin themed scrollbar; the fixed header stays outside that scrolling region. Close and Escape restore focus; selection or viewport changes dismiss stale context. The expanded map trigger retains its intentional 4px corner radius. Its minimum size is 160×44px with 8px vertical and 12px horizontal padding; it grows with enlarged text, up to the viewport width minus 32px. Measured control dimensions determine the offset above the selected pin and exclusion bounds for the header, reading surfaces, and neighboring markers.
+
+### Preserved interaction choices
+
+Keep the compact dot-and-chevron cluster symbol and the expanded “Nearby visits” label. The selected history row retains its mineral-edged rust dot and stronger city weight; the dot links list selection to the map pin.
+
+The history's bottom fade and partially visible next row provide the scrolling cue. Do not add introductory scroll instructions. The implemented fade is 32px while more history remains, and disappears at the end; the top fade is 12px when earlier history is available. Returning to the scroll origin restores the current location. No separate “Back to now” control is included, keeping the mobile interface restrained.
+
+### Camera motion
+
+**The Latest Selection Rule.** Each selection cancels the pending camera frame and starts from the current interpolated position. Nearby travel takes 420ms; travel beyond one viewport width takes 720ms and widens progressively, capped at a 25% reduction in scale. Position uses smoothstep easing (`t² × (3 − 2t)`); widening uses a sine-squared envelope and returns to the destination scale. Repeat visits to the same city share geometry and do not restart movement. Reduced motion, first measurement, and resize apply the destination immediately. Country highlighting fades over 450ms with `ease`, or changes instantly under reduced motion.
+
+Evidence: `src/components/whereabouts/whereabouts.module.css`, `whereabouts.tsx`, `travel-map.tsx`, `travel-camera.ts`, and `use-travel-story.ts`; `src/app/layout.tsx`; `src/styles/global.css`; `public/world-map.svg`; `scripts/generate-travel-map.py`.
